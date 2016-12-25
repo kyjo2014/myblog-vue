@@ -1,0 +1,27 @@
+{
+  "name": "myblog-vue",
+  "version": "0.1.0",
+  "description": "from kyjo",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyjo2014/myblog-vue.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "kyjo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyjo2014/myblog-vue/issues"
+  },
+  "homepage": "https://github.com/kyjo2014/myblog-vue#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mysql": "^2.12.0",
+    "node-uuid": "^1.4.7"
+  }
+}
