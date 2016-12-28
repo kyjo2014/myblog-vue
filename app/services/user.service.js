@@ -70,6 +70,8 @@ function createUser(user) {
         connection.query(insertUser, (err) => {
             if (err) {
                 resolve(err)
+            } else {
+                resolve("add success")
             }
         })
     })
@@ -89,6 +91,8 @@ function removeUser(userID) {
         connection.query(deleteUser, (err) => {
             if (err) {
                 resolve(err)
+            } else {
+                resolve("remove success")
             }
         })
     })

@@ -1,4 +1,6 @@
-var connection = require('../models').connect
+var connection = require('../models').connection
+
+
 
 /**
  * 查找所有的文章
@@ -9,9 +11,9 @@ var connection = require('../models').connect
  * @returns
  */
 function findAll({limit = 100, offset = 0} = {}) {
-    let FIND_USER = 'select * from article where Uid>' + offset + ' limit ' + limit
+    let FIND_ARTICELE = 'select * from article where id>' + offset + ' limit ' + limit
     return new Promise((resolve, reject) => {
-        connection.query(FIND_USER, (err, result) => {
+        connection.query(FIND_ARTICELE, (err, result) => {
             if (err) {
                 resolve(err)
             } else {
@@ -20,6 +22,7 @@ function findAll({limit = 100, offset = 0} = {}) {
         })
     })
 }
+
 exports.findAll = findAll
 
 /**
@@ -80,7 +83,7 @@ function updateArticle(article) {
         articleTableCol.push(i)
         articleTableColVal.push(stringWrap(article[i]))
     }
-    let updateSQL = "update article set " +  +" where " +  ;
+    // let updateSQL = "update article set " +  +" where " +  ;
 }
 exports.updateArticle = updateArticle
 
@@ -95,3 +98,8 @@ function deleteArticle(articleID) {
 }
 
 exports.deleteArticle = deleteArticle
+
+
+// module.exports = {
+//     "asd": 123
+// }

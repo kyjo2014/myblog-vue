@@ -11,14 +11,6 @@ var db = {}//数据库模式
 const connection = mysql.createPool(dbconfig);
 
 
-connection.getConnection((err) => {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-    console.log('connected as id ' + connection.threadId);
-});
-console.log(connection)
 //初始化数据库信息
 // dbinit(connection)
 

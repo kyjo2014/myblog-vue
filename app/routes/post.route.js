@@ -1,5 +1,5 @@
 let express = require('express')
-let postCtr = require('../controllers/article.ctrl')
+let postCtr = require('../controllers/post.ctrl')
 
 const router = express.Router()
 // console.log(userCtr.list())
