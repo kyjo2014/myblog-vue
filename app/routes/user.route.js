@@ -8,7 +8,7 @@ const router = express.Router()
 module.exports = function (app) {
     router.route('/').get(userCtr.list)
     router.route('/:userName').get(userCtr.get);
-    router.route('/').post(userCtrl.create)
+    router.route('/').post(userCtr.create)
     console.log("asdasdas")
     app.use('/api/users', router)
 }

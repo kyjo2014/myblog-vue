@@ -22,6 +22,7 @@ const operation = {
             });
     },
     create: (req, res) => {
+        console.log(req)
         const user = req.body;
         return userService
             .create(user)

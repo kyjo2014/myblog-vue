@@ -8,15 +8,17 @@ var dbconfig = require('../../config/dev')
 
 var basename = path.basename(module.filename)//避免循环依赖自身
 var db = {}//数据库模式
-const connection = mysql.createConnection(dbconfig);
+const connection = mysql.createPool(dbconfig);
 
-connection.connect((err) => {
+
+connection.getConnection((err) => {
     if (err) {
         console.error('error connecting: ' + err.stack);
         return;
     }
     console.log('connected as id ' + connection.threadId);
 });
+console.log(connection)
 //初始化数据库信息
 // dbinit(connection)
 
@@ -43,11 +45,17 @@ console.log(db)
  * @param {String} newtable
  * @param {Set} existTable
  */
-function checkReference(newtable,existTable) {
+function checkReference(newtable, existTable) {
     let tableArray = newtable.split(" ")
-    if () {
-        return refer
+    let length = tableArray.length
+    let reg = new RegExp("referen", "i")
+    for (let i = 0; i < length; i++) {
+        if (reg.test(tableArray[i])) {
+            return tableArray[i + 1]
+        }
+
     }
+    return null
 }
 
 
@@ -61,17 +69,37 @@ function checkReference(newtable,existTable) {
 function init() {
     var table = null;
     let existTable = new Set();
+    let toBuildList = []
     try {
         connection.query("show tables", (err, result) => {
             result.forEach((tablename) => {
                 existTable.add(tablename[Object.keys(tablename)])
             })
+
             for (table in db) {
-                if (typeof db[table] == "String" && !existTable.has(table))
-                    connection.query("create table " + table + " (" + db[table] + ")", (err) => {
+                if (typeof db[table] == "String" && !existTable.has(table)) {
+                    var referen = checkReference(db[table].proper)
+                    if (referen && !existTable.has(referen)) {
+                        db[table].ref = referen
+                        toBuildList.push(db[table])
+                    } else {
+                        connection.query("create table " + table + " (" + db[table].proper + ")", (err) => {
+                            console.log(err)
+                        })
+                    }
+                }
+            }
+            while (toBuildList.length) {
+                var cur = toBuildList.pop()
+                if (!existTable.has(cur.ref)) {
+                    toBuildList.unshift()
+                } else {
+                    connection.query("create table " + table + " (" + db[table].proper + ")", (err) => {
                         console.log(err)
                     })
+                }
             }
+
         })
     } catch (e) {
 

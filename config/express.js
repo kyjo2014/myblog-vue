@@ -39,6 +39,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 //注册路由
 function bootstrapRoutes() {
     // Skip the app/routes/middlewares directory as it is meant to be
@@ -50,7 +52,7 @@ function bootstrapRoutes() {
     //     require(path)(app);
     // });
     // console.log(appPath)
-    fs.readdirSync('../app/routes')
+    fs.readdirSync('./app/routes')
     .forEach((file) => {
         console.log(file)
         require('../app/routes/'+ file)(app)
@@ -73,3 +75,5 @@ var server = http.createServer(app);
 server.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+module.exports = app

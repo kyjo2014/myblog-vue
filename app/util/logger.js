@@ -19,4 +19,4 @@ logger.stream = {
     }
 };
 
-export default logger;
+module.exports = logger;

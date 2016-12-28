@@ -16,8 +16,11 @@
 
 
 const models = require('./app/models')
+const app = require('./config/express')
 
-
+app.get("/", (req, res) => {
+    res.sendFile(__dirname+"/views/index.html")
+})
 
 // /**
 //  * create database if not exist

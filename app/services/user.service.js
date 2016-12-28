@@ -14,7 +14,7 @@ function findAll({limit = 100, offset = 0} = {}) {
     return new Promise((resolve, reject) => {
         connection.query(FIND_USER, (err, result) => {
             if (err) {
-                reject(err)
+                resolve(err)
             } else {
                 resolve(result)
             }
@@ -35,7 +35,7 @@ function findByUserName(userName) {
     return new Promise((resolve, reject) => {
         connection.query(UserByName, (err, result) => {
             if (err) {
-                reject(err)
+                resolve(err)
             } else {
                 resolve(result)
             }
@@ -51,12 +51,25 @@ exports.findByName = findByUserName
  * @param {any} user
  * @returns
  */
-function createUser(user,isHost) {
-    let insertUser = 'insert into user(Uacount,Uemail) values()'
+function createUser(user) {
+    var newUser = {}
+    let insertUser = 'insert into user(Uaccount,Uemail) values("1","2")'
+    if (user.isHost) {
+        var userTableCol = []
+        var userTableColVal = []
+        for (var i in user) {
+            userTableCol.push(i)
+            userTableColVal.push(stringWrap(user[i]))
+        }
+
+        insertUser = 'insert into user(' + userTableCol.join(",") + ') values(' + userTableColVal.join(",") + ')'
+    } else {
+        insertUser = 'insert into user(Uaccount,Uemail) values(' + stringWrap(user.Uaccount) + ',' + stringWrap(user.Uemail) + ')'
+    }
     return new Promise((resolve, reject) => {
         connection.query(insertUser, (err) => {
             if (err) {
-                reject(err)
+                resolve(err)
             }
         })
     })
@@ -75,7 +88,7 @@ function removeUser(userID) {
     return new Promise((resolve, reject) => {
         connection.query(deleteUser, (err) => {
             if (err) {
-                reject(err)
+                resolve(err)
             }
         })
     })
