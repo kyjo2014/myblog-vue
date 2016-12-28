@@ -44,7 +44,10 @@ console.log(db)
  * @param {Set} existTable
  */
 function checkReference(newtable,existTable) {
-    
+    let tableArray = newtable.split(" ")
+    if () {
+        return refer
+    }
 }
 
 

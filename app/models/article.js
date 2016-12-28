@@ -1,7 +1,3 @@
-module.exports = function (connection) {
-
-}
-
 const ARTICLE = '\
     create table article ( \
 	id int primary key not null auto_increment, \
@@ -10,3 +6,6 @@ const ARTICLE = '\
     timestamp  char(30),\
 );\
 '
+
+
+module.exports = ARTICLE
