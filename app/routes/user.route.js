@@ -9,7 +9,7 @@ module.exports = function (app) {
     router.route('/').get(userCtr.list)
     router.route('/:userName').get(userCtr.get);
     router.route('/').post(userCtr.create)
-    console.log("asdasdas")
+    router.route('/:userID').delete(userCtr.delete)
     app.use('/api/users', router)
 }
 

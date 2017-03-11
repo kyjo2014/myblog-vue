@@ -1,5 +1,5 @@
 var connection = require('../models').connection
-
+let stringWrap = require('../util/stringWrap')
 
 
 /**
@@ -11,9 +11,10 @@ var connection = require('../models').connection
  * @returns
  */
 function findAll({limit = 100, offset = 0} = {}) {
-    let FIND_ARTICELE = 'select * from article where id>' + offset + ' limit ' + limit
+    let FIND_ARTICELE = 'select * from notagarticles where Aid>' + offset + ' limit ' + limit
     return new Promise((resolve, reject) => {
         connection.query(FIND_ARTICELE, (err, result) => {
+            // console.log(result)
             if (err) {
                 resolve(err)
             } else {
@@ -22,8 +23,19 @@ function findAll({limit = 100, offset = 0} = {}) {
         })
     })
 }
-
+// findAll().then((result) => {
+//     console.log(result)
+// })
 exports.findAll = findAll
+
+/**
+ * 
+ * 
+ * @param {any} Info
+ */
+function findByInfo(Info) {
+    let findArticle = 'select * from notagarticles where'
+}
 
 /**
  * 
@@ -73,7 +85,30 @@ function createArticle(article) {
         })
     })
 }
-exports.createArticle = createArticle
+function create(article) {
+    let CREATE_ARTICLE = 'call addarticle(' + stringWrap(article.title) +
+        ',' + stringWrap(article.content) + ',' +
+        article.Uid + ',' + article.sort + ');'
+    return new Promise((resolve, reject) => {
+        connection.query(CREATE_ARTICLE, (err,result) => {
+
+            if (err) {
+                resolve(err)
+            } else {
+               resolve(result[0][0]['Aid'])
+            }
+        })
+    })
+}
+// create({
+//     title: 'create',
+//     content: 'create1',
+//     Uid: 1,
+//     sort: 2
+// }).then((result) => {
+//     console.log(result['Aid'])
+// })
+exports.createArticle = create
 
 
 function updateArticle(article) {
@@ -83,20 +118,44 @@ function updateArticle(article) {
         articleTableCol.push(i)
         articleTableColVal.push(stringWrap(article[i]))
     }
-    // let updateSQL = "update article set " +  +" where " +  ;
+
+    let UPDATE_SQL = "update article set title=" + stringWrap(article.title) + ' , content=' +
+        stringWrap(article.content) +
+        " where id=" + article.Aid;
+    return new Promise((resolve, reject) => {
+        connection.query(UPDATE_SQL, (err, result) => {
+            if (err) {
+                resolve(err)
+            }
+            resolve("success")
+        })
+    })
 }
+// updateArticle({
+//     Aid: 48,
+//     title: 'bombshakalala',
+//     content: 'fluy'
+// }).then((result) => {
+//     console.log(result)
+// })
 exports.updateArticle = updateArticle
 
 
 
 function deleteArticle(articleID) {
+    let DELETE_ARTICLE = 'delete from article where id='+ articleID
     return new Promise((resolve, reject) => {
-        connection.query()
-    }).then((result) => {
-        console.log(result)
+        connection.query(DELETE_ARTICLE, (err, result) => {
+            if (err) {
+                resolve(err)
+            }
+            resolve("success")
+        })
     })
 }
-
+// deleteArticle(48).then((result) => {
+//     console.log(result)
+// })
 exports.deleteArticle = deleteArticle
 
 

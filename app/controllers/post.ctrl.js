@@ -1,21 +1,20 @@
 // let logger = require('../util/logger')
-let articleService = require('../services/article.service')
+let postService = require('../services/post.service')
+let tagService = require('../services/tag.service')
 
 const operations = {
 
 	list: (req, res) => {
-		const q = {
-			userName: req.params.userName
-		}
-		return articleService
-			.findAll(q)
+
+		return postService
+			.findAll()
 			.then((data) => {
 				res.status(200).json(data);
 			});
 	},
 	getBySort: (req, res) => {
 		const postSort = req.params.sort
-		return articleService
+		return po44stService
 			.findBySort(postSort)
 			.then((data) => {
 				if (data) {
@@ -25,9 +24,17 @@ const operations = {
 				}
 			})
 	},
-	get: (req, res) => {
+	getByTag: (req, res) => {
+		const postTag = req.params.tag
+
+		return
+	},
+	getAllInfo: (req, res) => {
+
+	},
+	getByID: (req, res) => {
 		const postId = req.params.postId;
-		return articleService
+		return postService
 			.findById(postId)
 			.then((data) => {
 				if (data) {
@@ -39,32 +46,47 @@ const operations = {
 	},
 	create: (req, res) => {
 		const post = req.body;
-		post.userId = req.params.userName;
-		logger.info('About to create post ', post);
-		return articleService
-			.create(post)
-			.then((data) => {
-				res.json(data);
-			});
+		// post.userId = req.params.userName;
+		// logger.info('About to create post ', post);
+		
+		if (post.tags) {
+			post.tags = JSON.parse(post.tags)
+			var tagPromise = []
+			post.tags.forEach((tag) => {
+				tagPromise.push(tagService.create(tag))
+			})
+			Promise.all(tagPromise).then((data) => {
+				return postService.create(post)
+					.then((data) => {
+						res.status(200).json(data);
+					});
+			})
+		} else {
+			return postService.create(post)
+				.then((data) => {
+					res.json(data);
+				});
+		}
+
 	},
 	delete: (req, res) => {
 		const postId = req.params.postId;
-		logger.info('About to delete post ', postId);
-		return articleService
+		// logger.info('About to delete post ', postId);
+		return postService
 			.deletePost(postId)
 			.then((affectedRows) => {
-				logger.info('rows deleted', affectedRows);
-				res.status(200).end();
+				// logger.info('rows deleted', affectedRows);
+				res.status(200).json(affectedRows);
 			});
 	},
 	update: (req, res) => {
 		const postId = req.params.postId;
 		const post = req.body;
-		post.id = postId;
-		return articleService
+		post.Aid = postId;
+		return postService
 			.update(post)
 			.then((p) => {
-				res.status(200).end();
+				res.status(200).json(p);
 			})
 			.catch(e => {
 				res.status(400).end();

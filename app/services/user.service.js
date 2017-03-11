@@ -31,7 +31,7 @@ exports.findAll = findAll
  * @returns
  */
 function findByUserName(userName) {
-    let UserByName = 'select * from user where Uaccount=' + stringWrap(userName)
+    let UserByName = 'select * from user where Uaccount like \'%' + userName + '%\''
     return new Promise((resolve, reject) => {
         connection.query(UserByName, (err, result) => {
             if (err) {
@@ -86,7 +86,8 @@ exports.create = createUser
  * @returns
  */
 function removeUser(userID) {
-    let deleteUser = 'delete from user where id=' + userID
+    let deleteUser = 'delete from user where Uid=' + userID
+    console.log(deleteUser)
     return new Promise((resolve, reject) => {
         connection.query(deleteUser, (err) => {
             if (err) {

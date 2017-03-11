@@ -7,6 +7,7 @@ var fs = require('fs')
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var methodOverride = require('method-override');
+var cookieParser = require('cookie-parser')
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var multer = require('multer');
@@ -29,9 +30,11 @@ app.set('view engine', 'jade');
 // app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(methodOverride());
+app.use(cookieParser())
 app.use(session({
     resave: true,
     saveUninitialized: true,
+    cookie: { domain: 'localhost:3000' },
     secret: 'uwotm8'
 }));
 app.use(bodyParser.json());
@@ -39,6 +42,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
+app.all('/api/*', function (req, res, next) {
+   console.log(req.cookies)
+        next();
+});
 
 
 //注册路由
@@ -53,10 +68,10 @@ function bootstrapRoutes() {
     // });
     // console.log(appPath)
     fs.readdirSync('./app/routes')
-    .forEach((file) => {
-        console.log(file)
-        require('../app/routes/'+ file)(app)
-    })
+        .forEach((file) => {
+            console.log(file)
+            require('../app/routes/' + file)(app)
+        })
 
 
 }

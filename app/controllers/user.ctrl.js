@@ -32,13 +32,12 @@ const operation = {
     },
     delete: (req, res) => {
         const userName = req.params.userID;
-        logger.info('About to delete user ', userName);
+        // logger.info('About to delete user ', userName);
+        console.log(userName)
         return userService
-            .delete({
-                userName: userName
-            })
+            .delete(userName)
             .then((affectedRows) => {
-                logger.info('rows deleted', affectedRows);
+                // logger.info('rows deleted', affectedRows);
                 res.status(200).end();
             });
     }
