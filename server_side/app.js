@@ -1,6 +1,6 @@
 const koa = require('koa')
 const router = require('koa-router')
-
+const mongo = require('./model/mongoModel')
 var app = new koa();
 const route = new router()
 function timeout(ms) {
@@ -14,9 +14,4 @@ route.get('/', async function (ctx) {
   ctx.body = "Hello world 3";
 })
 app.use(route.routes())
-// app.use(function *(){
-//   this.body = 'Hello World';
-//   console.log(this)
-// });
-
 app.listen(3000);
