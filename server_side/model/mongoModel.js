@@ -31,6 +31,21 @@ let post = new Schema({
         default: Date.now
     }
 })
-let Blog = mongoose.model('Blog',post)
+let Blog = mongoose.model('Blog', post)
 
-//
+//书本
+let book = new Schema({
+    title: String,
+    link: String,
+    info: String
+})
+let Book = mongoose.model('Book', book)
+
+
+
+
+
+module.exports = {
+    Blog,
+    Book
+}
