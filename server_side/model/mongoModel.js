@@ -15,3 +15,22 @@ db.once('open', callback => {
 //创建Schema
 const Schema = mongoose.Schema
 
+
+
+//文章
+let post = new Schema({
+    title: String,
+    author: String,
+    content: String,
+    comments: [{
+        content: String,
+        data: Date
+    }],
+    date: {
+        type: Date,
+        default: Date.now
+    }
+})
+let Blog = mongoose.model('Blog',post)
+
+//
