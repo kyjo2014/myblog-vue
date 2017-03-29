@@ -26,12 +26,10 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 // etag works together with conditional-get
 app.use(conditional());
 app.use(etag());
-
-
 // or use absolute paths
 app.use(serve(__dirname + '/dist'));
 
-
+//逻辑路由
 const route = new router()
 
 function timeout(ms) {
@@ -44,6 +42,16 @@ route.get('/', async function (ctx) {
   await timeout(200)
   ctx.body = "Hello world 3";
 })
-route
+route.get('/post', async function (ctx) {
+  getPost().then(res => {
+    console.log(res)
+  })
+  
+})
+
+function getPost() {
+  return mongo.Blog.find().exec()
+}
+
 app.use(route.routes())
 app.listen(3000);
