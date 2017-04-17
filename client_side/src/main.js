@@ -3,8 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import MuseUI from 'muse-ui'
+import 'muse-ui/dist/muse-ui.css'
 
 Vue.config.productionTip = false
+
+// 使用插件
+Vue.use(MuseUI)
 
 /* eslint-disable no-new */
 new Vue({

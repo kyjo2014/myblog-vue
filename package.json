@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "db": "mongod --config ./server_side/conf/mongodb.conf",
-    "start": "node ./server_side/app.js "
+    "db": "mongod --config ./server_side/conf/mongodb.conf & cd server_side pm2 start ./app.js --watch",
+    "start": "cd client_side & npm run dev"
   },
   "repository": {
     "type": "git",
