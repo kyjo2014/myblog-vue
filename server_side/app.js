@@ -6,12 +6,15 @@ const compress = require('koa-compress')
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
 const serve = require('koa-static');
+const bodyPraser = require('koa-bodyparser');
 
 //引入mongoose实例
 const mongo = require('./model/mongoModel')
 
 //生成koa实例
 var app = new koa();
+
+
 
 app.use(compress({
   filter: function (content_type) {
@@ -21,37 +24,18 @@ app.use(compress({
   flush: require('zlib').Z_SYNC_FLUSH
 }))
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
+// app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // etag works together with conditional-get
 app.use(conditional());
 app.use(etag());
 // or use absolute paths
 app.use(serve(__dirname + '/dist'));
+//加上body-praser
+app.use(bodyPraser())
 
-//逻辑路由
-const route = new router()
+//加载路由
+const routers = require('./routers/index')
+app.use(routers)
 
-function timeout(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-route.get('/', async function (ctx) {
-  await timeout(200)
-  ctx.body = "Hello world 3";
-})
-route.get('/post', async function (ctx) {
-  getPost().then(res => {
-    console.log(res)
-  })
-  
-})
-
-function getPost() {
-  return mongo.Blog.find().exec()
-}
-
-app.use(route.routes())
 app.listen(3000);

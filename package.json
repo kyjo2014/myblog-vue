@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db": "mongod --config ./server_side/conf/mongodb.conf",
-    "start": "node ./server_side/app.js"
+    "start": "node ./server_side/app.js "
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/kyjo2014/myblog-vue#readme",
   "dependencies": {
-    "koa": "^2.2.0"
+    "koa": "^2.2.0",
+    "pm2": "^2.4.5"
   }
 }
