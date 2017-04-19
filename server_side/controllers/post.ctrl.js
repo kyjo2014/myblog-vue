@@ -53,7 +53,7 @@ exports.update = async ctx => {
 
 exports.del = async ctx => {
      try {
-        ctx.body = await postModel.Blog
+        ctx.body = await postModel.Blog.findByIdAndRemove(ctx.params.id).exec()
     } catch (error) {
         ctx.body = error
     }
