@@ -3,7 +3,7 @@ const postModel = require('../model/mongoModel')
 
 /**
  * @description 
- * 
+ * 返回所有文章
  * @export
  * @param {any} ctx 
  */
@@ -11,6 +11,11 @@ exports.list = async ctx => {
     ctx.body = await postModel.Blog.find().exec()
 }
 
+/**
+ * @description 
+ * 按照文章id返回文章
+ * @param {any} ctx 
+ */
 exports.findById = async ctx => {
     try {
         ctx.body = await postModel.Blog.findById(ctx.params.id).exec()
@@ -19,6 +24,11 @@ exports.findById = async ctx => {
     }
 }
 
+/**
+ * @description 
+ * 新建文章
+ * @param {any} ctx 
+ */
 exports.create = async ctx => {
     let body = ctx.request.body
     let {
@@ -33,6 +43,11 @@ exports.create = async ctx => {
     ctx.body = await postModel.Blog.find().exec()
 }
 
+/**
+ * @description 
+ * 更新文章
+ * @param {any} ctx 
+ */
 exports.update = async ctx => {
     let body = ctx.request.body
     let {
@@ -51,6 +66,11 @@ exports.update = async ctx => {
     }
 }
 
+/**
+ * @description 
+ * 删除文章
+ * @param {any} ctx 
+ */
 exports.del = async ctx => {
      try {
         ctx.body = await postModel.Blog.findByIdAndRemove(ctx.params.id).exec()
