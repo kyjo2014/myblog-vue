@@ -7,6 +7,6 @@ const post = require('./post.route')
 let routers = new Router();
 
 //聚集路由api
-routers.use('/post',post)
+routers.use('/posts',post)
 
 module.exports = routers.routes()

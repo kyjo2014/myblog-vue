@@ -1,5 +1,5 @@
 let mongoose = require('mongoose')
-
+mongoose.Promise = global.Promise;
 
 //建立数据库链接
 mongoose.connect('mongodb://127.0.0.1:27017')
@@ -19,17 +19,13 @@ const Schema = mongoose.Schema
 
 //文章
 let post = new Schema({
-    title: String,
-    author: String,
-    content: String,
-    comments: [{
-        content: String,
-        data: Date
-    }],
-    date: {
-        type: Date,
-        default: Date.now
-    }
+    title: String, //文章标题
+    author: String, //文章作者
+    content: String, //文章内容
+    createAt: Date, //发布时间
+    updatedAt: Date, //更新时间
+    readAmount: Number //阅读量
+    //TODO：增加评论功能
 })
 let Blog = mongoose.model('Blog', post)
 
