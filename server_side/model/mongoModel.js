@@ -38,10 +38,20 @@ let book = new Schema({
 let Book = mongoose.model('Book', book)
 
 
+//用户
+let user = new Schema({
+    id: String,
+    name: String,
+    password: String,
+    email: String,
+    createAt: Date
+})
+let user = mongoose.model('User',user)
 
 
 
 module.exports = {
     Blog,
-    Book
+    Book,
+    user
 }
