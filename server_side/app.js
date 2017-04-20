@@ -6,6 +6,7 @@ const compress = require('koa-compress')
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
 const serve = require('koa-static');
+const jwt = require('koa-jwt');
 const bodyPraser = require('koa-bodyparser');
 
 //引入mongoose实例
@@ -30,7 +31,8 @@ app.use(compress({
 app.use(conditional());
 app.use(etag());
 // or use absolute paths
-app.use(serve(__dirname + '/dist'));
+console.log(__dirname)
+app.use(serve(__dirname + '/www'));
 //加上body-praser
 app.use(bodyPraser())
 

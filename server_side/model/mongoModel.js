@@ -19,12 +19,17 @@ const Schema = mongoose.Schema
 
 //文章
 let post = new Schema({
+    id: Number, //博客id
     title: String, //文章标题
     author: String, //文章作者
     content: String, //文章内容
     createAt: Date, //发布时间
-    updatedAt: Date, //更新时间
-    readAmount: Number //阅读量
+    updatedAt: {
+        type: Date,
+        default:Date.now()
+    }, //更新时间
+    readAmount: Number, //阅读量
+    tags: [Schema.Types.ObjectId]//标签
     //TODO：增加评论功能
 })
 let Blog = mongoose.model('Blog', post)
@@ -46,12 +51,12 @@ let user = new Schema({
     email: String,
     createAt: Date
 })
-let user = mongoose.model('User',user)
+let User = mongoose.model('User', user)
 
 
 
 module.exports = {
     Blog,
     Book,
-    user
+    User
 }

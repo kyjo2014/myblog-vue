@@ -16,6 +16,7 @@
     "koa-csrf": "^3.0.5",
     "koa-etag": "^3.0.0",
     "koa-favicon": "^2.0.0",
+    "koa-jwt": "^3.2.1",
     "koa-router": "^7.0.1",
     "koa-static": "",
     "koa2-common": "^1.0.0",
