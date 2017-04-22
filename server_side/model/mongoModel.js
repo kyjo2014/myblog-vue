@@ -34,7 +34,10 @@ const Schema = mongoose.Schema
 
 //文章
 let post = new Schema({
-    id: Number, //博客id
+    id: {
+        type: Number,
+        default: 0
+    }, //博客id
     title: {
         type: String,
         required: true
@@ -78,9 +81,8 @@ post.pre('save', function (next) {
 //添加虚属性
 post.virtual('summary').get(function () {
     if (this.content) {
-        return this.content.splice(0,10)
+        return this.content.splice(0, 10)
     } else {
-        
         return ''
     }
 })
