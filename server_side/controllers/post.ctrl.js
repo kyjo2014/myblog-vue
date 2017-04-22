@@ -8,7 +8,7 @@ const postModel = require('../model/mongoModel')
  * @param {any} ctx 
  */
 exports.list = async ctx => {
-    return ctx.body = await postModel.Blog.find().exec()
+    return ctx.body = await postModel.Blog.listAll()
 }
 
 /**
@@ -18,7 +18,7 @@ exports.list = async ctx => {
  */
 exports.findById = async ctx => {
     try {
-        return ctx.body = await postModel.Blog.findById(ctx.params.id).exec()
+        return ctx.body = await postModel.Blog.findByPostId(id)
     } catch (error) {
         return ctx.body = error
     }
@@ -40,9 +40,8 @@ exports.create = async ctx => {
         title,
         content
     })
-   return ctx.body = await postModel.Blog.find().exec()
+    return ctx.body = await postModel.Blog.listAll()
 }
-
 /**
  * @description 
  * 更新文章
