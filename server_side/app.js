@@ -8,6 +8,7 @@ const etag = require('koa-etag');
 const serve = require('koa-static');
 const jwt = require('koa-jwt');
 const bodyPraser = require('koa-bodyparser');
+const cors = require('kcors');
 
 //引入mongoose实例
 const mongo = require('./model/mongoModel')
@@ -16,7 +17,7 @@ const mongo = require('./model/mongoModel')
 var app = new koa();
 
 
-
+app.use(cors())
 app.use(compress({
   filter: function (content_type) {
     return /text/i.test(content_type)
