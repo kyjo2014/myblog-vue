@@ -1,4 +1,6 @@
 let mongoose = require('mongoose')
+let AutoIncrement = require('mongoose-sequence');
+let removeAttr = require('../utils/removeAttrFromDoc')
 mongoose.Promise = global.Promise;
 
 //当前已保存文章数量
@@ -34,10 +36,6 @@ const Schema = mongoose.Schema
 
 //文章
 let post = new Schema({
-    id: {
-        type: Number,
-        default: 0
-    }, //博客id
     title: {
         type: String,
         required: true
@@ -49,7 +47,7 @@ let post = new Schema({
     }, //文章作者
     content: {
         type: String,
-        default: ''
+        default: ' '
     }, //文章内容
     createAt: {
         type: Date,
@@ -64,6 +62,11 @@ let post = new Schema({
     //TODO：增加评论功能
 })
 
+
+//添加自增的id
+post.plugin(AutoIncrement, {
+    inc_field: 'id'
+});
 //设置返回文档内容时候同时获取虚属性
 post.set('toJSON', {
     virtuals: true
@@ -81,18 +84,19 @@ post.pre('save', function (next) {
 //添加虚属性
 post.virtual('summary').get(function () {
     if (this.content) {
-        return this.content.splice(0, 10)
+        return this.content.slice(0, 10)
     } else {
         return ''
     }
 })
+
 
 //添加静态方法
 post.statics = {
     listAll() {
         return this
             .find({})
-            .select('-content -_id')
+            .select('-__v -_id')
             .exec()
     },
     findByPostId(id) {
@@ -111,7 +115,6 @@ post.statics = {
             })
             .skip(POST_PER_PAGE * (page - 1))
             .limit(POST_PER_PAGE)
-            .select('-summary')
             .exec()
     },
     getTotalCount() {

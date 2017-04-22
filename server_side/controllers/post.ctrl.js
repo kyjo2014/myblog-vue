@@ -8,7 +8,8 @@ const postModel = require('../model/mongoModel')
  * @param {any} ctx 
  */
 exports.list = async ctx => {
-    return ctx.body = await postModel.Blog.listAll()
+    let collection = await postModel.Blog.listAll()
+    return ctx.body = collection
 }
 
 /**
@@ -40,6 +41,7 @@ exports.create = async ctx => {
         title,
         content
     })
+
     return ctx.body = await postModel.Blog.listAll()
 }
 /**
