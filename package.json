@@ -23,6 +23,7 @@
   "homepage": "https://github.com/kyjo2014/myblog-vue#readme",
   "dependencies": {
     "koa": "^2.2.0",
+    "lodash": "^4.17.4",
     "pm2": "^2.4.5"
   }
 }

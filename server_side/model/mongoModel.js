@@ -39,9 +39,12 @@ let post = new Schema({
     author: {
         type: String,
         required: true,
-        default: admin
+        default: ADMIN_ID
     }, //文章作者
-    content: String, //文章内容
+    content: {
+        type: String,
+        default: ''
+    }, //文章内容
     createAt: {
         type: Date,
         default: Date.now()
@@ -61,13 +64,18 @@ post.pre('save', next => {
     next()
 })
 //添加虚属性
-post.virtual('summary').get(() => {
-    return this.content.splice(0, SUMMARY_LEN)
+post.virtual('summary').get(function () {
+    console.log('finding')
+    console.log(this)
+    return this.content
 })
 
 //添加静态方法
 post.statics = {
     listAll() {
+        this.findOne({}).exec((err, doc) => {
+            console.log(doc.summary)
+        })
         return this
             .find({})
             .select('-content')

@@ -6,7 +6,10 @@ const post = require('./post.route')
 
 let routers = new Router();
 
+
+routers.redirect('/index', '/index.html', 301)
+
 //聚集路由api
-routers.use('/posts',post)
+routers.use('/posts', post)
 
 module.exports = routers.routes()
