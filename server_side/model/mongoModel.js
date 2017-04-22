@@ -1,6 +1,8 @@
 let mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
 
+//当前已保存文章数量
+let postAmount = 0
 
 //summary长度
 const SUMMARY_LEN = 10;
@@ -26,6 +28,7 @@ db.once('open', callback => {
 
 //创建Schema
 const Schema = mongoose.Schema
+
 
 
 
@@ -57,28 +60,37 @@ let post = new Schema({
     tags: [Schema.Types.ObjectId] //标签
     //TODO：增加评论功能
 })
+
+//设置返回文档内容时候同时获取虚属性
+post.set('toJSON', {
+    virtuals: true
+})
+post.set('toObject', {
+    virtuals: true
+})
+
 //更改前更新日期
-post.pre('save', next => {
+post.pre('save', function (next) {
     this.updatedAt = Date.now()
     this.markModified('updatedAt')
     next()
 })
 //添加虚属性
 post.virtual('summary').get(function () {
-    console.log('finding')
-    console.log(this)
-    return this.content
+    if (this.content) {
+        return this.content.splice(0,10)
+    } else {
+        
+        return ''
+    }
 })
 
 //添加静态方法
 post.statics = {
     listAll() {
-        this.findOne({}).exec((err, doc) => {
-            console.log(doc.summary)
-        })
         return this
             .find({})
-            .select('-content')
+            .select('-content -_id')
             .exec()
     },
     findByPostId(id) {
@@ -110,6 +122,8 @@ post.statics = {
 }
 
 let Blog = mongoose.model('Blog', post)
+
+
 
 //书本
 let book = new Schema({
