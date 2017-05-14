@@ -32,10 +32,20 @@ app.use(compress({
 app.use(conditional());
 app.use(etag());
 // or use absolute paths
-console.log(__dirname)
 app.use(serve(__dirname + '/www'));
 //加上body-praser
 app.use(bodyPraser())
+//未登录错误拦截
+app.use(function (ctx, next) {
+  return next().catch((err) => {
+    if (401 == err.status) {
+      ctx.status = 401;
+      ctx.body = 'Protected resource, use Authorization header to get access\n';
+    } else {
+      throw err;
+    }
+  });
+});
 
 //加载路由
 const routers = require('./routers/index')
