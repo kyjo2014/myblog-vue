@@ -10,6 +10,9 @@ const jwt = require('koa-jwt');
 const bodyPraser = require('koa-bodyparser');
 const cors = require('kcors');
 
+//引用配置文件
+const conf = require('./conf/mainConf')
+
 //引入mongoose实例
 const mongo = require('./model/mongoModel')
 
@@ -46,6 +49,9 @@ app.use(function (ctx, next) {
     }
   });
 });
+
+//添加jwt 拦截
+app.use(jwt({ secret: conf.secretKey }).unless({ path: [/^\/users\/login/,/^\/users\/register/,/^\/post/] }));
 
 //加载路由
 const routers = require('./routers/index')

@@ -1,10 +1,7 @@
 const userModel = require('../model/mongoModel')
+const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
-const hostInfo = {
-    'id': 'host',
-    'pwd': '123',
-    'secretKey': '123'
-}
+const hostInfo = require('../conf/mainConf')
 
 
 /**
@@ -86,11 +83,17 @@ exports.login = async ctx => {
     } = ctx.body
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
+            let token = jwt.sign({
+                id,
+                pwd
+            }, hostInfo.secretKey, {
+                expiresIn: 60 * 60
+            })
             return ctx.body = {
                 code: '200',
                 message: '登录成功',
                 data: {
-                    token: ''
+                    token
                 }
             }
         } else {
@@ -102,12 +105,19 @@ exports.login = async ctx => {
     } else if (guestValid(email, nickname)) {
         let user = await userModel.User.findByEmail(email)
         if (user.hasOwnPorperty('nickname')) {
+
             if (user['nickname'] === nickname) {
+                let token = jwt.sign({
+                    email,
+                    nickname
+                }, hostInfo.secretKey, {
+                    expiresIn: 60 * 60
+                })
                 return ctx.body = {
                     code: '200',
                     message: '登录成功',
                     data: {
-                        token: ''
+                        token
                     }
                 }
             }
