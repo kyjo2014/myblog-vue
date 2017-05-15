@@ -27,16 +27,21 @@ exports.create = async ctx => {
     } = ctx.body;
 
     if (bodyValid(email, nickname)) {
-        let message = await userModel.User.create(email, nickname)
-        return ctx.body = {
-            code: '200',
-            message: message
+        let user = await userModel.User.findOne({
+            email: email
+        }).exec()
+        if (user.length == 0) {
+            let message = await userModel.User.create(email, nickname)
+            return ctx.body = {
+                code: '200',
+                message: message
+            }
         }
 
     }
     return ctx.body = {
         code: '403',
-        message: 'register fail'
+        message: '注册失败'
     }
 }
 

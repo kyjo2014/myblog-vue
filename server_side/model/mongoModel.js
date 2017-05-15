@@ -147,6 +147,42 @@ let user = new Schema({
     email: String,
     createAt: Date
 })
+
+//添加静态方法
+user.statics = {
+    listAll() {
+        return this
+            .find({})
+            .select('-__v -_id')
+            .exec()
+    },
+    findById(id) {
+        return this
+            .findOne({
+                id: id
+            })
+            .exec()
+    },
+    fetchByPage(page) {
+        return this
+            .find({})
+            .sort({
+                'createAt': -1
+            })
+            .skip(POST_PER_PAGE * (page - 1))
+            .limit(POST_PER_PAGE)
+            .exec()
+    },
+    getTotalCount() {
+        return this
+            .find({})
+            .count()
+            .exec()
+    }
+
+}
+
+
 let User = mongoose.model('User', user)
 
 
