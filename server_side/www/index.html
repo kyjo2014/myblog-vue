@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    helloworld
+    <fieldset>
+        <h1>登录</h1>
+        <form method="POST" id="login">
+
+            <input type="text" name="id" value="">
+            <input type="password" name="password" value="">
+            <input type="submit" value="提交">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <h1>注册</h1>
+        <form method="POST" id="register">
+            <input type="email" name="email" value="">
+            <input type="text" name="nickname" value="">
+            <input type="submit" value="提交">
+        </form>
+    </fieldset>
+
+    <script src="./static/js/main.js"></script>
 </body>
+
 </html>

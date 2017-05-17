@@ -38,6 +38,7 @@ app.use(etag());
 app.use(serve(__dirname + '/www'));
 //加上body-praser
 app.use(bodyPraser())
+
 //未登录错误拦截
 app.use(function (ctx, next) {
   return next().catch((err) => {
@@ -51,7 +52,7 @@ app.use(function (ctx, next) {
 });
 
 //添加jwt 拦截
-app.use(jwt({ secret: conf.secretKey }).unless({ path: [/^\/users\/login/,/^\/users\/register/,/^\/post/] }));
+// app.use(jwt({ secret: conf.secretKey }).unless({ path: [/^\/users\/login/,/^\/users\/register/,/^\/post/] }));
 
 //加载路由
 const routers = require('./routers/index')

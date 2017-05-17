@@ -80,12 +80,19 @@ function hostValid(id, passward) {
  * @param {any} ctx 
  */
 exports.login = async ctx => {
-    let {
-        password: pwd,
-        id,
-        email,
-        nickname
-    } = ctx.body
+   
+    // let {
+    //     password: pwd,
+    //     id,
+    //     email,
+    //     nickname
+    // } = ctx.body
+  
+    var id = 'host'
+    var pwd = '123'
+    var email = 'test@'
+    var nickname="123"
+    ctx.body = 'login'
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
             let token = jwt.sign({
@@ -134,4 +141,8 @@ exports.login = async ctx => {
         }
 
     }
+}
+
+exports.del = async ctx => {
+
 }
