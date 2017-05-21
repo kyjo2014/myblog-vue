@@ -9,7 +9,11 @@ const postModel = require('../model/mongoModel')
  */
 exports.list = async ctx => {
     let collection = await postModel.Blog.listAll()
-    return ctx.body = collection
+    return ctx.body = {
+        code: '200',
+        message: '成功获取',
+        data: collection
+    }
 }
 
 /**
