@@ -1,6 +1,7 @@
 'use strict'
 const router = require('koa-router')
 const userCtrl = require('../controllers/user.ctrl')
+const hostInfo = require('../conf/mainConf')
 
 
 let route = new router()
