@@ -1,5 +1,5 @@
 module.exports =  {
     'id': 'host',
-    'pwd': '123',
+    'pwd': 'abc123456',
     'secretKey': '123'
 }

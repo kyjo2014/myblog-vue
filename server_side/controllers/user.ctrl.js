@@ -62,13 +62,14 @@ function guestValid(email, nickname) {
 /**
  * @description 
  * 博主身份验证器
- * @param {any} id 
- * @param {any} passward 
+ * @param {any} id 长度为 3-16的字符串 
+ * @param {any} passward 长度为6-21 的字符串,包含字母与数字
  * @returns  
  */
 function hostValid(id, passward) {
     const ID_REG = /[a-zA-Z0-9_]{3,16}/
     const PWD_REG = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,21}$/
+    console.log(PWD_REG.test(passward) )
     return ID_REG.test(id) && PWD_REG.test(passward)
 }
 
@@ -80,19 +81,18 @@ function hostValid(id, passward) {
  * @param {any} ctx 
  */
 exports.login = async ctx => {
-   
+
     // let {
     //     password: pwd,
     //     id,
     //     email,
     //     nickname
     // } = ctx.body
-  
+
     var id = 'host'
-    var pwd = '123'
+    var pwd = 'abc123456'
     var email = 'test@'
-    var nickname="123"
-    ctx.body = 'login'
+    var nickname = "123"
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
             let token = jwt.sign({
@@ -134,13 +134,13 @@ exports.login = async ctx => {
                 }
             }
         }
-
-        return ctx.body = {
-            code: '403',
-            message: '登陆失败'
-        }
-
     }
+    return ctx.body = {
+        code: '403',
+        message: '登陆失败'
+    }
+
+
 }
 
 exports.del = async ctx => {

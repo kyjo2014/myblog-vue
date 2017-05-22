@@ -7,10 +7,21 @@
     getArticle()
 })()
 
+/**
+ * @description 
+ * 顺序事件绑定
+ * 
+ */
 function attachEvent() {
     bindEvent('#login', 'submit', login)
+    bindEvent('.uploadArticle', 'click', postArticle)
 }
 
+/**
+ * @description
+ * 登录 
+ * @param {any} e 
+ */
 function login(e) {
     e.preventDefault();
     fetch('http://localhost:3000/users/login', {
@@ -19,6 +30,11 @@ function login(e) {
             id: 'host',
             password: '123'
         }
+    }).then(res => {
+        res.json()
+            .then(data => {
+                setToken('kblog', data.data.token)
+            })
     })
 }
 
@@ -70,7 +86,7 @@ function createArticle(context) {
         title,
         content
     } = context
-    
+
     return `<article class="posts" id="${id}">
         <h2>${title}</h2>
         <div class="content">
@@ -92,4 +108,52 @@ function createArticle(context) {
 function appendToNode(parent, html) {
     console.log(parent)
     document.querySelector(parent).innerHTML += html
+}
+
+
+/**
+ * @description 
+ * 
+ * 
+ */
+function postArticle() {
+    fetch('http://localhost:3000/posts', {
+            method: 'POST',
+            body: {
+                title: '123',
+                content: '12345'
+            },
+            headers: {
+                Authorization: getToken('kblog')
+            }
+        })
+        .then(res => {
+            console.log(res.body)
+        })
+}
+
+
+/**
+ * @description 
+ * 读取token
+ * @param {any} name 
+ * @returns  
+ */
+function getToken(name) {
+    return window.localStorage.getItem(name)
+}
+
+
+/**
+ * @description 
+ * 设置token
+ * @param {any} name 
+ * @param {any} value 
+ */
+function setToken(name, value) {
+    const ls = window.localStorage
+    if (ls.getItem(name)) {
+        ls.removeItem(name)
+    }
+    ls.setItem(name, value)
 }
