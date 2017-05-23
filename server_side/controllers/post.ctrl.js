@@ -36,11 +36,13 @@ exports.findById = async ctx => {
  */
 exports.create = async ctx => {
     let body = ctx.request.body
-    let {
-        title: title,
-        content: content,
+    return ctx.body = ctx.request.body
 
-    } = body
+    // let {
+    //     title: title,
+    //     content: content,
+
+    // } = body
     await postModel.Blog.create({
         title,
         content

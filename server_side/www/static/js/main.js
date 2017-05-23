@@ -117,20 +117,36 @@ function appendToNode(parent, html) {
  * 
  */
 function postArticle() {
+    let doc = document
+    let title = doc.querySelector('.article-title').value
+    let content = doc.querySelector('.article-content').value
+
+    let body = JSON.stringify({
+        title,
+        content
+    })
+
     fetch('http://localhost:3000/posts', {
             method: 'POST',
-            body: {
-                title: '123',
-                content: '12345'
-            },
             headers: {
-                Authorization: getToken('kblog')
-            }
+                'Authorization': 'Bearer '+ getToken('kblog'),
+                'content-type': 'application/json'
+            },
+            body: body
         })
         .then(res => {
-            console.log(res.body)
+            res.json()
+            .then(data=>{
+                alert('上传成功')  
+            })
+        })
+        .catch(data => {
+            alert('上传失败')
         })
 }
+
+
+
 
 
 /**

@@ -2,6 +2,7 @@
 const router = require('koa-router')
 const postCtrl = require('../controllers/post.ctrl')
 const jwt = require('koa-jwt')
+const decodejwt = require('jsonwebtoken')
 const hostInfo = require('../conf/mainConf')
 
 let route = new router();
@@ -11,9 +12,9 @@ route.get('/', postCtrl.list);
 //根据文章id打开
 route.get('/:id', postCtrl.findById);
 //新增文章
-route.post('/', jwt({
-    secret: hostInfo.secretKey
-}), postCtrl.create);
+route.post('/',jwt({
+    secret: hostInfo.secretKey    
+}),postCtrl.create);
 //删除文章
 route.delete('/:id', jwt({
     secret: hostInfo.secretKey

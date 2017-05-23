@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        body>div {
+            border: 1px solid black; 
+        }
+    </style>
 </head>
 
 <body>
@@ -33,7 +38,7 @@
     </div>
     <!-- 文章搜索 -->
     <div class="article-search">
-        <input type="text" class="search article-search">
+        <input type="text" class="search article-search" placeholder="文章id">
         <input type="button" class="article-submit" value="搜索">
         <div class="article">
 
@@ -42,7 +47,7 @@
     </div>
     <!-- 提交文章 -->
     <div class="upload-article">
-        <input type="text" class="article-title">
+        <input type="text" class="article-title" style="display:block" placeholder="文章标题">
         <textarea name="" id="" cols="30" rows="10" class="article-content"></textarea>
         <input type="button" class="uploadArticle" value="提交">
     </div>
@@ -50,6 +55,7 @@
     <div class="userList">
 
     </div>
+
 
 
 
