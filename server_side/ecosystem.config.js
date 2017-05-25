@@ -16,7 +16,7 @@ module.exports = {
         NODE_ENV: 'production'
       },
       "watch": ["server", "client"],
-      "ignore_watch": ["node_modules"],
+      "ignore_watch": ["node_modules","dbdata"],
       "watch_options": {
         "followSymlinks": false
       }

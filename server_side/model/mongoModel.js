@@ -139,11 +139,10 @@ let book = new Schema({
 let Book = mongoose.model('Book', book)
 
 
-//用户
+//用户:普通用户
 let user = new Schema({
     id: String,
     name: String,
-    password: String,
     email: String,
     createAt: Date
 })
@@ -178,6 +177,14 @@ user.statics = {
             .find({})
             .count()
             .exec()
+    },
+    async createGuest(info) {
+        let count = await this.find({}).count().exec()
+        Object.assign(info, {
+            id: count++
+        })
+        return this.create(info)
+
     }
 
 }
@@ -185,10 +192,61 @@ user.statics = {
 
 let User = mongoose.model('User', user)
 
+//用户：管理人员
+let host = new Schema({
+    id: String,
+    name: String,
+    password: String,
+    email: String,
+    createAt: Date,
+})
+
+//添加静态方法
+host.statics = {
+    listAll() {
+        return this
+            .find({})
+            .select('-__v -_id')
+            .exec()
+    },
+    findById(id) {
+        return this
+            .findOne({
+                id: id
+            })
+            .exec()
+    },
+    fetchByPage(page) {
+        return this
+            .find({})
+            .sort({
+                'createAt': -1
+            })
+            .skip(POST_PER_PAGE * (page - 1))
+            .limit(POST_PER_PAGE)
+            .exec()
+    },
+    getTotalCount() {
+        return this
+            .find({})
+            .count()
+            .exec()
+    },
+    createGust(info) {
+
+        return this.create
+    }
+
+}
+
+
+let Host = mongoose.model('Host', host)
+
 
 
 module.exports = {
     Blog,
     Book,
-    User
+    User,
+    Host
 }

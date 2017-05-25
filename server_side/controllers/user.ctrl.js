@@ -21,17 +21,22 @@ exports.findById = async ctx => {
  * @param {any} ctx 
  */
 exports.create = async ctx => {
+    let body = ctx.request.body || {}
     let {
-        email,
-        nickname
-    } = ctx.body;
+        email = "undefined",
+        nickname = "undefined"
+    } = body;
 
-    if (bodyValid(email, nickname)) {
+    if (guestValid(email, nickname)) {
         let user = await userModel.User.findOne({
             email: email
         }).exec()
-        if (user.length == 0) {
-            let message = await userModel.User.create(email, nickname)
+        console.log(user)
+        if (user == null) {
+            let message = await userModel.User.createGuest({
+                name: nickname,
+                email
+            })
             return ctx.body = {
                 code: '200',
                 message: message
@@ -87,7 +92,6 @@ exports.login = async ctx => {
         email = "undefined",
         nickname = "undefined"
     } = body
-    console.log(id,pwd,body,ctx.request.body)
     // var id = 'host'
     // var pwd = 'abc123456'
     // var email = 'test@'

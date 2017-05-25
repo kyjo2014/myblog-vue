@@ -14,7 +14,9 @@
  */
 function attachEvent() {
     bindEvent('#login', 'submit', login)
+    bindEvent('#register','submit',signup)
     bindEvent('.uploadArticle', 'click', postArticle)
+    
 }
 
 /**
@@ -25,8 +27,8 @@ function attachEvent() {
 function login(e) {
     e.preventDefault();
     let doc = document
-    let model = 1//1是管理员 0是游客
-    let body 
+    let model = 1 //1是管理员 0是游客
+    let body
     if (model) {
         body = JSON.stringify({
             id: doc.querySelector('.login-main').value,
@@ -48,6 +50,36 @@ function login(e) {
         res.json()
             .then(data => {
                 setToken('kblog', data.data.token)
+            })
+    })
+}
+
+
+/**
+ * @description 
+ * 注册
+ * @param {any} e 
+ */
+function signup(e) {
+    e.preventDefault()
+    let doc = document
+    let body
+
+    body = JSON.stringify({
+        email: doc.querySelector('.signup-main').value,
+        password: doc.querySelector('.signup-sub').value
+    })
+
+    fetch('http://localhost:3000/users/register', {
+        method: "POST",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: body
+    }).then(res => {
+        res.json()
+            .then(data => {
+                alert(data)
             })
     })
 }
@@ -143,16 +175,16 @@ function postArticle() {
     fetch('http://localhost:3000/posts', {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer '+ getToken('kblog'),
+                'Authorization': 'Bearer ' + getToken('kblog'),
                 'content-type': 'application/json'
             },
             body: body
         })
         .then(res => {
             res.json()
-            .then(data=>{
-                alert('上传成功')  
-            })
+                .then(data => {
+                    alert('上传成功')
+                })
         })
         .catch(data => {
             alert('上传失败')
