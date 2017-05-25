@@ -51,8 +51,7 @@ app.use(function (ctx, next) {
   });
 });
 
-//添加jwt 拦截
-// app.use(jwt({ secret: conf.secretKey }).unless({ path: [/^\/users\/login/,/^\/users\/register/,/^\/post/] }));
+
 
 //加载路由
 const routers = require('./routers/index')

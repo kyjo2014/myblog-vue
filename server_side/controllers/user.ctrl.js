@@ -69,7 +69,6 @@ function guestValid(email, nickname) {
 function hostValid(id, passward) {
     const ID_REG = /[a-zA-Z0-9_]{3,16}/
     const PWD_REG = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,21}$/
-    console.log(PWD_REG.test(passward) )
     return ID_REG.test(id) && PWD_REG.test(passward)
 }
 
@@ -81,24 +80,26 @@ function hostValid(id, passward) {
  * @param {any} ctx 
  */
 exports.login = async ctx => {
-
-    // let {
-    //     password: pwd,
-    //     id,
-    //     email,
-    //     nickname
-    // } = ctx.body
-
-    var id = 'host'
-    var pwd = 'abc123456'
-    var email = 'test@'
-    var nickname = "123"
+    let body = ctx.request.body || {}
+    let {
+        password: pwd = "undefined",
+        id = "undefined",
+        email = "undefined",
+        nickname = "undefined"
+    } = body
+    console.log(id,pwd,body,ctx.request.body)
+    // var id = 'host'
+    // var pwd = 'abc123456'
+    // var email = 'test@'
+    // var nickname = "123"
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
             let token = jwt.sign({
                 id,
                 pwd
-            }, hostInfo.secretKey)
+            }, hostInfo.secretKey, {
+                expiresIn: 60*60    
+            })
             return ctx.body = {
                 code: '200',
                 message: '登录成功',

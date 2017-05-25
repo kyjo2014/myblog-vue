@@ -24,12 +24,26 @@ function attachEvent() {
  */
 function login(e) {
     e.preventDefault();
+    let doc = document
+    let model = 1//1是管理员 0是游客
+    let body 
+    if (model) {
+        body = JSON.stringify({
+            id: doc.querySelector('.login-main').value,
+            password: doc.querySelector('.login-sub').value
+        })
+    } else {
+        body = JSON.stringify({
+            email: doc.querySelector('.login-main').value,
+            nickname: doc.querySelector('.login-sub').value
+        })
+    }
     fetch('http://localhost:3000/users/login', {
         method: "POST",
-        body: {
-            id: 'host',
-            password: '123'
-        }
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: body
     }).then(res => {
         res.json()
             .then(data => {

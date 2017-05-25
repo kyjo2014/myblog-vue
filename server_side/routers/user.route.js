@@ -2,7 +2,7 @@
 const router = require('koa-router')
 const userCtrl = require('../controllers/user.ctrl')
 const hostInfo = require('../conf/mainConf')
-
+const jwt = require('koa-jwt')
 
 let route = new router()
 
@@ -14,10 +14,14 @@ route.all('/', function (ctx) {
 route.post('/login', userCtrl.login)
 
 //查看用户信息
-route.post('/find/:id',userCtrl.findById)
+route.post('/find/:id',jwt({
+    secret: hostInfo.secretKey    
+}),userCtrl.findById)
 
 //删除用户
-route.delete('/:id', userCtrl.del)
+route.delete('/:id',jwt({
+    secret: hostInfo.secretKey    
+}),userCtrl.del)
 
 
 //注册
