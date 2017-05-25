@@ -147,5 +147,11 @@ exports.login = async ctx => {
 }
 
 exports.del = async ctx => {
+    let userID = ctx.request.params
+    console.log(userID)
+    return ctx.body = "删除用户"
+}
+
+exports.update = async ctx => {
 
 }

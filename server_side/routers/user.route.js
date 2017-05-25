@@ -24,6 +24,10 @@ route.delete('/:id',jwt({
 }),userCtrl.del)
 
 
+route.put('/:id',jwt({
+    secret: hostInfo.secretKey    
+}),userCtrl.update)
+
 //注册
 route.post('/register',userCtrl.create)
 

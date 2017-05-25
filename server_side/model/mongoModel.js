@@ -79,6 +79,7 @@ post.set('toObject', {
 post.pre('save', function (next) {
     this.updatedAt = Date.now()
     this.markModified('updatedAt')
+    this.find({}).count
     next()
 })
 //添加虚属性

@@ -14,9 +14,10 @@
  */
 function attachEvent() {
     bindEvent('#login', 'submit', login)
-    bindEvent('#register','submit',signup)
+    bindEvent('#register', 'submit', signup)
+    bindEvent('#rmUser', 'submit', rmUser)
     bindEvent('.uploadArticle', 'click', postArticle)
-    
+
 }
 
 /**
@@ -79,7 +80,25 @@ function signup(e) {
     }).then(res => {
         res.json()
             .then(data => {
-                alert(data)
+                alert(data.message)
+            })
+    })
+}
+
+
+function rmUser(e) {
+    e.preventDefault()
+    let doc = document
+    let id = doc.querySelector('.rmuser-sub').value
+    fetch(`http://localhost:3000/users/${id}`, {
+        method: 'DELETE',
+        headers: {
+             'Authorization': 'Bearer ' + getToken('kblog')
+        }
+    }).then(res => {
+        res.json()
+            .then(body => {
+                console.log(body)
             })
     })
 }
@@ -152,7 +171,6 @@ function createArticle(context) {
  * @param {any} html 
  */
 function appendToNode(parent, html) {
-    console.log(parent)
     document.querySelector(parent).innerHTML += html
 }
 
