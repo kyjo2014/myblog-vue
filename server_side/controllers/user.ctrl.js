@@ -24,7 +24,7 @@ exports.create = async ctx => {
     let body = ctx.request.body || {}
     let {
         email = "undefined",
-        nickname = "undefined"
+            nickname = "undefined"
     } = body;
 
     if (guestValid(email, nickname)) {
@@ -102,7 +102,7 @@ exports.login = async ctx => {
                 id,
                 pwd
             }, hostInfo.secretKey, {
-                expiresIn: 60*60    
+                expiresIn: 60 * 60
             })
             return ctx.body = {
                 code: '200',
@@ -147,9 +147,27 @@ exports.login = async ctx => {
 }
 
 exports.del = async ctx => {
-    let userID = ctx.request.params
-    console.log(userID)
-    return ctx.body = "删除用户"
+    let {
+        id: userID
+    } = ctx.params //获取删除的用户的id
+    let user = await userModel.User.findOneAndRemove({
+        id: userID
+    })
+    if (user) {
+        res = {
+            code: '200',
+            message: '删除用户成功',
+            data: {
+                userInfo: user
+            }
+        }
+    } else {
+        res = {
+            code: '403',
+            message: '删除用户失败'
+        }
+    }
+    return ctx.body = res
 }
 
 exports.update = async ctx => {
