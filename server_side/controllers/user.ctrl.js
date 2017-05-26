@@ -171,5 +171,18 @@ exports.del = async ctx => {
 }
 
 exports.update = async ctx => {
-
+    let {
+        id,
+        nickname
+    } = ctx.request.body
+    let res = await userModel.User.findOneAndUpdate({
+        id: id
+    }, {
+        nickname,
+        email
+        })
+    return ctx.body = {
+        code: '200',
+        message: res
+    }
 }
