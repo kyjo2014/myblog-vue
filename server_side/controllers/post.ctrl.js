@@ -65,8 +65,8 @@ exports.create = async ctx => {
  * @param {any} title 
  * @param {any} content 
  */
-function postValid(title,content) {
-    const TITLE_REG = ''//    
+function postValid(title, content) {
+    const TITLE_REG = '' //    
 }
 
 
@@ -100,7 +100,9 @@ exports.update = async ctx => {
  */
 exports.del = async ctx => {
     try {
-        ctx.body = await postModel.Blog.findByIdAndRemove(ctx.params.id).exec()
+        ctx.body = await postModel.Blog.findOneAndRemove({
+            id: ctx.params.id
+        }).exec()
     } catch (error) {
         ctx.body = error
     }

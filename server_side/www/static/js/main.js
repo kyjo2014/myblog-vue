@@ -17,9 +17,9 @@ function attachEvent() {
     bindEvent('#register', 'submit', signup)
     bindEvent('#rmUser', 'submit', rmUser)
     bindEvent('.uploadArticle', 'click', postArticle)
-    
+    bindEvent('.article', 'click', delPost)
     bindEvent('#source', 'keyup', (e) => {
-        md2HTML('#source','#converted')
+        md2HTML('#source', '#converted')
     })
 }
 
@@ -141,6 +141,19 @@ function getArticle() {
         })
 }
 
+/**
+ * @description 
+ * 通过id获取文章
+ * @param {any} id 
+ * @returns  
+ */
+async function getArticleById(id) {
+    let res = await fetch(`http://localhost:3000/posts/${id}`)
+    let data = await res.json()
+    return data.data
+}
+
+
 
 /**
  * @description 
@@ -160,10 +173,30 @@ function createArticle(context) {
         <div class="content">
             ${content}
         </div>
+        <div class="del" post-id="${id}" >
+            删除
+        </div>
     <article>
     `
 }
 
+
+/**
+ * @description 
+ * 删除文章
+ * @param {any} e 
+ */
+async function delPost(e) {
+    let target = e.target
+    let id = target.getAttribute('post-id')
+    let res = await fetch(`http://localhost:3000/posts/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + getToken('kblog')
+        }
+    })
+    let data = await res.json()
+}
 
 
 /**
@@ -252,9 +285,9 @@ function setToken(name, value) {
  */
 function md2HTMLConverter(opt) {
     var converter = new showdown.Converter(opt);
-        return function (text) {
-            return html = converter.makeHtml(text);
-        }
+    return function (text) {
+        return html = converter.makeHtml(text);
+    }
 }
 
 /**
@@ -263,7 +296,7 @@ function md2HTMLConverter(opt) {
  * @param {any} from 
  * @param {any} to 
  */
-function md2HTML(from,to) {
+function md2HTML(from, to) {
     let doc = document
     let fromNode = doc.querySelector(from)
     let toNode = doc.querySelector(to)
