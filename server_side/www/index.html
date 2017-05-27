@@ -7,8 +7,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+    </style>
+    <style>
         body>div {
-            border: 1px solid black; 
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -18,7 +39,7 @@
         <h1>登录</h1>
         <form method="POST" id="login">
 
-            <input type="text" class="login-main" name="id" value="host" >
+            <input type="text" class="login-main" name="id" value="host">
             <input type="password" class="login-sub" name="password" value="abc123456">
             <input type="submit" value="提交">
         </form>
@@ -55,8 +76,25 @@
     <!-- 提交文章 -->
     <div class="upload-article">
         <input type="text" class="article-title" style="display:block" placeholder="文章标题">
-        <textarea name="" id="" cols="30" rows="10" class="article-content"></textarea>
+        <textarea name="" id="source" cols="30" rows="10" class="article-content">
+            class: center, middle
+
+# Title
+
+---
+
+# Agenda
+
+1. Introduction
+2. Deep-dive
+3. ...
+
+---
+
+# Introduction
+        </textarea>
         <input type="button" class="uploadArticle" value="提交">
+        <div id="converted"></div>
     </div>
     <!-- 查看用户 -->
     <div class="userList">
@@ -65,8 +103,8 @@
 
 
 
-
-
+    <!-- markdown编辑器 -->
+    <script src="./static/js/showdown.min.js"></script>
     <script src="./static/js/main.js"></script>
 </body>
 

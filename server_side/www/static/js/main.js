@@ -17,7 +17,10 @@ function attachEvent() {
     bindEvent('#register', 'submit', signup)
     bindEvent('#rmUser', 'submit', rmUser)
     bindEvent('.uploadArticle', 'click', postArticle)
-
+    
+    bindEvent('#source', 'keyup', (e) => {
+        md2HTML('#source','#converted')
+    })
 }
 
 /**
@@ -93,7 +96,7 @@ function rmUser(e) {
     fetch(`http://localhost:3000/users/${id}`, {
         method: 'DELETE',
         headers: {
-             'Authorization': 'Bearer ' + getToken('kblog')
+            'Authorization': 'Bearer ' + getToken('kblog')
         }
     }).then(res => {
         res.json()
@@ -236,4 +239,34 @@ function setToken(name, value) {
         ls.removeItem(name)
     }
     ls.setItem(name, value)
+}
+
+
+
+/**
+ * @description 
+ * 生成一个md转换为html的转换器
+ * 
+ * @param {any} opt 
+ * @returns  
+ */
+function md2HTMLConverter(opt) {
+    var converter = new showdown.Converter(opt);
+        return function (text) {
+            return html = converter.makeHtml(text);
+        }
+}
+
+/**
+ * @description 
+ * 用于转换md 成html
+ * @param {any} from 
+ * @param {any} to 
+ */
+function md2HTML(from,to) {
+    let doc = document
+    let fromNode = doc.querySelector(from)
+    let toNode = doc.querySelector(to)
+    const update = md2HTMLConverter()
+    toNode.innerHTML = update(fromNode.value)
 }

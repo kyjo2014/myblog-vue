@@ -22,11 +22,21 @@ exports.list = async ctx => {
  * @param {any} ctx 
  */
 exports.findById = async ctx => {
-    try {
-        return ctx.body = await postModel.Blog.findByPostId(id)
-    } catch (error) {
-        return ctx.body = error
+    let res = {
+        code: '200',
+        message: '查找成功'
     }
+    try {
+        res.data = await postModel.Blog.findByPostId(id)
+    } catch (error) {
+        res = {
+            code: '400',
+            message: '查找失败，出现错误',
+            data: error
+        }
+    }
+
+    return ctx.body = res
 }
 
 /**
@@ -36,13 +46,10 @@ exports.findById = async ctx => {
  */
 exports.create = async ctx => {
     let body = ctx.request.body
-    return ctx.body = ctx.request.body
-
-    // let {
-    //     title: title,
-    //     content: content,
-
-    // } = body
+    let {
+        title: title,
+        content: content,
+    } = body
     await postModel.Blog.create({
         title,
         content
@@ -50,6 +57,19 @@ exports.create = async ctx => {
 
     return ctx.body = await postModel.Blog.listAll()
 }
+
+
+/**
+ * @description 
+ * 文章格式验证
+ * @param {any} title 
+ * @param {any} content 
+ */
+function postValid(title,content) {
+    const TITLE_REG = ''//    
+}
+
+
 /**
  * @description 
  * 更新文章
