@@ -21,6 +21,7 @@ function attachEvent() {
     bindEvent('#source', 'keyup', (e) => {
         md2HTML('#source', '#converted')
     })
+    bindEvent('.article-submit','click',findPostByQuery)
 }
 
 /**
@@ -245,6 +246,24 @@ function postArticle() {
         })
 }
 
+
+/**
+ * @description 
+ * 通过标题对文章进行模糊查询
+ */
+function findPostByQuery() {
+    let doc = document
+    let title = doc.querySelector('.article-search-input').value
+    let queryString = encodeURI(title)
+    fetch(`http://localhost:3000/posts/search?title=${queryString}`, {
+        method: 'GET'
+    }).then(res => {
+        res.json()
+            .then(data => {
+            console.log(data)
+        })
+    })
+}
 
 
 

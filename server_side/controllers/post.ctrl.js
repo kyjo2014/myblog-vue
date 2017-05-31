@@ -41,6 +41,49 @@ exports.findById = async ctx => {
 
 /**
  * @description 
+ * 根据查询串提供的信息进行文章的查询 
+ * @param {any} ctx 
+ */
+exports.findByQuery = async ctx => {
+    let queryString = ctx.request.query || {}
+    let queryMap = {
+        id: undefined,
+        title: undefined
+    }
+    let res = []
+    let info = {
+        code: "200",
+        message: "已完成查询",
+        data: []
+
+    }
+    Object.keys(queryString).map((query) => {
+        if (query in queryMap) {
+            queryMap[query] = new RegExp(queryString[query])
+        }
+    })
+    for (let i in queryMap) {
+        if (typeof queryMap[i] != 'string') {
+            delete queryMap[i]
+        }
+    }
+    try {
+        res = await postModel.Blog.find(queryMap).exec()
+    } catch (error) {
+
+        return ctx.body = {
+            code: '404',
+            message: '模糊查询出错',
+            data: error
+        }
+    }
+    info.data = res
+    return ctx.body = info
+}
+
+
+/**
+ * @description 
  * 新建文章
  * @param {any} ctx 
  */
