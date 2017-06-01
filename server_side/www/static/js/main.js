@@ -21,7 +21,7 @@ function attachEvent() {
     bindEvent('#source', 'keyup', (e) => {
         md2HTML('#source', '#converted')
     })
-    bindEvent('.article-submit','click',findPostByQuery)
+    bindEvent('.article-submit', 'click', findPostByQuery)
 }
 
 /**
@@ -228,13 +228,13 @@ function postArticle() {
     })
 
     fetch('http://localhost:3000/posts', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + getToken('kblog'),
-                'content-type': 'application/json'
-            },
-            body: body
-        })
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + getToken('kblog'),
+            'content-type': 'application/json'
+        },
+        body: body
+    })
         .then(res => {
             res.json()
                 .then(data => {
@@ -260,8 +260,12 @@ function findPostByQuery() {
     }).then(res => {
         res.json()
             .then(data => {
-            console.log(data)
-        })
+                // console.log(data)
+                let postList = data.data
+                postList.map(post => {
+                    appendToNode('.article-searched', createArticle(post))
+                })
+            })
     })
 }
 
