@@ -22,6 +22,7 @@ function attachEvent() {
         md2HTML('#source', '#converted')
     })
     bindEvent('.article-submit', 'click', findPostByQuery)
+    bindEvent('.updateArticle', 'click', updatePost)
 }
 
 /**
@@ -265,6 +266,36 @@ function findPostByQuery() {
                 postList.map(post => {
                     appendToNode('.article-searched', createArticle(post))
                 })
+            })
+    })
+}
+
+/**
+ * @description 
+ * 更新文章
+ */
+function updatePost() {
+    let doc = document
+    let title = doc.querySelector('.article-title').value
+    let content = doc.querySelector('.article-content').value
+
+    let body = JSON.stringify({
+        title,
+        content
+    })
+    let id = 15
+    fetch(`http://localhost:3000/posts/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + getToken('kblog'),
+            'content-type': 'application/json'
+        },
+
+        body
+    }).then(res => {
+        res.json()
+            .then(data => {
+                console.log(data)
             })
     })
 }

@@ -124,15 +124,28 @@ exports.update = async ctx => {
         title: title,
         content: content,
     } = body
+    let doc = null
     try {
-        ctx.body = await postModel.Blog.findByIdAndUpdate(ctx.params.id, {
+        doc = await postModel.Blog.findOneAndUpdate({ id: ctx.params.id }, {
             $set: {
                 title: title,
                 content: content
             }
         }).exec()
+        if (doc == null) {
+            throw new Error('没有找到该文档')
+        }
     } catch (error) {
-        ctx.body = error
+        return ctx.body = {
+            code: '404',
+            message: '更新失败',
+            data: error
+        }
+    }
+    return ctx.body = {
+        code: '200',
+        message: '更新成功',
+        data: doc
     }
 }
 
