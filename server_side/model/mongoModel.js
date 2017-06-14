@@ -79,9 +79,28 @@ post.set('toObject', {
 post.pre('save', function (next) {
     this.updatedAt = Date.now()
     this.markModified('updatedAt')
-    this.find({}).count
     next()
 })
+
+//替换tags 从String到objectID
+post.pre('save', function (next) {
+    if (Array.isArray(this.tags)) {
+        this.tags.map(async tag => {
+            let tagId = await Tag.findOne({
+                name: tag
+            })
+            if (!tagId) {
+                tagId = await Tag.create({
+                    name: tag
+                })
+            }
+            return tagId
+
+        })
+    }
+    next()
+})
+
 //添加虚属性
 post.virtual('summary').get(function () {
     if (this.content) {
@@ -123,7 +142,8 @@ post.statics = {
             .find({})
             .count()
             .exec()
-    }
+    },
+
 
 }
 
@@ -243,7 +263,37 @@ host.statics = {
 
 let Host = mongoose.model('Host', host)
 
+//文章标签
+let tag = new Schema({
+    name: {
+        type: String,
+        required: true,
+        maxlength: 8
+    },
+    tid: {
+        type: Number,
+        required: true,
+        unique: true
+    }
+})
 
+//添加自增的id
+tag.plugin(AutoIncrement, {
+    inc_field: 'tid'
+});
+
+
+tag.statics = {
+    listAll() {
+        return this
+            .find({})
+            .select('-__v -_id')
+            .exec()
+    }
+}
+
+
+let Tag = mongoose.model('Tag', tag)
 
 module.exports = {
     Blog,
