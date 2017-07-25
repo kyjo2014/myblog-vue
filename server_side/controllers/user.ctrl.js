@@ -4,6 +4,24 @@ const crypto = require('crypto')
 const hostInfo = require('../conf/mainConf')
 
 
+exports.list = async ctx => {
+    let items = []
+    try {
+        items = await userModel.User.find({})
+
+    } catch (error) {
+        ctx.body = {
+            code: 500,
+            message: '服务器出错'
+        }
+    }
+    ctx.body = {
+        code: 200,
+        message: '查询成功',
+        data: items
+    }
+}
+
 /**
  * @description 
  * 根据用户id返回用户信息
@@ -180,7 +198,7 @@ exports.update = async ctx => {
     }, {
         nickname,
         email
-        })
+    })
     return ctx.body = {
         code: '200',
         message: res

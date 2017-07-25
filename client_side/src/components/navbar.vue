@@ -1,14 +1,12 @@
 <template>
   <div>
     <mu-tabs :value="activeTab" @change="handleTabChange">
-      <mu-tab value="tab1" title="首页" href="/#/index"/>
-      <mu-tab value="tab3" title="登录" href="/#/login"/>
+      <mu-tab value="tab1" title="首页" href="/#/index" />
+      <mu-tab value="tab2" title="书籍" href='/#/books' />
+      <mu-tab value="tab3" title="管理" href="/#/manage" />
     </mu-tabs>
     <div v-if="activeTab === 'tab1'">
-      <h2>Tab One</h2>
-      <p>
-        这是第一个 tab
-      </p>
+       
     </div>
     <div v-if="activeTab === 'tab2'">
       <h2>Tab Two</h2>
@@ -25,21 +23,21 @@
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        activeTab: 'tab1'
-      }
+export default {
+  data() {
+    return {
+      activeTab: 'tab1'
+    }
+  },
+  methods: {
+    handleTabChange(val) {
+      this.activeTab = val
     },
-    methods: {
-      handleTabChange(val) {
-        this.activeTab = val
-      },
-      handleActive() {
-        window.alert('tab active')
-      }
+    handleActive() {
+      window.alert('tab active')
     }
   }
+}
 
 </script>
 <style lang='stylus'>

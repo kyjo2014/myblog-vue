@@ -215,27 +215,40 @@ function appendToNode(parent, html) {
 
 /**
  * @description 
- * 
+ * 提交文章
  * 
  */
 function postArticle() {
     let doc = document
     let title = doc.querySelector('.article-title').value
     let content = doc.querySelector('.article-content').value
+    let tags = getTags()
+
+    function getTags() {
+        let tags = []
+        let addTags = doc.querySelector('.tag-select')
+        Array.from(addTags.options).forEach(opt => {
+            if (opt.selected) {
+                tags.push(opt.value)
+            }
+        })
+        return tags
+    }
 
     let body = JSON.stringify({
         title,
-        content
+        content,
+        tags
     })
 
     fetch('http://localhost:3000/posts', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + getToken('kblog'),
-            'content-type': 'application/json'
-        },
-        body: body
-    })
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + getToken('kblog'),
+                'content-type': 'application/json'
+            },
+            body: body
+        })
         .then(res => {
             res.json()
                 .then(data => {
@@ -246,6 +259,7 @@ function postArticle() {
             alert('上传失败')
         })
 }
+
 
 
 /**

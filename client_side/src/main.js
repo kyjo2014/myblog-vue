@@ -6,11 +6,24 @@ import router from './router'
 import axios from 'axios'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
+import 'muse-ui/dist/theme-teal.css'
+import {
+  TweenMax,
+  Power2,
+  TimelineLite
+} from "gsap";
 
 Vue.config.productionTip = false
 
 // 使用插件
 Vue.use(MuseUI)
+axios
+  .interceptors
+  .request
+  .use((config) => {
+    
+    return config
+  })
 Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
@@ -18,5 +31,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

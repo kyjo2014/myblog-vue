@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     <router-view></router-view>
     <Aside></Aside>
-    <Toaste></Toaste>
+    <!--<Toaste></Toaste>-->
   </div>
 </template>
 
@@ -24,6 +24,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
 </style>

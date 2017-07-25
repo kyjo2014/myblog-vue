@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import indexView from '../components/view/index'
-import articleView from '../components/view/posts'
+import articleView from '../components/view/post'
 import loginView from '../components/view/login'
+import manageView from '../components//view/manage'
 
 Vue.use(Router)
 
@@ -19,8 +20,8 @@ export default new Router({
     name: 'posts',
     component: articleView
   }, {
-    path: '/login',
-    name: 'login',
-    component: loginView
+    path: '/manage',
+    name: 'manage',
+    component: manageView
   }]
 })

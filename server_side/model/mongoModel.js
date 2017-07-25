@@ -58,7 +58,10 @@ let post = new Schema({
         default: Date.now()
     }, //更新时间
     readAmount: Number, //阅读量
-    tags: [Schema.Types.ObjectId] //标签
+    tags: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }] //标签
     //TODO：增加评论功能
 })
 
@@ -84,21 +87,22 @@ post.pre('save', function (next) {
 
 //替换tags 从String到objectID
 post.pre('save', function (next) {
-    if (Array.isArray(this.tags)) {
-        this.tags.map(async tag => {
-            let tagId = await Tag.findOne({
-                name: tag
-            })
-            if (!tagId) {
-                tagId = await Tag.create({
-                    name: tag
-                })
-            }
-            return tagId
+    // if (Array.isArray(this.tags)) {
+    //     this.tags.map(async tag => {
+    //         let tagId = await Tag.findOne({
+    //             name: tag
+    //         })
+    //         if (!tagId) {
+    //             tagId = await Tag.create({
+    //                 name: tag
+    //             })
+    //         }
+    //         return tagId
 
-        })
-    }
-    next()
+    //     })
+    // }
+    console.log(this)
+    // next()
 })
 
 //添加虚属性
@@ -142,7 +146,7 @@ post.statics = {
             .find({})
             .count()
             .exec()
-    },
+    }
 
 
 }

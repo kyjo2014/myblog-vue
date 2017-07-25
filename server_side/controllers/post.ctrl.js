@@ -26,8 +26,9 @@ exports.findById = async ctx => {
         code: '200',
         message: '查找成功'
     }
+    console.log(ctx.params.id)
     try {
-        res.data = await postModel.Blog.findByPostId(id)
+        res.data = await postModel.Blog.findByPostId(ctx.params.id)
     } catch (error) {
         res = {
             code: '400',
@@ -92,10 +93,12 @@ exports.create = async ctx => {
     let {
         title: title,
         content: content,
+        tags
     } = body
     await postModel.Blog.create({
         title,
-        content
+        content,
+        tags
     })
 
     return ctx.body = await postModel.Blog.listAll()
