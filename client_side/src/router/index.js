@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import indexView from '../components/view/index'
-import articleView from '../components/view/posts'
-import loginView from '../components/view/login'
+import indexView from '../view/index'
+import articleView from '../view/posts'
+import loginView from '../view/login'
 
 Vue.use(Router)
 
@@ -13,7 +13,9 @@ export default new Router({
   }, {
     path: '/index',
     name: 'index',
-    component: indexView
+    components: {
+      content: indexView
+    }
   }, {
     path: '/posts/:id',
     name: 'posts',

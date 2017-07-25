@@ -1,5 +1,5 @@
 <template>
-   <div>
+    <div>
         this is postsView
     </div>
 </template>
@@ -15,7 +15,11 @@ export default {
     },
     mounted() {
 
+    },
+    methods: {
+        
     }
+
 }
 </script>
 <style lang="stylus">
