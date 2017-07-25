@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <!-- <Navbar></Navbar>
-                        <router-view></router-view>
-                        <Aside></Aside>
-                        <Toaste></Toaste> -->
+                          <router-view></router-view>
+                          <Aside></Aside>
+                          <Toaste></Toaste> -->
     <div class="header">
       <div class="logo">1235</div>
       <div class="nav">
@@ -108,7 +108,11 @@ body {
   display: inline-block;
   float: right;
   padding: 10px 20px;
-  background-color: rgba(0, 0, 0, 0)
+  background-color: rgba(0, 0, 0, 0);
+  overflow: auto;
+  margin-bottom: -4000px;
+  padding-bottom: 4000px;
+  position: relative;
 }
 
 .breadcrumb {

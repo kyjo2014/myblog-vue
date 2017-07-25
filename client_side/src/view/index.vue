@@ -1,8 +1,8 @@
 <template>
   <div>
-    <mu-card v-for="i in data" :key="i.title">
+    <mu-card v-for="i in nowPagePosts" :key="i.title">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
-        
+  
       </mu-card-header>
       <mu-card-text>
         {{i.summary}}
@@ -12,36 +12,43 @@
         <mu-flat-button label="Action 2" />
       </mu-card-actions>
     </mu-card>
+    <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
+    </mu-pagination>
   </div>
 </template>
 <script>
-import getResData from '../mixins/getResData'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      data: []
+      totals: 50
     }
   },
   mounted() {
-    this.getPosts()
-
+    this.getPosts(1)
   },
   methods: {
-    getPosts() {
-      this
-        .$http
-        .get('./posts')
-        .then((res) => {
-          this.data = this.getResData(res)
-        })
-    },
-    
+    getPosts(pageIdx) {
+      console.log('wtf')
+      this.$store.dispatch('loadPage', pageIdx)
+    }
+
   },
-  mixins: [getResData]
+  computed: {
+    ...mapGetters([
+      'posts',
+      'pageIdx',
+      'total'
+    ]),
+    nowPagePosts() {
+      return this.posts[this.pageIdx]
+    }
+  }
 }
 
 </script>
-<style lang="stylus">
-
-
+<style scoped>
+.fixed-bottom {
+  position: fixed;
+}
 </style>

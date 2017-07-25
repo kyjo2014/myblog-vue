@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import MuseUI from 'muse-ui'
-import vuex from 'vuex'
+import store from './store'
 import 'muse-ui/dist/muse-ui.css'
 
 
@@ -13,13 +13,13 @@ Vue.config.productionTip = false
 
 // 使用插件
 Vue.use(MuseUI)
-Vue.use(Vuex)
 Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
