@@ -2,14 +2,27 @@
   <div>
     <mu-card v-for="i in nowPagePosts" :key="i.title">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
-  
+        标题
       </mu-card-header>
       <mu-card-text>
-        {{i.summary}}
+        摘要{{i.summary}}
       </mu-card-text>
       <mu-card-actions>
-        <mu-flat-button label="Action 1" />
-        <mu-flat-button label="Action 2" />
+  
+        <mu-flexbox>
+          <mu-flexbox-item class="flex-demo">
+            <mu-chip class="demo-chip">
+              种类
+            </mu-chip>
+          </mu-flexbox-item>
+          <mu-flexbox-item class="flex-demo">
+  
+          </mu-flexbox-item>
+          <mu-flexbox-item class="flex-demo">
+            <mu-flat-button label="阅读文章"  primary/>
+          </mu-flexbox-item>
+        </mu-flexbox>
+  
       </mu-card-actions>
     </mu-card>
     <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
@@ -29,7 +42,6 @@ export default {
   },
   methods: {
     getPosts(pageIdx) {
-      console.log('wtf')
       this.$store.dispatch('loadPage', pageIdx)
     }
 
