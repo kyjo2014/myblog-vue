@@ -93,6 +93,8 @@ body {
 .content {
   overflow: hidden;
   height: calc(100% - 56px);
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .content-left {

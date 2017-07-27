@@ -62,5 +62,7 @@ export default {
 <style scoped>
 .fixed-bottom {
   position: fixed;
+  bottom: 20px;
+  left: 50%;
 }
 </style>
