@@ -1,0 +1,16 @@
+{
+  "code": 200,
+  "message": "query Success",
+  "data": {
+    "title": "123",
+    "sort": ["前端", "后台"],
+    "tags": ["前端1", "前端2"],
+    "content": "123hiehrgkjio",
+    "info": {
+      "author": "lth",
+      "createAt": "2017 09",
+      "readerAmount": 0
+    }
+
+  }
+}

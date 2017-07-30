@@ -1,19 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import indexView from '../view/index'
-import articleView from '../view/posts'
-import loginView from '../view/login'
+import postView from '../view/post'
+import postInfoView from '../view/postInfo'
 import meView from '../view/me.vue'
+import manageView from '../view/manage'
 
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  mode: 'history',
+  routes: [{
       path: '/',
       redirect: '/index'
-    }, {
+    },
+    {
       path: '/index',
       name: 'index',
       components: {
@@ -23,11 +25,15 @@ export default new Router({
     }, {
       path: '/posts/:id',
       name: 'posts',
-      component: articleView
-    }, {
-      path: '/login',
-      name: 'login',
-      component: loginView
+      components: {
+        content: postView,
+        sideBar: postInfoView
+      }
+    }, 
+    {
+      path: '/manage',
+      name: 'manage',
+      component: manageView
     }
   ]
 })

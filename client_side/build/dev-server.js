@@ -85,6 +85,10 @@ router.get('/posts', (req, res) => {
   var articles = require('./api/articles.json')
   res.send(articles)
 })
+router.get('/posts/:id', (req, res) => {
+  var article = require(`./api/posts/post-${req.params.id}.json`)
+  res.send(article)
+})
 
 app.use(router)
 module.exports = app.listen(port, function (err) {

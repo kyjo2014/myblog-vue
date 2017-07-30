@@ -1,25 +1,29 @@
 <template>
   <div id="app">
     <!-- <Navbar></Navbar>
-                          <router-view></router-view>
-                          <Aside></Aside>
-                          <Toaste></Toaste> -->
+                            <router-view></router-view>
+                            <Aside></Aside>
+                            <Toaste></Toaste> -->
     <div class="header">
-      <div class="logo">1235</div>
+      <div class="logo">Lee's Blog</div>
       <div class="nav">
         <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
-          <mu-tab value="tab1" title="test1" />
-          <mu-tab value="tab2" title="test2" />
-          <mu-tab value="tab3" title="test3" />
+          <mu-tab value="index" title="首页" />
+          <mu-tab value="posts" title="文章" />
+          <mu-tab value="manage" title="管理" />
         </mu-tabs>
       </div>
     </div>
     <div class="content">
       <div class="content-left">
-        <router-view class="view" name="sideBar"></router-view>
+        <transition>
+          <router-view class="view" name="sideBar"></router-view>
+        </transition>
       </div>
       <div class="content-right">
-        <router-view class="view" name="content"></router-view>
+        <transition>
+          <router-view class="view" name="content"></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -35,15 +39,27 @@ export default {
   data() {
     return {
       activeTab: 'tab1',
-      activeList: 'list1'
+      activeList: 'list1',
     }
+  },
+  computed: {
+    route() {
+      return 0
+    }
+  },
+  mounted() {
+    this.activeTab = this.$route.name
   },
   methods: {
     handleTabChange(val) {
       this.activeTab = val
+      // console.log(val)
+      this.$router.push({ name: val, params: { id: 1 } })
     },
     handleListChange(val) {
       this.activeList = val
+
+
     }
   },
   mixins: []
@@ -54,16 +70,6 @@ export default {
 
 
 <style>
-<<<<<<< HEAD
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    max-width: 1280px;
-    margin: 0 auto;
-  }
-=======
 html,
 body {
   height: 100%;
@@ -75,6 +81,7 @@ body {
   background-color: rgb(236, 236, 236);
   min-width: 1280px;
   height: 100%;
+  overflow: hidden;
 }
 
 .header {
@@ -136,7 +143,6 @@ body {
   border-radius: 5px;
   min-height: 500px;
 }
->>>>>>> 8193b8674af479cd96a7e3f186c8d52e24b0c5f4
 
 .footer {
   padding: 20px 0;

@@ -19,7 +19,7 @@
   
           </mu-flexbox-item>
           <mu-flexbox-item class="flex-demo">
-            <mu-flat-button label="阅读文章"  primary/>
+            <router-link :to="getPostUrl(i.id)">阅读文章</router-link>
           </mu-flexbox-item>
         </mu-flexbox>
   
@@ -43,9 +43,13 @@ export default {
   methods: {
     getPosts(pageIdx) {
       this.$store.dispatch('loadPage', pageIdx)
+    },
+    getPostUrl(id) {
+      const baseUrl = `/posts/${id}`
+      return baseUrl
     }
-
   },
+
   computed: {
     ...mapGetters([
       'posts',
@@ -55,6 +59,9 @@ export default {
     nowPagePosts() {
       return this.posts[this.pageIdx]
     }
+  },
+  beforeRouteLeave: (to, from, next) => {
+    next()
   }
 }
 
