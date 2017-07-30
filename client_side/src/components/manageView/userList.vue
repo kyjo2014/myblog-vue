@@ -1,7 +1,7 @@
 <template>
     <mobile-tear-sheet>
         <mu-list>
-            <mu-list-item :title="item.name" v-for="item in items">
+            <mu-list-item :title="item.name" v-for="item in items" :key="item" >
                 <mu-avatar src="/images/avatar1.jpg" slot="leftAvatar" />
                 <span slot="describe">
                     <span style="color: rgba(0, 0, 0, .87)">Email:</span>{{item.email}}

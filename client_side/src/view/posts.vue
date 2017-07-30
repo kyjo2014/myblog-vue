@@ -1,6 +1,6 @@
 <template>
     <div>
-        this is loginView
+        this is postsView
     </div>
 </template>
 <script>
@@ -15,7 +15,11 @@ export default {
     },
     mounted() {
 
+    },
+    methods: {
+        
     }
+
 }
 </script>
 <style lang="stylus">
