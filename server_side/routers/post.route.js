@@ -8,11 +8,12 @@ const hostInfo = require('../conf/mainConf')
 let route = new router();
 
 //全部展示
-route.get('/', postCtrl.list);
+route.get('/', postCtrl.fetchByPage);
 //根据搜索框模糊查询
 route.get('/search', postCtrl.findByQuery);
 //根据文章id打开
 route.get('/:id', postCtrl.findById);
+
 
 //新增文章
 route.post('/', jwt({
