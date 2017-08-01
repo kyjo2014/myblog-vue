@@ -27,12 +27,8 @@ db.once('open', callback => {
     console.log('mongodb opened')
 })
 
-
 //创建Schema
 const Schema = mongoose.Schema
-
-
-
 
 //文章
 let post = new Schema({
@@ -58,25 +54,20 @@ let post = new Schema({
         default: Date.now()
     }, //更新时间
     readAmount: Number, //阅读量
-    tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
-    }] //标签
+    tags: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Tag'
+        }
+    ] //标签
     //TODO：增加评论功能
 })
 
-
 //添加自增的id
-post.plugin(AutoIncrement, {
-    inc_field: 'id'
-});
+post.plugin(AutoIncrement, {inc_field: 'id'});
 //设置返回文档内容时候同时获取虚属性
-post.set('toJSON', {
-    virtuals: true
-})
-post.set('toObject', {
-    virtuals: true
-})
+post.set('toJSON', {virtuals: true})
+post.set('toObject', {virtuals: true})
 
 //更改前更新日期
 post.pre('save', function (next) {
@@ -87,33 +78,26 @@ post.pre('save', function (next) {
 
 //替换tags 从String到objectID
 post.pre('save', function (next) {
-    // if (Array.isArray(this.tags)) {
-    //     this.tags.map(async tag => {
-    //         let tagId = await Tag.findOne({
-    //             name: tag
-    //         })
-    //         if (!tagId) {
-    //             tagId = await Tag.create({
-    //                 name: tag
-    //             })
-    //         }
-    //         return tagId
-
-    //     })
-    // }
+    // if (Array.isArray(this.tags)) {     this.tags.map(async tag => {         let
+    // tagId = await Tag.findOne({             name: tag         })         if
+    // (!tagId) {             tagId = await Tag.create({                 name: tag
+    //           })         }         return tagId     }) }
     console.log(this)
     // next()
 })
 
 //添加虚属性
-post.virtual('summary').get(function () {
-    if (this.content) {
-        return this.content.slice(0, 10)
-    } else {
-        return ''
-    }
-})
-
+post
+    .virtual('summary')
+    .get(function () {
+        if (this.content) {
+            return this
+                .content
+                .slice(0, 10)
+        } else {
+            return ''
+        }
+    })
 
 //添加静态方法
 post.statics = {
@@ -125,20 +109,16 @@ post.statics = {
     },
     findByPostId(id) {
         return this
-            .findOne({
-                id: id
-            })
+            .findOne({id: id})
             .select('-summary')
             .exec()
     },
-    fetchByPage(page) {
+    fetchByPage(page = 1, post_per_page = 10) {
         return this
             .find({})
-            .sort({
-                'createAt': -1
-            })
-            .skip(POST_PER_PAGE * (page - 1))
-            .limit(POST_PER_PAGE)
+            .sort({'createAt': -1})
+            .skip(post_per_page * (page - 1))
+            .limit(post_per_page)
             .exec()
     },
     getTotalCount() {
@@ -148,29 +128,16 @@ post.statics = {
             .exec()
     }
 
-
 }
 
 let Blog = mongoose.model('Blog', post)
 
-
-
 //书本
-let book = new Schema({
-    title: String,
-    link: String,
-    info: String
-})
+let book = new Schema({title: String, link: String, info: String})
 let Book = mongoose.model('Book', book)
 
-
 //用户:普通用户
-let user = new Schema({
-    id: String,
-    name: String,
-    email: String,
-    createAt: Date
-})
+let user = new Schema({id: String, name: String, email: String, createAt: Date})
 
 //添加静态方法
 user.statics = {
@@ -182,17 +149,13 @@ user.statics = {
     },
     findById(id) {
         return this
-            .findOne({
-                id: id
-            })
+            .findOne({id: id})
             .exec()
     },
     fetchByPage(page) {
         return this
             .find({})
-            .sort({
-                'createAt': -1
-            })
+            .sort({'createAt': -1})
             .skip(POST_PER_PAGE * (page - 1))
             .limit(POST_PER_PAGE)
             .exec()
@@ -204,7 +167,10 @@ user.statics = {
             .exec()
     },
     async createGuest(info) {
-        let count = await this.find({}).count().exec()
+        let count = await this
+            .find({})
+            .count()
+            .exec()
         Object.assign(info, {
             id: count++
         })
@@ -214,17 +180,10 @@ user.statics = {
 
 }
 
-
 let User = mongoose.model('User', user)
 
 //用户：管理人员
-let host = new Schema({
-    id: String,
-    name: String,
-    password: String,
-    email: String,
-    createAt: Date,
-})
+let host = new Schema({id: String, name: String, password: String, email: String, createAt: Date})
 
 //添加静态方法
 host.statics = {
@@ -236,17 +195,13 @@ host.statics = {
     },
     findById(id) {
         return this
-            .findOne({
-                id: id
-            })
+            .findOne({id: id})
             .exec()
     },
     fetchByPage(page) {
         return this
             .find({})
-            .sort({
-                'createAt': -1
-            })
+            .sort({'createAt': -1})
             .skip(POST_PER_PAGE * (page - 1))
             .limit(POST_PER_PAGE)
             .exec()
@@ -263,7 +218,6 @@ host.statics = {
     }
 
 }
-
 
 let Host = mongoose.model('Host', host)
 
@@ -282,10 +236,7 @@ let tag = new Schema({
 })
 
 //添加自增的id
-tag.plugin(AutoIncrement, {
-    inc_field: 'tid'
-});
-
+tag.plugin(AutoIncrement, {inc_field: 'tid'});
 
 tag.statics = {
     listAll() {
@@ -295,7 +246,6 @@ tag.statics = {
             .exec()
     }
 }
-
 
 let Tag = mongoose.model('Tag', tag)
 

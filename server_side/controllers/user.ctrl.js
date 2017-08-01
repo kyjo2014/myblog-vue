@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const hostInfo = require('../conf/mainConf')
 
-
 exports.list = async ctx => {
     let items = []
     try {
-        items = await userModel.User.find({})
+        items = await userModel
+            .User
+            .find({})
 
     } catch (error) {
         ctx.body = {
@@ -23,38 +24,48 @@ exports.list = async ctx => {
 }
 
 /**
- * @description 
+ * @description
  * 根据用户id返回用户信息
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.findById = async ctx => {
-    let user = await userModel.User.findById()
+    let user = await userModel
+        .User
+        .findById()
     return ctx.body = user
 }
 
+/**
+ * 获取管理员的自我介绍
+ * 
+ * @param {any} ctx 
+ */
+exports.me = async ctx => {
+    
+}
 
 /**
- * @description 
+ * @description
  * 新建用户
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.create = async ctx => {
     let body = ctx.request.body || {}
     let {
         email = "undefined",
-            nickname = "undefined"
+        nickname = "undefined"
     } = body;
 
     if (guestValid(email, nickname)) {
-        let user = await userModel.User.findOne({
-            email: email
-        }).exec()
+        let user = await userModel
+            .User
+            .findOne({email: email})
+            .exec()
         console.log(user)
         if (user == null) {
-            let message = await userModel.User.createGuest({
-                name: nickname,
-                email
-            })
+            let message = await userModel
+                .User
+                .createGuest({name: nickname, email})
             return ctx.body = {
                 code: '200',
                 message: message
@@ -69,11 +80,11 @@ exports.create = async ctx => {
 }
 
 /**
- * @description 
+ * @description
  * 用户格式验证器
- * @param {any} email 
- * @param {any} nickname 
- * @returns  
+ * @param {any} email
+ * @param {any} nickname
+ * @returns
  */
 function guestValid(email, nickname) {
     const E_MAIL_REG = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
@@ -81,13 +92,12 @@ function guestValid(email, nickname) {
     return E_MAIL_REG.test(email) && NICK_NAME_REG.test(nickname)
 }
 
-
 /**
- * @description 
+ * @description
  * 博主身份验证器
- * @param {any} id 长度为 3-16的字符串 
+ * @param {any} id 长度为 3-16的字符串
  * @param {any} passward 长度为6-21 的字符串,包含字母与数字
- * @returns  
+ * @returns
  */
 function hostValid(id, passward) {
     const ID_REG = /[a-zA-Z0-9_]{3,16}/
@@ -95,12 +105,10 @@ function hostValid(id, passward) {
     return ID_REG.test(id) && PWD_REG.test(passward)
 }
 
-
-
 /**
- * @description 
+ * @description
  * 登录
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.login = async ctx => {
     let body = ctx.request.body || {}
@@ -110,10 +118,8 @@ exports.login = async ctx => {
         email = "undefined",
         nickname = "undefined"
     } = body
-    // var id = 'host'
-    // var pwd = 'abc123456'
-    // var email = 'test@'
-    // var nickname = "123"
+    // var id = 'host' var pwd = 'abc123456' var email = 'test@' var nickname =
+    // "123"
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
             let token = jwt.sign({
@@ -136,7 +142,9 @@ exports.login = async ctx => {
             }
         }
     } else if (guestValid(email, nickname)) {
-        let user = await userModel.User.findByEmail(email)
+        let user = await userModel
+            .User
+            .findByEmail(email)
         if (user.hasOwnPorperty('nickname')) {
 
             if (user['nickname'] === nickname) {
@@ -161,16 +169,13 @@ exports.login = async ctx => {
         message: '登陆失败'
     }
 
-
 }
 
 exports.del = async ctx => {
-    let {
-        id: userID
-    } = ctx.params //获取删除的用户的id
-    let user = await userModel.User.findOneAndRemove({
-        id: userID
-    })
+    let {id: userID} = ctx.params //获取删除的用户的id
+    let user = await userModel
+        .User
+        .findOneAndRemove({id: userID})
     if (user) {
         res = {
             code: '200',
@@ -189,16 +194,12 @@ exports.del = async ctx => {
 }
 
 exports.update = async ctx => {
-    let {
-        id,
-        nickname
-    } = ctx.request.body
-    let res = await userModel.User.findOneAndUpdate({
-        id: id
-    }, {
-        nickname,
-        email
-    })
+    let {id, nickname} = ctx.request.body
+    let res = await userModel
+        .User
+        .findOneAndUpdate({
+            id: id
+        }, {nickname, email})
     return ctx.body = {
         code: '200',
         message: res

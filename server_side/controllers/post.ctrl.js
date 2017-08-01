@@ -1,14 +1,15 @@
 const postModel = require('../model/mongoModel')
 
-
 /**
- * @description 
+ * @description
  * 返回所有文章
  * @export
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.list = async ctx => {
-    let collection = await postModel.Blog.listAll()
+    let collection = await postModel
+        .Blog
+        .listAll()
     return ctx.body = {
         code: '200',
         message: '成功获取',
@@ -17,18 +18,46 @@ exports.list = async ctx => {
 }
 
 /**
- * @description 
- * 按照文章id返回文章
+ * 按页查找文章
+ * 
  * @param {any} ctx 
+ */
+exports.fetchByPage = async ctx => {
+    let {pageIdx, perPage} = ctx.request.queryString
+    let collection = null
+    try {
+        collection = await postModel
+            .Blog
+            .fetchByPage(pageIdx, perPage)
+
+    } catch (error) {
+        ctx.body = {
+            code: '500',
+            message: '查询错误'
+        }
+    }
+    ctx.body = {
+        code: '200',
+        message: '查询成功',
+        data: collection
+    }
+
+}
+
+/**
+ * @description
+ * 按照文章id返回文章
+ * @param {any} ctx
  */
 exports.findById = async ctx => {
     let res = {
         code: '200',
         message: '查找成功'
     }
-    console.log(ctx.params.id)
     try {
-        res.data = await postModel.Blog.findByPostId(ctx.params.id)
+        res.data = await postModel
+            .Blog
+            .findByPostId(ctx.params.id)
     } catch (error) {
         res = {
             code: '400',
@@ -41,9 +70,9 @@ exports.findById = async ctx => {
 }
 
 /**
- * @description 
- * 根据查询串提供的信息进行文章的查询 
- * @param {any} ctx 
+ * @description
+ * 根据查询串提供的信息进行文章的查询
+ * @param {any} ctx
  */
 exports.findByQuery = async ctx => {
     let queryString = ctx.request.query || {}
@@ -58,18 +87,23 @@ exports.findByQuery = async ctx => {
         data: []
 
     }
-    Object.keys(queryString).map((query) => {
-        if (query in queryMap) {
-            queryMap[query] = new RegExp(queryString[query])
-        }
-    })
+    Object
+        .keys(queryString)
+        .map((query) => {
+            if (query in queryMap) {
+                queryMap[query] = new RegExp(queryString[query])
+            }
+        })
     for (let i in queryMap) {
         if (typeof queryMap[i] != 'string') {
             delete queryMap[i]
         }
     }
     try {
-        res = await postModel.Blog.find(queryMap).exec()
+        res = await postModel
+            .Blog
+            .find(queryMap)
+            .exec()
     } catch (error) {
 
         return ctx.body = {
@@ -82,59 +116,54 @@ exports.findByQuery = async ctx => {
     return ctx.body = info
 }
 
-
 /**
- * @description 
+ * @description
  * 新建文章
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.create = async ctx => {
     let body = ctx.request.body
-    let {
-        title: title,
-        content: content,
-        tags
-    } = body
-    await postModel.Blog.create({
-        title,
-        content,
-        tags
-    })
+    let {title: title, content: content, tags} = body
+    await postModel
+        .Blog
+        .create({title, content, tags})
 
-    return ctx.body = await postModel.Blog.listAll()
+    return ctx.body = await postModel
+        .Blog
+        .listAll()
 }
 
-
 /**
- * @description 
+ * @description
  * 文章格式验证
- * @param {any} title 
- * @param {any} content 
+ * @param {any} title
+ * @param {any} content
  */
 function postValid(title, content) {
-    const TITLE_REG = '' //    
+    const TITLE_REG = '' //
 }
 
-
 /**
- * @description 
+ * @description
  * 更新文章
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.update = async ctx => {
     let body = ctx.request.body
-    let {
-        title: title,
-        content: content,
-    } = body
+    let {title: title, content: content} = body
     let doc = null
     try {
-        doc = await postModel.Blog.findOneAndUpdate({ id: ctx.params.id }, {
-            $set: {
-                title: title,
-                content: content
-            }
-        }).exec()
+        doc = await postModel
+            .Blog
+            .findOneAndUpdate({
+                id: ctx.params.id
+            }, {
+                $set: {
+                    title: title,
+                    content: content
+                }
+            })
+            .exec()
         if (doc == null) {
             throw new Error('没有找到该文档')
         }
@@ -153,15 +182,16 @@ exports.update = async ctx => {
 }
 
 /**
- * @description 
+ * @description
  * 删除文章
- * @param {any} ctx 
+ * @param {any} ctx
  */
 exports.del = async ctx => {
     try {
-        ctx.body = await postModel.Blog.findOneAndRemove({
-            id: ctx.params.id
-        }).exec()
+        ctx.body = await postModel
+            .Blog
+            .findOneAndRemove({id: ctx.params.id})
+            .exec()
     } catch (error) {
         ctx.body = error
     }
