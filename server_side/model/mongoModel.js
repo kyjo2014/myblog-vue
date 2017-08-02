@@ -60,6 +60,7 @@ let post = new Schema({
             ref: 'Tag'
         }
     ] //标签
+    // sort: {     type: Schema.Types.ObjectId required: true }
     //TODO：增加评论功能
 })
 
@@ -77,11 +78,22 @@ post.pre('save', function (next) {
 })
 
 //替换tags 从String到objectID
-post.pre('save', function (next) {
-    // if (Array.isArray(this.tags)) {     this.tags.map(async tag => {         let
-    // tagId = await Tag.findOne({             name: tag         })         if
-    // (!tagId) {             tagId = await Tag.create({                 name: tag
-    //   })         }         return tagId     }) }
+post.pre('save', async function (next) {
+    // if (Array.isArray(this.tags)) {     this         .tags         .map(tag => {
+    // let tagId =  Tag.findOne({name: tag})             if (!tagId) { tagId =
+    // Tag.create({name: tag})             } return tagId }) }
+    try {
+        let tag = await Tag
+            .findOne({name: '23456'})
+            .exec()
+
+        if (!tag) {
+            tag = await Tag.create({name: '1234'})
+        }
+    } catch (error) {
+        cosnole.log(error)
+    }
+
     next()
 })
 
@@ -103,24 +115,25 @@ post.statics = {
     listAll() {
         return this
             .find({})
+            .populate('tags')
             .select('-__v -_id')
             .exec()
     },
     findByPostId(id) {
         return this
             .findOne({id: id})
+            .populate('tags')
             .select('-summary')
             .exec()
     },
+    //获取post列表
     fetchByPage(page = 1, post_per_page = 10) {
-        this
-            .find({})
-            .exec((str) => {
-                console.log(str)
-            })
+
         return this
             .find({})
+            .populate('tags')
             .sort({'createAt': -1})
+            .select('-content')
             .skip(post_per_page * (page - 1))
             .limit(post_per_page)
             .exec()
@@ -235,7 +248,6 @@ let tag = new Schema({
     },
     tid: {
         type: Number,
-        required: true,
         unique: true
     }
 })
