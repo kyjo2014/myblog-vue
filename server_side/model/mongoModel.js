@@ -79,9 +79,7 @@ post.pre('save', function (next) {
 
 //替换tags 从String到objectID
 post.pre('save', async function (next) {
-    // if (Array.isArray(this.tags)) {     this         .tags         .map(tag => {
-    // let tagId =  Tag.findOne({name: tag})             if (!tagId) { tagId =
-    // Tag.create({name: tag})             } return tagId }) }
+   
     try {
         let tag = await Tag
             .findOne({name: '23456'})
