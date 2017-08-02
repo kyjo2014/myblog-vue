@@ -1,5 +1,9 @@
 const postModel = require('../model/mongoModel')
 
+const DEFAULT_PAGE_INDEX = 1
+
+const DEFAULT_PER_PAGE = 10
+
 /**
  * @description
  * 返回所有文章
@@ -19,17 +23,17 @@ exports.list = async ctx => {
 
 /**
  * 按页查找文章
- * 
- * @param {any} ctx 
+ *
+ * @param {any} ctx
  */
 exports.fetchByPage = async ctx => {
-    let {pageIdx, perPage} = ctx.request.queryString
+    let {pageIdx, perPage} = ctx.request.query
     let collection = null
     try {
         collection = await postModel
             .Blog
             .fetchByPage(pageIdx, perPage)
-
+        
     } catch (error) {
         ctx.body = {
             code: '500',

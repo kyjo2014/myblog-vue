@@ -18,7 +18,7 @@ const ADMIN_ID = 'admin'
 mongoose.set('debug', true)
 
 //建立数据库链接
-mongoose.connect('mongodb://127.0.0.1:27017')
+mongoose.connect('mongodb://127.0.0.1:27017/myblog')
 let db = mongoose.connection
 
 //检测是否成功连接数据库
@@ -81,9 +81,8 @@ post.pre('save', function (next) {
     // if (Array.isArray(this.tags)) {     this.tags.map(async tag => {         let
     // tagId = await Tag.findOne({             name: tag         })         if
     // (!tagId) {             tagId = await Tag.create({                 name: tag
-    //           })         }         return tagId     }) }
-    console.log(this)
-    // next()
+    //   })         }         return tagId     }) }
+    next()
 })
 
 //添加虚属性
@@ -114,6 +113,11 @@ post.statics = {
             .exec()
     },
     fetchByPage(page = 1, post_per_page = 10) {
+        this
+            .find({})
+            .exec((str) => {
+                console.log(str)
+            })
         return this
             .find({})
             .sort({'createAt': -1})
@@ -198,12 +202,13 @@ host.statics = {
             .findOne({id: id})
             .exec()
     },
-    fetchByPage(page) {
+    fetchByPage(page = 1, perPage = POST_PER_PAGE) {
+
         return this
             .find({})
             .sort({'createAt': -1})
-            .skip(POST_PER_PAGE * (page - 1))
-            .limit(POST_PER_PAGE)
+            .skip(perPage * (page - 1))
+            .limit(perPage)
             .exec()
     },
     getTotalCount() {

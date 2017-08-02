@@ -1,0 +1,17 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": [{
+      "id": 1,
+      "name": "book1",
+      "description": "this is a good book",
+      "link": "http://www.baidu.com"
+    },
+    {
+      "id": 2,
+      "name": "book2",
+      "description": "this is a good book2",
+      "link": "http://www.baidu.com"
+    }
+  ]
+}
