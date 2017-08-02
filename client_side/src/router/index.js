@@ -6,6 +6,10 @@ import postInfoView from '../view/postInfo'
 import meView from '../view/me.vue'
 import manageView from '../view/manage'
 import manageSiderBarView from '../view/manageSideBar'
+import manageContentView from '../view/manage'
+import managePostView from '../view/managePostView.vue'
+import manageBookView from '../view/manageBookView.vue'
+import manageUserView from '../view/manageUserView.vue'
 
 Vue.use(Router)
 
@@ -32,25 +36,25 @@ export default new Router({
     }, {
       path: '/manage',
       name: 'manage',
-      component: manageView,
+      components: {
+        sideBar: manageSiderBarView,
+        content: manageContentView
+      },
       children: [
         {
           path: 'posts',
           components: {
-            sideBar: manageSiderBarView,
-            content: manageView
+            manage: managePostView
           }
         }, {
           path: 'users',
           components: {
-            sideBar: manageSiderBarView,
-            content: manageView
+            manage: manageUserView
           }
         }, {
           path: 'books',
           components: {
-            sideBar: manageSiderBarView,
-            content: manageView
+            manage: manageBookView
           }
         }
       ],
