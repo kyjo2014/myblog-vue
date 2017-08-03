@@ -10,6 +10,7 @@ import manageContentView from '../view/manage'
 import managePostView from '../view/managePostView.vue'
 import manageBookView from '../view/manageBookView.vue'
 import manageUserView from '../view/manageUserView.vue'
+import managePostListView from '../view/managePostList.vue'
 
 Vue.use(Router)
 
@@ -43,16 +44,25 @@ export default new Router({
       children: [
         {
           path: 'posts',
+          name: 'manage-post',
           components: {
             manage: managePostView
           }
         }, {
+          path: 'postsList',
+          name: 'manage-postList',
+          components: {
+            manage: managePostListView
+          }
+        }, {
           path: 'users',
+          name: 'manage-user',
           components: {
             manage: manageUserView
           }
         }, {
           path: 'books',
+          name: 'manage-book',
           components: {
             manage: manageBookView
           }

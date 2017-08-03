@@ -115,6 +115,7 @@ export default {
 .main-sort.main-sort {
     width: 100px;
     margin-right: 10px;
+    text-align: center;
 }
 
 .input {
@@ -136,7 +137,8 @@ export default {
 }
 
 .image {
-    border: 1px dashed yellow;
+    margin-top: 5px;
+    border: 1px dashed red;
     min-height: 150px;
     padding: 10px;
 }

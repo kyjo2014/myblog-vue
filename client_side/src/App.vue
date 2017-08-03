@@ -35,17 +35,18 @@ export default {
   },
   data() {
     return {
-      activeTab: 'tab1',
+      activeTab: this.$route.name,
       activeList: 'list1',
     }
   },
   computed: {
     route() {
       return 0
-    }
+    },
+  
   },
   mounted() {
-    this.activeTab = this.$route.name
+    this.activeTab = this.$route.name.slice(0,6)
   },
   methods: {
     handleTabChange(val) {
