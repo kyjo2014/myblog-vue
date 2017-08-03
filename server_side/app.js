@@ -6,6 +6,7 @@ const compress = require('koa-compress')
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
 const serve = require('koa-static');
+// const mount =require('koa-mount')
 const jwt = require('koa-jwt');
 const bodyPraser = require('koa-bodyparser');
 const cors = require('kcors');
@@ -48,7 +49,7 @@ app.use(function (ctx, next) {
     } else {
       throw err;
     }
-  });
+  })
 });
 
 

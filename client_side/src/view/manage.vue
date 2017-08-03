@@ -15,7 +15,12 @@ export default {
 <style>
 .manageView {
     background-color: white;
+    overflow: auto;
     height: 100%;
+}
+
+.manage-content {
+    padding: 10px;
 }
 </style>
 
