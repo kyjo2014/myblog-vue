@@ -35,11 +35,11 @@ Vue.prototype.$http = axios
 function md2HTMLConverter(opt) {
   var converter = new showdown.Converter(opt);
   return function (text) {
-    return html = converter.makeHtml(text);
+    return converter.makeHtml(text);
   }
 }
 
-Vue.filter('md2HTML',md2HTMLConverter())
+Vue.filter('md2HTML', md2HTMLConverter())
 
 /* eslint-disable no-new */
 new Vue({el: '#app', router, store, template: '<App/>', components: {
