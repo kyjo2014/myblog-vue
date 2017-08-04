@@ -8,28 +8,8 @@
             </mu-select-field>
             <mu-text-field hintText="标题" />
         </mu-flexbox>
-        <postContent :updatePost="content" :post="prevpost"></postContent>
-        <mu-flexbox class="image">
-            <mu-flexbox-item order="0" class="flex-demo">
-                <mu-float-button icon="add" class="demo-float-button">
+        <postContent @updatePost="updateContent" :post="prevpost"></postContent>
     
-                </mu-float-button>
-    
-            </mu-flexbox-item>
-            <mu-flexbox-item order="2" span="200" class="flex-demo">
-                <mu-grid-list class="gridlist-inline-demo">
-                    <!-- <mu-grid-tile v-for="tile, index in list" :key="index">
-                                                                                        <img :src="tile.image" />
-                                                                                        <span slot="title">{{tile.title}}</span>
-                                                                                        <span slot="subTitle">by
-                                                                                            <b>{{tile.author}}</b>
-                                                                                        </span>
-                                                                                        <mu-icon-button icon="star_border" slot="action" />
-                                                                                    </mu-grid-tile> -->
-                </mu-grid-list>
-            </mu-flexbox-item>
-    
-        </mu-flexbox>
         <mu-flexbox class="tag" orient="vertical">
             <mu-flexbox-item order="0" class="flex-demo">
                 <mu-text-field hintText="标签" helpText="标签以逗号分隔" full-width v-model="post" />
@@ -53,15 +33,15 @@
     
             </mu-flexbox-item>
             <mu-flexbox-item order="0" class="flex">
-                <mu-raised-button label="上传" class="demo-raised-button" />
-                <mu-raised-button label="保存" class="demo-raised-button" />
+                <mu-raised-button label="上传" @click="upload" class="demo-raised-button" />
+                <mu-raised-button label="保存" @click="save" class="demo-raised-button" />
             </mu-flexbox-item>
         </mu-flexbox>
     </div>
 </template>
 <script>
 import postContent from '../components/md2HTML.vue'
-
+import { mapGetters } from 'vuex'
 
 export default {
     data() {
@@ -73,14 +53,41 @@ export default {
         }
     },
     mounted() {
-
+        let postId = this.$route.params.id
+        if (postId) {
+            this.$store.dispatch('fetchPost', postId)
+        }
     },
     methods: {
-        //TODO：草稿箱        
+        //TODO：草稿箱   
+        updateContent(a) {
+            this.$store.commit('updatePost', {
+                content: a
+            })
+        },
+        upload() {
+            this.$http.post('', {
+                post
+            }).then((res) => {
+                if (res.data.code == 200) {
+                    console.log('success')
+                }
+            }, (err) => {
+
+            })
+        },
+        save() {
+            this.$store.commit('saveDrafts')
+        }
     },
-    components: [
+    components: {
         postContent
-    ]
+    },
+    computed: {
+        ...mapGetters([
+            'posts'
+        ])
+    }
 
 }
 </script>

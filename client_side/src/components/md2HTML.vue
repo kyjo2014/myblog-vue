@@ -30,7 +30,7 @@ function md2HTMLConverter(opt) {
 export default {
     data() {
         return {
-            post
+            post: ''
         }
     },
     computed: {
@@ -44,9 +44,7 @@ export default {
             this.$emit('updatePost', content)
         }
     },
-    props: {
-        post
-    }
+    props: 'post'
 }
 </script>
 <style scoped>

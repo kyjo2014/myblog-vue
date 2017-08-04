@@ -1,3 +1,5 @@
+//这里只保存文章的简略信息
+
 import axios from '../../util//modifiedAxios'
 
 export default {
