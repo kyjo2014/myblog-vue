@@ -8,15 +8,7 @@
             </mu-select-field>
             <mu-text-field hintText="标题" />
         </mu-flexbox>
-        <mu-flexbox class="content">
-            <mu-flexbox-item class="input">
-                <mu-text-field class="input-content" inputClass="input-content" hintText="多行文本输入，默认 3行，最大6行" :underlineShow="false" :full-width="true" multiLine :rows="20" :rowsMax="20" v-model="post" />
-            </mu-flexbox-item>
-            <mu-flexbox-item class="preview">
-                <mu-content-block v-html="rawHTML" class="preview-content">
-                </mu-content-block>
-            </mu-flexbox-item>
-        </mu-flexbox>
+        <postContent :updatePost="content" :post="prevpost"></postContent>
         <mu-flexbox class="image">
             <mu-flexbox-item order="0" class="flex-demo">
                 <mu-float-button icon="add" class="demo-float-button">
@@ -27,13 +19,13 @@
             <mu-flexbox-item order="2" span="200" class="flex-demo">
                 <mu-grid-list class="gridlist-inline-demo">
                     <!-- <mu-grid-tile v-for="tile, index in list" :key="index">
-                                                                                    <img :src="tile.image" />
-                                                                                    <span slot="title">{{tile.title}}</span>
-                                                                                    <span slot="subTitle">by
-                                                                                        <b>{{tile.author}}</b>
-                                                                                    </span>
-                                                                                    <mu-icon-button icon="star_border" slot="action" />
-                                                                                </mu-grid-tile> -->
+                                                                                        <img :src="tile.image" />
+                                                                                        <span slot="title">{{tile.title}}</span>
+                                                                                        <span slot="subTitle">by
+                                                                                            <b>{{tile.author}}</b>
+                                                                                        </span>
+                                                                                        <mu-icon-button icon="star_border" slot="action" />
+                                                                                    </mu-grid-tile> -->
                 </mu-grid-list>
             </mu-flexbox-item>
     
@@ -54,7 +46,7 @@
             </mu-flexbox-item>
         </mu-flexbox>
         <mu-flexbox class="summary">
-            <mu-text-field label="简介" labelFloat  multi-line :rows="4" full-width v-model="post" />
+            <mu-text-field label="简介" labelFloat multi-line :rows="4" full-width v-model="post" />
         </mu-flexbox>
         <mu-flexbox class="ctrl">
             <mu-flexbox-item order="0" class="flex">
@@ -68,21 +60,7 @@
     </div>
 </template>
 <script>
-import showdown from '../../static/showdown.min.js'
-
-/**
- * @description
- * 生成一个md转换为html的转换器
- *
- * @param {any} opt
- * @returns
- */
-function md2HTMLConverter(opt) {
-    var converter = new showdown.Converter(opt);
-    return function (text) {
-        return converter.makeHtml(text);
-    }
-}
+import postContent from '../components/md2HTML.vue'
 
 
 export default {
@@ -90,19 +68,20 @@ export default {
         return {
             game: 2,
             row: 300,
-            post: ''
-
+            post: '',
+            prevpost: ''
         }
     },
     mounted() {
 
     },
-    computed: {
-        rawHTML() {
-            var converter = md2HTMLConverter()
-            return converter(this.post)
-        }
-    }
+    methods: {
+        //TODO：草稿箱        
+    },
+    components: [
+        postContent
+    ]
+
 }
 </script>
 <style>
@@ -118,23 +97,6 @@ export default {
     text-align: center;
 }
 
-.input {
-    border: 1px dashed blue;
-    height: 512px;
-}
-
-.input-content {
-    height: 100%!important;
-}
-
-.preview {
-    border: 1px dashed green;
-    height: 512px;
-}
-
-.preview-content {
-    height: 100%;
-}
 
 .image {
     margin-top: 5px;
