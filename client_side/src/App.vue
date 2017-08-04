@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <!-- <Navbar></Navbar>
-                            <router-view></router-view>
-                            <Aside></Aside>
-                            <Toaste></Toaste> -->
+  
     <div class="header">
       <div class="logo">Lee's Blog</div>
       <div class="nav">
@@ -38,17 +35,18 @@ export default {
   },
   data() {
     return {
-      activeTab: 'tab1',
+      activeTab: this.$route.name,
       activeList: 'list1',
     }
   },
   computed: {
     route() {
       return 0
-    }
+    },
+  
   },
   mounted() {
-    this.activeTab = this.$route.name
+    this.activeTab = this.$route.name.slice(0,6)
   },
   methods: {
     handleTabChange(val) {
@@ -70,6 +68,10 @@ export default {
 
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -109,29 +111,33 @@ body {
 
 .content {
   overflow: hidden;
-  height: calc(100% - 56px);
+  height: calc(100% - 104px);
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .content-left {
   width: 30%;
-  float: left;
-  background-color: white;
-  margin-bottom: -4000px;
-  padding-bottom: 4000px;
+  padding: 10px;
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
 }
 
 .content-right {
   width: 70%;
+  margin-left: -10px;
   display: inline-block;
-  float: right;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: rgba(0, 0, 0, 0);
   overflow: auto;
-  margin-bottom: -4000px;
-  padding-bottom: 4000px;
+  height: 100%;
   position: relative;
+}
+
+.view {
+  background-color: white;
+  height: 100%;
 }
 
 .breadcrumb {

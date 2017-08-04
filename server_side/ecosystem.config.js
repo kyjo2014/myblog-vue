@@ -7,7 +7,7 @@ module.exports = {
 
     // First application
     {
-      name: 'API',
+      name: 'myblog-API',
       script: 'app.js',
       env: {
         COMMON_VARIABLE: 'true'
@@ -15,8 +15,12 @@ module.exports = {
       env_production: {
         NODE_ENV: 'production'
       },
-      "watch": ["server", "client"],
-      "ignore_watch": ["node_modules","dbdata"],
+      "watch": [
+        "server", "client","./"
+      ],
+      "ignore_watch": [
+        "node_modules", "dbdata"
+      ],
       "watch_options": {
         "followSymlinks": false
       }

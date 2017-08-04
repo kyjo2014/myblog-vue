@@ -18,7 +18,7 @@ const ADMIN_ID = 'admin'
 mongoose.set('debug', true)
 
 //建立数据库链接
-mongoose.connect('mongodb://127.0.0.1:27017')
+mongoose.connect('mongodb://127.0.0.1:27017/myblog')
 let db = mongoose.connection
 
 //检测是否成功连接数据库
@@ -60,6 +60,7 @@ let post = new Schema({
             ref: 'Tag'
         }
     ] //标签
+    // sort: {     type: Schema.Types.ObjectId required: true }
     //TODO：增加评论功能
 })
 
@@ -77,13 +78,21 @@ post.pre('save', function (next) {
 })
 
 //替换tags 从String到objectID
-post.pre('save', function (next) {
-    // if (Array.isArray(this.tags)) {     this.tags.map(async tag => {         let
-    // tagId = await Tag.findOne({             name: tag         })         if
-    // (!tagId) {             tagId = await Tag.create({                 name: tag
-    //           })         }         return tagId     }) }
-    console.log(this)
-    // next()
+post.pre('save', async function (next) {
+   
+    try {
+        let tag = await Tag
+            .findOne({name: '23456'})
+            .exec()
+
+        if (!tag) {
+            tag = await Tag.create({name: '1234'})
+        }
+    } catch (error) {
+        cosnole.log(error)
+    }
+
+    next()
 })
 
 //添加虚属性
@@ -104,19 +113,25 @@ post.statics = {
     listAll() {
         return this
             .find({})
+            .populate('tags')
             .select('-__v -_id')
             .exec()
     },
     findByPostId(id) {
         return this
             .findOne({id: id})
+            .populate('tags')
             .select('-summary')
             .exec()
     },
+    //获取post列表
     fetchByPage(page = 1, post_per_page = 10) {
+
         return this
             .find({})
+            .populate('tags')
             .sort({'createAt': -1})
+            .select('-content')
             .skip(post_per_page * (page - 1))
             .limit(post_per_page)
             .exec()
@@ -198,12 +213,13 @@ host.statics = {
             .findOne({id: id})
             .exec()
     },
-    fetchByPage(page) {
+    fetchByPage(page = 1, perPage = POST_PER_PAGE) {
+
         return this
             .find({})
             .sort({'createAt': -1})
-            .skip(POST_PER_PAGE * (page - 1))
-            .limit(POST_PER_PAGE)
+            .skip(perPage * (page - 1))
+            .limit(perPage)
             .exec()
     },
     getTotalCount() {
@@ -230,7 +246,6 @@ let tag = new Schema({
     },
     tid: {
         type: Number,
-        required: true,
         unique: true
     }
 })

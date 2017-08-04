@@ -1,21 +1,60 @@
 <template>
-    <div>
-    
-        this is loginView
+    <div id="login-popup">
+        <div class="guest" v-if="isGuest">
+            <mu-text-field name="id" v-model="guestInfo.nickName" hintText="你的昵称" />
+            <mu-text-field name="value" v-model="guestInfo.email" hintText="你的邮箱" />
+        </div>
+        <div class="host" v-else>
+            <mu-text-field name="id" v-model="hostInfo.id" hintText="你的用户名" />
+            <mu-text-field name="value" v-model="hostInfo.pwd" hintText="你的密码" />
+        </div>
+        <div class="role-sel">
+            <mu-radio label="游客" name="role" nativeValue="guest" v-model="role" class="demo-radio" />
+            <mu-radio label="管理员" name="role" nativeValue="host" v-model="role" class="demo-radio" />
+        </div>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            data: [{
-                title: '123',
-                content: '456'
-            }]
+            role: "guest",
+            guestInfo: {
+                nickName: '',
+                email: ''
+            },
+            hostInfo: {
+                id: '',
+                pwd: ''
+            }
         }
     },
     mounted() {
 
+    },
+    computed: {
+        isGuest() {
+            return this.role == "guest"
+        }
+    },
+    methods: {
+        login() {
+            let body = {
+                role: 'guest'
+            }
+            if (this.isGuest) {
+                body = this.guestInfo
+
+            } else {
+                body = this.hostInfo
+                body.role = 'host'
+            }
+            this.$http.post('/login', body).then((res) => {
+                alert(res)
+            }, (err) => {
+                console.error(err)
+            })
+        }
     }
 }
 </script>

@@ -1,0 +1,19 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "name": "lth",
+    "icon": "http://www.baidu.com",
+    "info": {
+      "github": {
+        "icon": "wtf",
+        "value": "xxx.github.io"
+      },
+      "e-mail": {
+        "icon": "emial",
+        "value": "12345@qq.com"
+      }
+    }
+  }
+
+}
