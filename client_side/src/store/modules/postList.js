@@ -1,17 +1,17 @@
 import axios from '../../util//modifiedAxios'
 export default {
-  state: {
+  state : {
     posts: {}, //属性名是第X页
-    pageIdx: 1,//当前页面数
-    total: 3,//总共页数
-    perPage: 10//一页文章数目
+    pageIdx: 1, //当前页面数
+    total: 3, //总共页数
+    perPage: 10 //一页文章数目
   },
-  getters: {
+  getters : {
     posts: state => state.posts,
     pageIdx: state => state.pageIdx,
     total: state => state.total
   },
-  mutations: {
+  mutations : {
     updatePosts(state, posts) {
       Object.assign(state, {
         posts: {
@@ -21,23 +21,33 @@ export default {
       })
     },
     changePage(state, pageIdx) {
-      Object.assign(state, {
-        pageIdx
-      })
+      Object.assign(state, {pageIdx})
     }
   },
-  actions: {
+  actions : {
+    rmPost({
+      commit,
+      state
+    }, postId) {
+      axios
+        .delete(`/posts/${postId}`)
+        .then((res) => {
+          res.data.code == '200' && commit()
+        }, (err) => {
+          alert(err)
+        })
+    },
     loadPage({
       commit,
       state
     }, pageIdx) {
       !state.posts[pageIdx] && axios
         .get('/posts', {
-          params: {
-              pageIdx,
-              perPage: 10
-          }
-        })
+        params: {
+          pageIdx,
+          perPage: 10
+        }
+      })
         .then((res) => {
           res.data.code == '200' && commit('updatePosts', {
             pageIdx,
