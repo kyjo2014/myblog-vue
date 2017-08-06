@@ -28,11 +28,12 @@ export default {
       state
     }, userInfo) {
       axios
-        .post('./login', userInfo)
+        .post('/users/login', userInfo)
         .then((res) => {
-          console.log(res)
+          window.localStorage.setItem('jwt', res.data.data.token)
+          commit('close')
         }, (err) => {
-          alert(err)
+          console.log(err)
         })
     }
   }

@@ -7,6 +7,7 @@
         </div>
         <div class="input host" v-else>
             <mu-text-field name="id" v-model="hostInfo.id" hintText="你的用户名" />
+            <br/>
             <mu-text-field name="value" v-model="hostInfo.password" hintText="你的密码" />
         </div>
         <div class="role-sel">
@@ -63,11 +64,11 @@ export default {
                 body = this.hostInfo
                 body.role = 'host'
             }
-            this.$http.post('users/login', body).then((res) => {
-                alert(res)
-            }, (err) => {
-                console.error(err)
-            })
+            this.$store.dispatch('login', body)
+            // this.$http.post('users/login', body).then((res) => {
+            // }, (err) => {
+            //     console.error(err)
+            // })
         },
         close() {
             this.$emit('close')
