@@ -9,21 +9,15 @@ export default {
 
   },
   mutations: {
-    updatePosts(state, posts) {
+    close(state) {
       Object.assign(state, {
-        posts: {
-          ...state.posts,
-          [posts.pageIdx]: posts.posts
-        },
-        total: posts.total,
-        pageIdx: posts.pageIdx
+        isOpen: false
       })
     },
-    close(state) {
-      state.isOpen = false
-    },
     open(state) {
-      state.isOpen = true
+      Object.assign(state, {
+        isOpen: true
+      })
     }
 
   },

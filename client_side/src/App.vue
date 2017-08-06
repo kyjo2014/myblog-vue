@@ -10,8 +10,8 @@
           <mu-tab value="manage" title="管理" />
         </mu-tabs>
       </div>
-      <mu-icon-menu icon="more_vert" slot="right">
-        <mu-menu-item title="登录" />
+      <mu-icon-menu icon="more_vert" :anchorOrigin="leftTop" :targetOrigin="leftTop" class="selected" slot="right">
+        <mu-menu-item title="登录" @click="openLogin" />
       </mu-icon-menu>
     </div>
     <div class="content">
@@ -26,48 +26,59 @@
         </transition>
       </div>
     </div>
+    <login :show="isOpen" @close="closeLogin"></login>
   </div>
 </template>
 
 <script>
 import Navbar from './components/navbar'
+import login from './components/login'
+import { mapGetters } from 'vuex'
 export default {
+
   name: 'app',
   components: {
-    Navbar
+    Navbar,
+    login
   },
   data() {
     return {
-
+      leftTop: { horizontal: 'left', vertical: 'bottom' },
       activeList: 'list1',
     }
   },
   computed: {
+    activeTab() {
+      return this.$route.name.slice(0, 6)
+    },
     route() {
       return 0
     },
-
+    ...mapGetters([
+      'isOpen'
+    ])
   },
+
   mounted() {
     this.activeTab = this.$route.name.slice(0, 6)
   },
   methods: {
     handleTabChange(val) {
       this.activeTab = val
-      // console.log(val)
       this.$router.push({ name: val, params: { id: 1 } })
     },
     handleListChange(val) {
       this.activeList = val
-
-
+    },
+    openLogin() {
+      this.$store.commit('open')
+    },
+    closeLogin() {
+      this.$store.commit('close')
     }
+
   },
-  computed: {
-    activeTab() {
-      return this.$route.name.slice(0,6)
-    }
-  },
+
   mixins: []
 }
 
@@ -109,6 +120,11 @@ body {
   display: inline-block;
   width: calc(100% - 300px);
   margin: 0 auto;
+}
+
+.selected {
+  color: white;
+  vertical-align: middle;
 }
 
 .tab {

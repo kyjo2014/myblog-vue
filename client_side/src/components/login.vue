@@ -12,7 +12,7 @@
             <mu-radio label="游客" name="role" nativeValue="guest" v-model="role" class="demo-radio" />
             <mu-radio label="管理员" name="role" nativeValue="host" v-model="role" class="demo-radio" />
         </div>
-         <mu-flat-button label="登录" class="demo-flat-button" @click="login" primary/>
+        <mu-flat-button label="登录" class="demo-flat-button" @click="login" primary/>
     </mu-dialog>
 </template>
 <script>
@@ -27,7 +27,12 @@ export default {
             hostInfo: {
                 id: '',
                 pwd: ''
-            }
+            },
+        }
+    },
+    watch: {
+        show (a) {
+            console.log(a)
         }
     },
     mounted() {
@@ -36,9 +41,13 @@ export default {
     computed: {
         isGuest() {
             return this.role == "guest"
+        },
+        isShow() {
+            return this.show
         }
     },
     methods: {
+
         login() {
             let body = {
                 role: 'guest'
@@ -57,7 +66,7 @@ export default {
             })
         },
         close() {
-            this.show = false
+            this.$emit('close')
         }
     },
     props: {
