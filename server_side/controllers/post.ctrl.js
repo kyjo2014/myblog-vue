@@ -27,13 +27,18 @@ exports.list = async ctx => {
  * @param {any} ctx
  */
 exports.fetchByPage = async ctx => {
-    let {pageIdx, perPage} = ctx.request.query
+    let {
+        pageIdx,
+        perPage
+    } = ctx.request.query
     let collection = null
+    let totalPost = 0
     try {
         collection = await postModel
             .Blog
             .fetchByPage(pageIdx, perPage)
-        
+        totalPost = await postModel.Blog.getTotalCount()
+
     } catch (error) {
         ctx.body = {
             code: '500',
@@ -43,7 +48,15 @@ exports.fetchByPage = async ctx => {
     ctx.body = {
         code: '200',
         message: '查询成功',
-        data: collection
+        data: {
+            "posts": collection,
+            "Pagination": {
+                "currentPage": pageIdx,
+                "totalPage": Math.ceil(totalPost / perPage),
+                "perPage": perPage
+            }
+        }
+
     }
 
 }
@@ -127,10 +140,18 @@ exports.findByQuery = async ctx => {
  */
 exports.create = async ctx => {
     let body = ctx.request.body
-    let {title: title, content: content, tags} = body
+    let {
+        title: title,
+        content: content,
+        tags
+    } = body
     await postModel
         .Blog
-        .create({title, content, tags})
+        .create({
+            title,
+            content,
+            tags
+        })
 
     return ctx.body = await postModel
         .Blog
@@ -154,7 +175,10 @@ function postValid(title, content) {
  */
 exports.update = async ctx => {
     let body = ctx.request.body
-    let {title: title, content: content} = body
+    let {
+        title: title,
+        content: content
+    } = body
     let doc = null
     try {
         doc = await postModel
@@ -194,7 +218,9 @@ exports.del = async ctx => {
     try {
         ctx.body = await postModel
             .Blog
-            .findOneAndRemove({id: ctx.params.id})
+            .findOneAndRemove({
+                id: ctx.params.id
+            })
             .exec()
     } catch (error) {
         ctx.body = error

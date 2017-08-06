@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-card v-for="i in nowPagePosts" :key="i.title">
+    <mu-card v-for="i in nowPagePosts" :key="i.id">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
         标题
       </mu-card-header>
@@ -42,6 +42,7 @@ export default {
   },
   methods: {
     getPosts(pageIdx) {
+
       this.$store.dispatch('loadPage', pageIdx)
     },
     getPostUrl(id) {
@@ -56,7 +57,7 @@ export default {
       'pageIdx',
       'total'
     ]),
-    nowPagePosts() {
+    nowPagePosts(a) {
       return this.posts[this.pageIdx]
     }
   },

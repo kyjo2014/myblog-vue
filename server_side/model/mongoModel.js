@@ -18,7 +18,7 @@ const ADMIN_ID = 'admin'
 mongoose.set('debug', true)
 
 //建立数据库链接
-mongoose.connect('mongodb://127.0.0.1:27017/myblog')
+mongoose.connect('mongodb://127.0.0.1:27017/test')
 let db = mongoose.connection
 
 //检测是否成功连接数据库
