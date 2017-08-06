@@ -16,17 +16,6 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            // userName: '123',
-            // userInfo: {
-            //     '邮箱': {
-            //         icon: '',
-            //         value: '123@'
-            //     },
-            //     'github': {
-            //         icon: '',
-            //         value: '1234'
-            //     }
-            // }
         }
     },
     mounted() {

@@ -10,6 +10,9 @@
           <mu-tab value="manage" title="管理" />
         </mu-tabs>
       </div>
+      <mu-icon-menu icon="more_vert" slot="right">
+        <mu-menu-item title="登录" />
+      </mu-icon-menu>
     </div>
     <div class="content">
       <div class="content-left">
@@ -35,7 +38,7 @@ export default {
   },
   data() {
     return {
-      activeTab: this.$route.name,
+
       activeList: 'list1',
     }
   },
@@ -43,10 +46,10 @@ export default {
     route() {
       return 0
     },
-  
+
   },
   mounted() {
-    this.activeTab = this.$route.name.slice(0,6)
+    this.activeTab = this.$route.name.slice(0, 6)
   },
   methods: {
     handleTabChange(val) {
@@ -58,6 +61,11 @@ export default {
       this.activeList = val
 
 
+    }
+  },
+  computed: {
+    activeTab() {
+      return this.$route.name.slice(0,6)
     }
   },
   mixins: []
@@ -99,7 +107,7 @@ body {
 
 .nav {
   display: inline-block;
-  width: calc(100% - 150px);
+  width: calc(100% - 300px);
   margin: 0 auto;
 }
 
@@ -111,14 +119,14 @@ body {
 
 .content {
   overflow: hidden;
-  height: calc(100% - 104px);
+  height: calc(100% - 120px);
   max-width: 1280px;
   margin: 0 auto;
 }
 
 .content-left {
   width: 30%;
-  padding: 10px;
+  margin: 10px 0;
   display: inline-block;
   vertical-align: top;
   height: 100%;
@@ -126,9 +134,11 @@ body {
 
 .content-right {
   width: 70%;
+  margin: 10px 0;
   margin-left: -10px;
+  padding: 0 10px;
   display: inline-block;
-  padding: 10px;
+
   background-color: rgba(0, 0, 0, 0);
   overflow: auto;
   height: 100%;
