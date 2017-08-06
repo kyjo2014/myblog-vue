@@ -1,5 +1,14 @@
 {
-    "name" : "lee",
-    "e-mail": "12345@xx.com",
-    "github": "xxx.github.io"
+    "name": "lth",
+    "icon": "http://www.baidu.com",
+    "info": {
+        "github": {
+            "icon": "wtf",
+            "value": "xxx.github.io"
+        },
+        "e-mail": {
+            "icon": "emial",
+            "value": "12345@qq.com"
+        }
+    }
 }

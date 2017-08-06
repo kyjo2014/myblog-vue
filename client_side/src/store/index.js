@@ -5,6 +5,7 @@ import * as actions from './actions'
 import * as getters from './getters'
 import index from './modules/index.js'
 import post from './modules/post'
+import me from './modules/me'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     index,
-    post
+    post,
+    me
   }
 })

@@ -8,7 +8,7 @@ export default {
     }
   },
   getters: {
-    user: state => state
+    me: state => state
   },
   mutations: {
     updateUser(state, user) {
@@ -30,21 +30,15 @@ export default {
       commit,
       state
     }) {
-      !state.posts[pageIdx] && axios
-        .get('./posts', {
-          params: {
-            pageIdx
-          }
-        })
-        .then((res) => {
-          res.data.code == '200' && commit('updatePosts', {
-            pageIdx,
-            posts: res.data.data.posts,
-            total: res.data.data.Pagination.totalPage
+      if (state.icon == '') {
+        axios
+          .get('./me')
+          .then((res) => {
+            res.data.code == '200' && commit('updateUser', res.data.data)
+          }, (err) => {
+            alert(err)
           })
-        }, (err) => {
-          alert(err)
-        })
+      }
     }
   }
 }

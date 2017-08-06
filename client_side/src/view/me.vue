@@ -1,6 +1,6 @@
 <template>
     <div id="user">
-        <mu-avatar :src="require('../assets/logo.png')" backgroundColor="pink400" :size="150" class="user-icon" :iconSize="150" />
+        <mu-avatar :src="userIcon" backgroundColor="pink400" :size="150" class="user-icon" :iconSize="150" />
         <h1>{{userName}}</h1>
         <div class="user-info-list">
             <mu-list>
@@ -11,21 +11,44 @@
 </template>
 <script>
 import userInfoItem from '../components/userInfoItem.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     data() {
         return {
-            userName: '123',
-            userInfo: {
-                '邮箱': {
-                    icon: '',
-                    value: '123@'
-                },
-                'github': {
-                    icon: '',
-                    value: '1234'
-                }
-            }
+            // userName: '123',
+            // userInfo: {
+            //     '邮箱': {
+            //         icon: '',
+            //         value: '123@'
+            //     },
+            //     'github': {
+            //         icon: '',
+            //         value: '1234'
+            //     }
+            // }
+        }
+    },
+    mounted() {
+        this.fetchMeData()
+    },
+    methods: {
+        fetchMeData() {
+            this.$store.dispatch('fetchUser')
+        }
+    },
+    computed: {
+        ...mapGetters([
+            'me'
+        ]),
+        userName() {
+            return this.me.name
+        },
+        userIcon() {
+            return this.me.icon
+        },
+        userInfo() {
+            return this.me.info
         }
     },
     components: {
