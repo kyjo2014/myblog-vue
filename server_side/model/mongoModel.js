@@ -60,6 +60,7 @@ let post = new Schema({
             ref: 'Tag'
         }
     ] //标签
+
     // sort: {     type: Schema.Types.ObjectId required: true }
     //TODO：增加评论功能
 })
@@ -78,21 +79,10 @@ post.pre('save', function (next) {
 })
 
 //替换tags 从String到objectID
-post.pre('save', async function (next) {
-   
-    try {
-        let tag = await Tag
-            .findOne({name: '23456'})
-            .exec()
-
-        if (!tag) {
-            tag = await Tag.create({name: '1234'})
-        }
-    } catch (error) {
-        cosnole.log(error)
-    }
-
+post.pre('validate', async function (next) {
+    // console.log(this)
     next()
+
 })
 
 //添加虚属性
@@ -141,6 +131,26 @@ post.statics = {
             .find({})
             .count()
             .exec()
+    },
+    createWithTags: async(post) => {
+        try {
+
+            let {title, content, tags} = post
+            let nTagsPromise = tags.map(async(tag) => {
+                let tagId = await Tag
+                    .findOne({name: tag})
+                    .exec()
+                if (!tagId) {
+                    tagId = await Tag.create({name: tag})
+                }
+
+                return tagId['_id']
+            })
+            let nTags = await Promise.all(nTagsPromise)
+            await Blog.create({title, content, tags: nTags})
+        } catch (error) {
+            cosnole.log(error)
+        }
     }
 
 }
@@ -242,6 +252,7 @@ let tag = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
         maxlength: 8
     },
     tid: {

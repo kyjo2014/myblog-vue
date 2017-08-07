@@ -34,6 +34,7 @@ export default {
         addImage() {
             let fileList = this.files
             let reader = new FileReader()
+            
             console.log(this.files)
 
         }

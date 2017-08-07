@@ -35,11 +35,7 @@ export default {
             },
         }
     },
-    watch: {
-        show(a) {
-            console.log(a)
-        }
-    },
+  
     mounted() {
 
     },

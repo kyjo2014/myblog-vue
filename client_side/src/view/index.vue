@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="indexView">
     <mu-card v-for="i in nowPagePosts" :key="i.id">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
         标题
@@ -68,6 +68,10 @@ export default {
 
 </script>
 <style scoped>
+#indexView {
+  padding-bottom:30px; 
+}
+
 .fixed-bottom {
   position: fixed;
   bottom: 20px;

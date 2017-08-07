@@ -6,13 +6,13 @@
                 <mu-menu-item value="2" title="转载" />
                 <mu-menu-item value="3" title="翻译" />
             </mu-select-field>
-            <mu-text-field hintText="标题" />
+            <mu-text-field hintText="标题" v-model="title" />
         </mu-flexbox>
         <postContent @updatePost="updateContent" :post="prevpost"></postContent>
     
         <mu-flexbox class="tag" orient="vertical">
             <mu-flexbox-item order="0" class="flex-demo">
-                <mu-text-field hintText="标签" helpText="标签以逗号分隔" full-width v-model="post" />
+                <mu-text-field hintText="标签" helpText="标签以逗号分隔" full-width v-model="tags" />
             </mu-flexbox-item>
         </mu-flexbox>
         <mu-flexbox class="sort">
@@ -26,7 +26,7 @@
             </mu-flexbox-item>
         </mu-flexbox>
         <mu-flexbox class="summary">
-            <mu-text-field label="简介" labelFloat multi-line :rows="4" full-width v-model="post" />
+            <mu-text-field label="简介" labelFloat multi-line :rows="4" full-width v-model="summary" />
         </mu-flexbox>
         <mu-flexbox class="ctrl">
             <mu-flexbox-item order="0" class="flex">
@@ -48,7 +48,14 @@ export default {
         return {
             game: 2,
             row: 300,
-            post: '',
+
+            post: {
+                title: '',
+                content: '',
+                tags: [],
+                sort: '',
+                summary: ''
+            },
             prevpost: ''
         }
     },
@@ -61,14 +68,12 @@ export default {
     methods: {
         //TODO：草稿箱   
         updateContent(a) {
-            this.$store.commit('updatePost', {
-                content: a
-            })
+            this.content = a
         },
         upload() {
-            this.$http.post('', {
-                post
-            }).then((res) => {
+            this.$http.post('/posts',
+                this.post
+            ).then((res) => {
                 if (res.data.code == 200) {
                     console.log('success')
                 }
@@ -86,7 +91,55 @@ export default {
     computed: {
         ...mapGetters([
             'posts'
-        ])
+        ]),
+        title: {
+            set(val) {
+                this.post.title = val
+            },
+            get() {
+                return this.post.title
+            }
+        },
+        content: {
+            set(val) {
+                this.post.content = val
+                this.$store.commit('updatePost', {
+                    content: val
+                })
+            },
+            get() {
+                return this.posts.content
+            }
+        },
+        tags: {
+            set(val) {
+                this.post.tags = val.length > 0 ? val.split(',') : []
+            },
+            get() {
+                return  this.post.tags.join(',')
+            }
+        },
+        sort: {
+            set(val) {
+                this.post.sort = val
+            },
+            get() {
+                return this.psot.sort
+            }
+        },
+        summary: {
+            set(val) {
+                if (typeof val == 'string' && val.length < 30) {
+                    this.post.summary = val
+                } else {
+                    console.warn('summary should less then 30 word')
+                }
+
+            },
+            get() {
+                return this.post.summary
+            }
+        }
     }
 
 }
