@@ -7,7 +7,7 @@
         <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
           <mu-tab value="index" title="首页" />
           <mu-tab value="posts" title="文章" />
-          <mu-tab value="manage" title="管理" />
+          <mu-tab v-if="isHost" value="manage" title="管理" />
         </mu-tabs>
       </div>
       <mu-icon-menu icon="more_vert" :anchorOrigin="leftTop" :targetOrigin="leftTop" class="selected" slot="right">
@@ -53,6 +53,9 @@ export default {
     },
     route() {
       return 0
+    },
+    isHost() {
+      return this.$store.state.isHost
     },
     ...mapGetters([
       'isOpen'
