@@ -78,13 +78,6 @@ post.pre('save', function (next) {
     next()
 })
 
-//替换tags 从String到objectID
-post.pre('validate', async function (next) {
-    // console.log(this)
-    next()
-
-})
-
 //添加虚属性
 post
     .virtual('summary')
@@ -116,10 +109,9 @@ post.statics = {
     },
     //获取post列表
     fetchByPage(page = 1, post_per_page = 10) {
-
         return this
             .find({})
-            .populate('tags')
+            .populate('tags', 'name tid -_id')
             .sort({'createAt': -1})
             .select('-content')
             .skip(post_per_page * (page - 1))
@@ -224,7 +216,6 @@ host.statics = {
             .exec()
     },
     fetchByPage(page = 1, perPage = POST_PER_PAGE) {
-
         return this
             .find({})
             .sort({'createAt': -1})

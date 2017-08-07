@@ -33,11 +33,10 @@ exports.fetchByPage = async ctx => {
     try {
         collection = await postModel
             .Blog
-            .fetchByPage(pageIdx, perPage)
+            .fetchByPage(parseInt(pageIdx), parseInt(perPage))
         totalPost = await postModel
             .Blog
             .getTotalCount()
-
     } catch (error) {
         ctx.body = {
             code: '500',
@@ -144,7 +143,7 @@ exports.create = async ctx => {
     try {
         await postModel
             .Blog
-            .createWithTags({title, content,tags})
+            .createWithTags({title, content, tags})
         let collection = await postModel
             .Blog
             .listAll()
