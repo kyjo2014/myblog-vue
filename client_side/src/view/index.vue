@@ -1,6 +1,6 @@
 <template>
   <div id="indexView">
-    <mu-card v-for="i in nowPagePosts" :key="i.id">
+    <mu-card class="listItem" v-for="i in nowPagePosts" :key="i.id">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
         标题
       </mu-card-header>
@@ -78,6 +78,7 @@ export default {
 <style scoped>
 #indexView {
   padding-bottom: 30px;
+  overflow: auto;
 }
 
 .tags {
@@ -88,5 +89,8 @@ export default {
   position: fixed;
   bottom: 20px;
   left: 50%;
+}
+.listItem {
+  margin-bottom: 10px;
 }
 </style>
