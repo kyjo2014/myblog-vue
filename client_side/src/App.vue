@@ -145,7 +145,6 @@ body {
 
 .content-left {
   width: 30%;
-  /* margin: 10px 0; */
   display: inline-block;
   vertical-align: top;
   height: 100%;

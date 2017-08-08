@@ -8,12 +8,10 @@ export default {
     sort: null,
     title: '',
     content: '',
-    info: {
-      author: '',
-      createAt: '',
-      updateAt: '',
-      readerAmount: 0
-    }
+    author: '',
+    createAt: '',
+    updatedAt: '',
+    readerAmount: 0
 
   },
   getters : {
@@ -49,6 +47,7 @@ export default {
         .then((res) => {
           let data = res.data
           data.code == 200 && commit('updatePost', data.data)
+
         }, (err) => {
           console.error(err)
         })
