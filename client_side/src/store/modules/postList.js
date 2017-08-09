@@ -43,7 +43,6 @@ export default {
       commit,
       state
     }, pageIdx) {
-<<<<<<< HEAD:client_side/src/store/modules/index.js
       if (!state.posts[pageIdx]) {
         axios
           .get('/posts', {
@@ -51,20 +50,6 @@ export default {
               pageIdx,
               perPage: 10
             }
-=======
-      !state.posts[pageIdx] && axios
-        .get('/posts', {
-        params: {
-          pageIdx,
-          perPage: 10
-        }
-      })
-        .then((res) => {
-          res.data.code == '200' && commit('updatePosts', {
-            pageIdx,
-            posts: res.data.data.posts,
-            total: res.data.data.Pagination.totalPage
->>>>>>> master:client_side/src/store/modules/postList.js
           })
           .then((res) => {
             res.data.code == '200' && commit('updatePosts', {
