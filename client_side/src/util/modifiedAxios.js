@@ -1,9 +1,9 @@
 import axios from 'axios'
-
+let baseURL = 'http://localhost:3000/'
 if (process.env.NODE_ENV !== 'production') {
-  baseURL= 'http://localhost:3000/'
+  baseURL = 'http://localhost:3000/'
 } else {
-  baseURL= 'http://kyjocode.cn:19000/' 
+  baseURL = 'http://kyjocode.cn:19000/'
 }
 
 const $http = axios.create({
