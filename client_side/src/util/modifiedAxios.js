@@ -1,7 +1,13 @@
 import axios from 'axios'
 
+if (process.env.NODE_ENV !== 'production') {
+  baseURL= 'http://localhost:3000/'
+} else {
+  baseURL= 'http://kyjocode.cn:19000/' 
+}
+
 const $http = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL,
   headers: {
     Authorization: 'Bearer ' + window
       .localStorage
