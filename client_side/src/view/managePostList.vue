@@ -8,6 +8,8 @@
                 </mu-icon-menu>
             </mu-list-item>
         </mu-list>
+        <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
+        </mu-pagination>
     </div>
 </template>
 <script>
@@ -34,10 +36,25 @@ export default {
         }
     }
 
+    }
 }
 </script>
 <style>
+.postList-title {
+    width: 20px;
+}
+</style>
 
+<style scoped>
+.ctrl-group {
+    width: 200px;
+}
+
+.fixed-bottom {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+}
 </style>
 
 

@@ -1,7 +1,4 @@
-//这里只保存文章的简略信息
-
 import axios from '../../util//modifiedAxios'
-
 export default {
   state : {
     posts: {}, //属性名是第X页
@@ -18,13 +15,11 @@ export default {
     updatePosts(state, posts) {
       Object.assign(state, {
         posts: {
-          //默认如果没存在新的页面就默认更新当前页面
-          [posts.pageIdx || state.pageIdx]: {
-            data: posts.posts,
-            shouldUpdate: false //如果执行删除动作后，该页后面的条目都要进行更新
-          }
+          ...state.posts,
+          [posts.pageIdx]: posts.posts
         },
-        total: posts.total
+        total: posts.total,
+        pageIdx: posts.pageIdx
       })
     },
     changePage(state, pageIdx) {
@@ -39,29 +34,7 @@ export default {
       axios
         .delete(`/posts/${postId}`)
         .then((res) => {
-          if (res.data.code == '200') {
-            for (let i = state.pageIdx, len = state.totalPage; i < len; i++) {
-              state.posts[i].shouldUpdate = true //下面的页码需要再次更新
-            }
-            axios
-              .get('/posts', {
-              params: {
-                pageIdx: state.pageIdx,
-                perPage: 10
-              }
-            })
-              .then((res) => {
-                if (res.data.code == 200) {
-                  commit('updatePosts', {
-                    posts: res.data.data.posts,
-                    total: res.data.data.Pagination.totalPage
-                  })
-                }
-
-              }, (err) => {
-                alert(err)
-              })
-          }
+          res.data.code == '200' && commit()
         }, (err) => {
           alert(err)
         })
@@ -70,7 +43,16 @@ export default {
       commit,
       state
     }, pageIdx) {
-      (!state.posts[pageIdx] || state.posts[pageIdx].shouldUpdate) && axios
+<<<<<<< HEAD:client_side/src/store/modules/index.js
+      if (!state.posts[pageIdx]) {
+        axios
+          .get('/posts', {
+            params: {
+              pageIdx,
+              perPage: 10
+            }
+=======
+      !state.posts[pageIdx] && axios
         .get('/posts', {
         params: {
           pageIdx,
@@ -82,10 +64,20 @@ export default {
             pageIdx,
             posts: res.data.data.posts,
             total: res.data.data.Pagination.totalPage
+>>>>>>> master:client_side/src/store/modules/postList.js
           })
-        }, (err) => {
-          alert(err)
-        })
+          .then((res) => {
+            res.data.code == '200' && commit('updatePosts', {
+              pageIdx,
+              posts: res.data.data.posts,
+              total: res.data.data.Pagination.totalPage
+            })
+          }, (err) => {
+            alert(err)
+          })
+      } else {
+        commit('changePage', pageIdx)
+      }
     }
   }
 }
