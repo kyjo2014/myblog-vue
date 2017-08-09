@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+    </style>
+    <style>
+        body>div {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <fieldset>
+        <h1>登录</h1>
+        <form method="POST" id="login">
+
+            <input type="text" class="login-main" name="id" value="host">
+            <input type="password" class="login-sub" name="password" value="abc123456">
+            <input type="submit" value="提交">
+        </form>
+    </fieldset>
+
+    <fieldset>
+        <h1>注册</h1>
+        <form method="POST" id="register">
+            <input type="email" class="signup-main" name="email" value="467346087@qq.com">
+            <input type="text" name="nickname" class="signup-sub" value="kyjo">
+            <input type="submit" value="提交">
+        </form>
+    </fieldset>
+    <fieldset>
+        <h1>删除用户</h1>
+        <form method="POST" id="rmUser">
+            <input type="text" name="id" class="rmuser-sub" value="1">
+            <input type="submit" value="删除">
+        </form>
+    </fieldset>
+    <!-- 所有文章 -->
+    <div class="article" style="height: 300px;overflow: auto">
+
+    </div>
+    <!-- 文章搜索 -->
+    <div class="article-search">
+        <input type="text" class="search article-search-input" placeholder="文章id">
+        <input type="button" class="article-submit" value="搜索">
+        <div class="article article-searched">
+
+
+        </div>
+    </div>
+    <!-- 提交/更新文章 -->
+    <div class="upload-article">
+        <select class="tag-select" multiple="multiple" size="4">
+            <option value="1">html5</option>
+            <option value="2">html4</option>
+        </select>
+        <input type="text" name="newTag" class="tags new-tag" placeholder="新建标签" value="">
+        <input type="text" class="article-title" style="display:block" placeholder="文章标题">
+        <textarea style="display:inline-block" name="" id="source" cols="30" rows="10" class="article-content">
+    
+        </textarea>
+        <input type="button" class="uploadArticle" value="提交">
+        <input type="button" class="updateArticle" name="" value="更新">
+        <div id="converted" style="display:inline-block"></div>
+    </div>
+    <!-- 查看用户 -->
+    <div class="userList">
+
+    </div>
+
+
+
+    <!-- markdown编辑器 -->
+    <script src="./static/js/showdown.min.js"></script>
+    <script src="./static/js/main.js"></script>
+</body>
+
+</html>
