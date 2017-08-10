@@ -48,8 +48,19 @@ export default {
     }
   },
   computed: {
-    activeTab() {
-      return this.$route.name.slice(0, 6)
+    activeTab: {
+      set(val) {
+        this.$router.push(val)
+      },
+      get() {
+        if (!this.$route.name || this.$route.name.length == 0) {
+          return 'index'
+        } else {
+          return this.$route.name.slice(0, 6)
+
+        }
+
+      }
     },
     route() {
       return 0
