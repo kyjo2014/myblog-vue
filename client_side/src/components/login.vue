@@ -65,10 +65,7 @@ export default {
                 body.role = 'host'
             }
             this.$store.dispatch('login', body)
-            // this.$http.post('users/login', body).then((res) => {
-            // }, (err) => {
-            //     console.error(err)
-            // })
+            
         },
         close() {
             this.$emit('close')
