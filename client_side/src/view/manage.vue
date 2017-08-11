@@ -22,7 +22,12 @@ export default {
       
     },
     beforeRouteEnter(to, from, next) {
-        next()
+        
+        next((vm)=>{
+            if(!vm.$store.state.isHost) {
+                vm.$router.replace('/')
+            }
+        })
     }
 }
 </script>
