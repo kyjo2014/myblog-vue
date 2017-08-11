@@ -27,18 +27,16 @@ exports.list = async ctx => {
  * @param {any} ctx
  */
 exports.fetchByPage = async ctx => {
-    let {
-        pageIdx,
-        perPage
-    } = ctx.request.query
+    let {pageIdx, perPage} = ctx.request.query
     let collection = null
     let totalPost = 0
     try {
         collection = await postModel
             .Blog
-            .fetchByPage(pageIdx, perPage)
-        totalPost = await postModel.Blog.getTotalCount()
-
+            .fetchByPage(parseInt(pageIdx), parseInt(perPage))
+        totalPost = await postModel
+            .Blog
+            .getTotalCount()
     } catch (error) {
         ctx.body = {
             code: '500',
@@ -140,22 +138,28 @@ exports.findByQuery = async ctx => {
  */
 exports.create = async ctx => {
     let body = ctx.request.body
-    let {
-        title: title,
-        content: content,
-        tags
-    } = body
-    await postModel
-        .Blog
-        .create({
-            title,
-            content,
-            tags
-        })
+    let {title: title, content: content, tags} = body
 
-    return ctx.body = await postModel
-        .Blog
-        .listAll()
+    try {
+        await postModel
+            .Blog
+            .createWithTags({title, content, tags})
+        let collection = await postModel
+            .Blog
+            .listAll()
+        return ctx.body = {
+            code: '200',
+            message: 'create success',
+            data: collection
+        }
+
+    } catch (error) {
+        ctx.body = {
+            code: '404',
+            message: error
+        }
+    }
+
 }
 
 /**
@@ -175,10 +179,7 @@ function postValid(title, content) {
  */
 exports.update = async ctx => {
     let body = ctx.request.body
-    let {
-        title: title,
-        content: content
-    } = body
+    let {title: title, content: content} = body
     let doc = null
     try {
         doc = await postModel
@@ -218,9 +219,7 @@ exports.del = async ctx => {
     try {
         ctx.body = await postModel
             .Blog
-            .findOneAndRemove({
-                id: ctx.params.id
-            })
+            .findOneAndRemove({id: ctx.params.id})
             .exec()
     } catch (error) {
         ctx.body = error

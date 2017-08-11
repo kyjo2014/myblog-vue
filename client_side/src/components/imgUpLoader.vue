@@ -1,8 +1,8 @@
 <template>
     <mu-flexbox class="image">
         <mu-flexbox-item order="0" class="flex-demo">
-            <mu-float-button icon="add" class="demo-float-button">
-    
+            <mu-float-button icon="add"  class="demo-float-button">
+                <input type="file" multiple @change="addImg" style="visibility: hidden">
             </mu-float-button>
     
         </mu-flexbox-item>
@@ -28,6 +28,15 @@ export default {
             list: [
 
             ]
+        }
+    },
+    methods: {
+        addImage() {
+            let fileList = this.files
+            let reader = new FileReader()
+            
+            console.log(this.files)
+
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <mu-card v-for="i in nowPagePosts" :key="i.id">
+  <div id="indexView">
+    <mu-card class="listItem" v-for="i in nowPagePosts" :key="i.id">
       <mu-card-header :title="i.title" :subTitle="i.createAt">
         标题
       </mu-card-header>
@@ -11,9 +11,8 @@
   
         <mu-flexbox>
           <mu-flexbox-item class="flex-demo">
-            <mu-chip class="demo-chip">
-              种类
-            </mu-chip>
+            <mu-badge class="tags" v-for="j in i.tags" :key="j.tid" :content="j.name" :color="getTagColor(j.name)" />
+  
           </mu-flexbox-item>
           <mu-flexbox-item class="flex-demo">
   
@@ -31,6 +30,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import getRamdomColor from '../util/randomColor'
 export default {
   data() {
     return {
@@ -40,7 +40,15 @@ export default {
   mounted() {
     this.getPosts(1)
   },
+  computed: {
+
+  },
   methods: {
+    getTagColor(name) {
+
+      return getRamdomColor(name)
+
+    },
     getPosts(pageIdx) {
 
       this.$store.dispatch('loadPage', pageIdx)
@@ -68,9 +76,21 @@ export default {
 
 </script>
 <style scoped>
+#indexView {
+  padding-bottom: 30px;
+  overflow: auto;
+}
+
+.tags {
+  margin: 0 5px;
+}
+
 .fixed-bottom {
   position: fixed;
   bottom: 20px;
   left: 50%;
+}
+.listItem {
+  margin-bottom: 10px;
 }
 </style>

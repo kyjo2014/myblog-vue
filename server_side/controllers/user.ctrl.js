@@ -37,12 +37,10 @@ exports.findById = async ctx => {
 
 /**
  * 获取管理员的自我介绍
- * 
- * @param {any} ctx 
+ *
+ * @param {any} ctx
  */
-exports.me = async ctx => {
-    
-}
+exports.me = async ctx => {}
 
 /**
  * @description
@@ -61,7 +59,6 @@ exports.create = async ctx => {
             .User
             .findOne({email: email})
             .exec()
-        console.log(user)
         if (user == null) {
             let message = await userModel
                 .User
@@ -132,7 +129,8 @@ exports.login = async ctx => {
                 code: '200',
                 message: '登录成功',
                 data: {
-                    token
+                    token,
+                    isHost: true
                 }
             }
         } else {
@@ -158,7 +156,8 @@ exports.login = async ctx => {
                     code: '200',
                     message: '登录成功',
                     data: {
-                        token
+                        token,
+                        isHost: false
                     }
                 }
             }

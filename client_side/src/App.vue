@@ -7,7 +7,7 @@
         <mu-tabs :value="activeTab" @change="handleTabChange" class="tab">
           <mu-tab value="index" title="首页" />
           <mu-tab value="posts" title="文章" />
-          <mu-tab value="manage" title="管理" />
+          <mu-tab v-if="isHost" value="manage" title="管理" />
         </mu-tabs>
       </div>
       <mu-icon-menu icon="more_vert" :anchorOrigin="leftTop" :targetOrigin="leftTop" class="selected" slot="right">
@@ -54,17 +54,20 @@ export default {
     route() {
       return 0
     },
+    isHost() {
+      return this.$store.state.isHost
+    },
     ...mapGetters([
-      'isOpen'
+      'isOpen',
+      'isHost'
     ])
   },
 
   mounted() {
-    this.activeTab = this.$route.name.slice(0, 6)
+    // this.activeTab = this.$route.name.slice(0, 6)
   },
   methods: {
     handleTabChange(val) {
-      this.activeTab = val
       this.$router.push({ name: val, params: { id: 1 } })
     },
     handleListChange(val) {
@@ -135,14 +138,13 @@ body {
 
 .content {
   overflow: hidden;
-  height: calc(100% - 120px);
+  margin: 10px auto;
+  height: calc(100% - 75px);
   max-width: 1280px;
-  margin: 0 auto;
 }
 
 .content-left {
   width: 30%;
-  margin: 10px 0;
   display: inline-block;
   vertical-align: top;
   height: 100%;
@@ -150,9 +152,9 @@ body {
 
 .content-right {
   width: 70%;
-  margin: 10px 0;
+  /* margin: 10px 0 ; */
   margin-left: -10px;
-  padding: 0 10px;
+  padding: 0 0 0 10px;
   display: inline-block;
 
   background-color: rgba(0, 0, 0, 0);

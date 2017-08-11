@@ -60,6 +60,7 @@ let post = new Schema({
             ref: 'Tag'
         }
     ] //标签
+
     // sort: {     type: Schema.Types.ObjectId required: true }
     //TODO：增加评论功能
 })
@@ -74,24 +75,6 @@ post.set('toObject', {virtuals: true})
 post.pre('save', function (next) {
     this.updatedAt = Date.now()
     this.markModified('updatedAt')
-    next()
-})
-
-//替换tags 从String到objectID
-post.pre('save', async function (next) {
-   
-    try {
-        let tag = await Tag
-            .findOne({name: '23456'})
-            .exec()
-
-        if (!tag) {
-            tag = await Tag.create({name: '1234'})
-        }
-    } catch (error) {
-        cosnole.log(error)
-    }
-
     next()
 })
 
@@ -126,10 +109,9 @@ post.statics = {
     },
     //获取post列表
     fetchByPage(page = 1, post_per_page = 10) {
-
         return this
             .find({})
-            .populate('tags')
+            .populate('tags', 'name tid -_id')
             .sort({'createAt': -1})
             .select('-content')
             .skip(post_per_page * (page - 1))
@@ -141,6 +123,26 @@ post.statics = {
             .find({})
             .count()
             .exec()
+    },
+    createWithTags: async(post) => {
+        try {
+
+            let {title, content, tags} = post
+            let nTagsPromise = tags.map(async(tag) => {
+                let tagId = await Tag
+                    .findOne({name: tag})
+                    .exec()
+                if (!tagId) {
+                    tagId = await Tag.create({name: tag})
+                }
+
+                return tagId['_id']
+            })
+            let nTags = await Promise.all(nTagsPromise)
+            await Blog.create({title, content, tags: nTags})
+        } catch (error) {
+            cosnole.log(error)
+        }
     }
 
 }
@@ -214,7 +216,6 @@ host.statics = {
             .exec()
     },
     fetchByPage(page = 1, perPage = POST_PER_PAGE) {
-
         return this
             .find({})
             .sort({'createAt': -1})
@@ -242,6 +243,7 @@ let tag = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
         maxlength: 8
     },
     tid: {
