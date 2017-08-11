@@ -1,5 +1,5 @@
 <template>
-    <mu-popup position="top" :overlay="false" popupClass="demo-popup-top" :open="topPopup">
+    <mu-popup position="top" :overlay="false" popupClass="demo-popup-top" :open="isOpen">
         {{message}}
     </mu-popup>
 </template>
@@ -8,28 +8,20 @@
 export default {
     data() {
         return {
-            topPopup: true
+            topPopup: false
         }
     },
-    computed: {
+    props: {
+        isOpen: {
+            type: Boolean
+        },
         message: {
-            get: function () {
-                return this.$store.state.message
-            }
-        }
-    },
-    watch: {
-        topPopup(val) {
-            if (val) {
-                setTimeout(() => {
-                    this.topPopup = false
-                }, 2000)
-            }
+            type: String
         }
     }
 }
 </script>
-<style scoped>
+<style>
 .demo-popup-top {
     width: 100%;
     opacity: .8;

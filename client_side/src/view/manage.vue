@@ -24,7 +24,7 @@ export default {
     beforeRouteEnter(to, from, next) {
         
         next((vm)=>{
-            if(!vm.$store.state.isHost) {
+            if(!vm.$store.state.login.isHost) {
                 vm.$router.replace('/')
             }
         })

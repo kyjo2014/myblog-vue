@@ -1,6 +1,6 @@
 export default {
     state : {
-        message: ''
+        errMessage: ''
     },
     getters : {
         message: state => state
@@ -8,7 +8,7 @@ export default {
     mutations : {
         updateMessage(state, message) {
 
-            Object.assign(state, {message})
+            Object.assign(state, {errMessage: message})
         }
 
     }
