@@ -1,9 +1,11 @@
 import axios from 'axios'
-let baseURL = 'http://localhost:3000/'
+
+let baseURL = ''
+
 if (process.env.NODE_ENV !== 'production') {
-  baseURL = 'http://localhost:3000/'
+  baseURL= 'http://localhost:3000/'
 } else {
-  baseURL = 'http://kyjocode.cn:19000/'
+  baseURL= 'http://kyjocode.cn:19000/' 
 }
 
 const $http = axios.create({
@@ -21,8 +23,6 @@ $http
   .use((res) => {
     if (res.code == '403' || res.code == '401') {
       alert('请登录')
-    } else {
-      alert(res.data.message)
     }
     return res
   }, (err) => {
