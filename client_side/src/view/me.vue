@@ -58,6 +58,7 @@ export default {
 .user-icon {
     margin: 0 auto;
     display: block!important;
+    object-fit: cover;
 }
 
 .user-info-list {

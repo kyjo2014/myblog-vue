@@ -25,21 +25,7 @@ axios
 //全局注册axios
 Vue.prototype.$http = axios
 
-/**
- * @description
- * 生成一个md转换为html的转换器
- *
- * @param {any} opt
- * @returns
- */
-function md2HTMLConverter(opt) {
-  var converter = new showdown.Converter(opt);
-  return function (text) {
-    return converter.makeHtml(text);
-  }
-}
 
-Vue.filter('md2HTML', md2HTMLConverter())
 
 /* eslint-disable no-new */
 new Vue({el: '#app', router, store, template: '<App/>', components: {

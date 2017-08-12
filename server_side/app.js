@@ -20,6 +20,10 @@ const mongo = require('./model/mongoModel')
 //生成koa实例
 var app = new koa();
 
+//设置常量
+app.port = process.env.PORT || 3000;
+console.log(process.argv)
+
 
 app.use(cors())
 app.use(compress({
@@ -30,9 +34,8 @@ app.use(compress({
   flush: require('zlib').Z_SYNC_FLUSH
 }))
 
-// app.use(favicon(__dirname + '/public/favicon.ico'));
-
-// etag works together with conditional-get
+// app.use(favicon(__dirname + '/public/favicon.ico')); etag works together with
+// conditional-get
 app.use(conditional());
 app.use(etag());
 // or use absolute paths
@@ -52,10 +55,8 @@ app.use(function (ctx, next) {
   })
 });
 
-
-
 //加载路由
 const routers = require('./routers/index')
 app.use(routers)
 
-app.listen(3000);
+app.listen(app.port);

@@ -27,10 +27,12 @@
       </div>
     </div>
     <login :show="isOpen" @close="closeLogin"></login>
+    <pageheader :isOpen="pop" :message="errMessage"></pageheader>
   </div>
 </template>
 
 <script>
+import pageheader from './components/pageheader'
 import Navbar from './components/navbar'
 import login from './components/login'
 import { mapGetters } from 'vuex'
@@ -39,17 +41,31 @@ export default {
   name: 'app',
   components: {
     Navbar,
-    login
+    login,
+    pageheader
   },
   data() {
     return {
       leftTop: { horizontal: 'left', vertical: 'bottom' },
       activeList: 'list1',
+      pop: false,
+      errMessage: ''
     }
   },
   computed: {
-    activeTab() {
-      return this.$route.name.slice(0, 6)
+    activeTab: {
+      set(val) {
+        this.$router.push(val)
+      },
+      get() {
+        if (!this.$route.name || this.$route.name.length == 0) {
+          return 'index'
+        } else {
+          return this.$route.name.slice(0, 6)
+
+        }
+
+      }
     },
     route() {
       return 0
@@ -59,12 +75,21 @@ export default {
     },
     ...mapGetters([
       'isOpen',
-      'isHost'
+      'isHost',
+
     ])
   },
 
   mounted() {
     // this.activeTab = this.$route.name.slice(0, 6)
+    window.alert = function (val) {
+      this.pop = true
+      this.errMessage = val
+      setTimeout(() => {
+        this.pop = false
+      }, 2000)
+
+    }.bind(this)
   },
   methods: {
     handleTabChange(val) {

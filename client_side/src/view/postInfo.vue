@@ -11,7 +11,7 @@
         </div>
         <div class="summary">
             <h3>简介</h3>
-            {{summary}}
+            <span v-html="summary"></span>
         </div>
         <div class="author">
             <h3>作者</h3>
@@ -35,7 +35,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import getRandomColor from '../util/randomColor'
-
+import md2HTML from '../util/md2HTML'
 export default {
     data() {
         return {
@@ -59,7 +59,7 @@ export default {
             return this.post.tags
         },
         summary() {
-            return this.post.summary
+            return md2HTML(this.post.summary)
         }
     },
     methods: {

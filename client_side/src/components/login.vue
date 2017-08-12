@@ -1,9 +1,9 @@
 <template>
     <mu-dialog dialogClass="login-popup" :open="show" title="登录" @close="close">
         <div class="input guest" v-if="isGuest">
-            <mu-text-field name="id" v-model="guestInfo.nickName" hintText="你的昵称" />
+            <mu-text-field name="id" v-model="nickName" :errorText="errNickname" :maxLength="20" hintText="你的昵称" />
             <br/>
-            <mu-text-field name="value" v-model="guestInfo.email" hintText="你的邮箱" />
+            <mu-text-field name="value" v-model="email" :errorText="errEmail" hintText="你的邮箱" />
         </div>
         <div class="input host" v-else>
             <mu-text-field name="id" v-model="hostInfo.id" hintText="你的用户名" />
@@ -33,9 +33,11 @@ export default {
                 id: '',
                 password: ''
             },
+            errEmail: '',
+            errNickname: ''
         }
     },
-  
+
     mounted() {
 
     },
@@ -45,6 +47,29 @@ export default {
         },
         isShow() {
             return this.show
+        },
+        email: {
+            set: function (val) {
+                const emailExp = /^[a-z_0-9.-]{1,64}@([a-z0-9-]{1,200}.){1,5}[a-z]{1,6}$/i
+                if (emailExp.test(val)) {
+                    this.guestInfo.email = val
+                    this.errEmail = ''
+                } else {
+                    this.guestInfo.email = ''
+                    this.errEmail = '邮件格式错误'
+                }
+            },
+            get: function () {
+                return this.guestInfo.email
+            }
+        },
+        nickName: {
+            set: function (val) {
+                this.guestInfo.nickname = val
+            },
+            get: function () {
+                return this.guestInfo.nickname
+            }
         }
     },
     methods: {
@@ -61,7 +86,7 @@ export default {
                 body.role = 'host'
             }
             this.$store.dispatch('login', body)
-            
+           
         },
         close() {
             this.$emit('close')
