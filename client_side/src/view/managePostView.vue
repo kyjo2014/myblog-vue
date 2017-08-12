@@ -18,10 +18,7 @@
         <mu-flexbox class="sort">
             <mu-flexbox-item order="0" class="flex-demo">
                 <h2>种类</h2>
-                <mu-checkbox label="最简单的" class="demo-checkbox" />
-                <mu-checkbox label="最简单的" class="demo-checkbox" />
-                <mu-checkbox label="最简单的" class="demo-checkbox" />
-                <mu-checkbox label="最简单的" class="demo-checkbox" />
+                <mu-radio label="前端" class="demo-checkbox" />
                 <mu-float-button icon="add" mini class="add-sort" />
             </mu-flexbox-item>
         </mu-flexbox>
@@ -37,6 +34,11 @@
                 <mu-raised-button label="保存" @click="save" class="demo-raised-button" />
             </mu-flexbox-item>
         </mu-flexbox>
+        <mu-dialog :open="dialog" title="新增种类" @close="close">
+            <mu-text-field hintText="种类" v-model="newSort" />
+            <mu-flat-button slot="actions" @click="close" primary label="取消" />
+            <mu-flat-button slot="actions" primary @click="addSort" label="确定" />
+        </mu-dialog>
     </div>
 </template>
 <script>
@@ -48,7 +50,7 @@ export default {
         return {
             game: 2,
             row: 300,
-
+            dialog: true,
             post: {
                 title: '',
                 content: '',
@@ -56,7 +58,8 @@ export default {
                 sort: '',
                 summary: ''
             },
-            prevpost: ''
+            prevpost: '',
+            newSort: ''
         }
     },
     mounted() {
@@ -83,6 +86,18 @@ export default {
         },
         save() {
             this.$store.commit('saveDrafts')
+        },
+        close() {
+            this.dialog = false
+        },
+        addSort() {
+            this.$http.post('/sort', {
+                sort: this.newSort
+            }).then((res) => {
+                console.log(res)
+            }, (err) => {
+                console.log(err)
+            })
         }
     },
     components: {
@@ -116,7 +131,7 @@ export default {
                 this.post.tags = val.length > 0 ? val.split(',') : []
             },
             get() {
-                return  this.post.tags.join(',')
+                return this.post.tags.join(',')
             }
         },
         sort: {
