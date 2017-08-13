@@ -18,8 +18,8 @@
         <mu-flexbox class="sort">
             <mu-flexbox-item order="0" class="flex-demo">
                 <h2>种类</h2>
-                <mu-radio label="前端" class="demo-checkbox" />
-                <mu-radio v-for=" i in sorts" :key="i.sid" :label="i.name" class="demo-checkbox" />
+                <mu-radio label="前端" class="demo-checkbox" v-model="sort" />
+                <mu-radio v-for=" i in sorts" :key="i.sid" :nativeValue="i._id" :label="i.name" class="demo-checkbox"  v-model="sort" />
                 <mu-float-button icon="add" mini class="add-sort" @click="addSortpop" />
             </mu-flexbox-item>
         </mu-flexbox>
@@ -155,7 +155,7 @@ export default {
                 this.post.sort = val
             },
             get() {
-                return this.psot.sort
+                return this.post.sort
             }
         },
         summary: {

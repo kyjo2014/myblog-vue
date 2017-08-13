@@ -304,7 +304,7 @@ tag.statics = {
     listAll() {
         return this
             .find({})
-            .select('-__v -_id')
+            .select('-__v')
             .exec()
     }
 }
@@ -332,7 +332,7 @@ sort.statics = {
     listAll() {
         return this
             .find({})
-            .select('-__v -_id')
+            .select('-__v')
             .exec()
     }
 }
