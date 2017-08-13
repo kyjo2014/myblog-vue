@@ -1,17 +1,17 @@
 import axios from '../../util//modifiedAxios'
 export default {
-  state : {
+  state: {
     posts: {}, //属性名是第X页
     pageIdx: 1, //当前页面数
     total: 3, //总共页数
     perPage: 10 //一页文章数目
   },
-  getters : {
+  getters: {
     posts: state => state.posts,
     pageIdx: state => state.pageIdx,
     total: state => state.total
   },
-  mutations : {
+  mutations: {
     updatePosts(state, posts) {
       Object.assign(state, {
         posts: {
@@ -23,10 +23,28 @@ export default {
       })
     },
     changePage(state, pageIdx) {
-      Object.assign(state, {pageIdx})
+      Object.assign(state, {
+        pageIdx
+      })
     }
   },
-  actions : {
+  actions: {
+    fetchByQuery({
+      commit,
+      state
+    }, query) {
+      axios
+        .get(`/posts/search`, {
+          params: {
+            query
+          }
+        })
+        .then((res) => {
+          console.log(res)
+        }, (err) => {
+          console.log(err)
+        })
+    },
     rmPost({
       commit,
       state

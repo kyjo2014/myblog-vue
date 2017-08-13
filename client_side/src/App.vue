@@ -9,7 +9,9 @@
           <mu-tab value="posts" title="文章" />
           <mu-tab v-if="isHost" value="manage" title="管理" />
         </mu-tabs>
+  
       </div>
+     
       <mu-icon-menu icon="more_vert" :anchorOrigin="leftTop" :targetOrigin="leftTop" class="selected" slot="right">
         <mu-menu-item title="登录" @click="openLogin" />
       </mu-icon-menu>

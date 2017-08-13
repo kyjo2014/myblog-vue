@@ -1,29 +1,35 @@
 <template>
   <div id="indexView">
-    <mu-card class="listItem" v-for="i in nowPagePosts" :key="i.id">
-      <mu-card-header :title="i.title" :subTitle="i.createAt">
-        标题
-      </mu-card-header>
-      <mu-card-text>
-        摘要{{i.summary}}
-      </mu-card-text>
-      <mu-card-actions>
+    <div class="tools">
+      <input type="text" class="post-search" v-model.lazy="search">
+    </div>
+    <div class="content">
+      <mu-card class="listItem" v-for="i in nowPagePosts" :key="i.id">
+        <mu-card-header :title="i.title" :subTitle="i.createAt">
+          标题
+        </mu-card-header>
+        <mu-card-text>
+          摘要{{i.summary}}
+        </mu-card-text>
+        <mu-card-actions>
   
-        <mu-flexbox>
-          <mu-flexbox-item class="flex-demo">
-            <mu-badge class="tags" v-for="j in i.tags" :key="j.tid" :content="j.name" :color="getTagColor(j.name)" />
+          <mu-flexbox>
+            <mu-flexbox-item class="flex-demo">
+              <mu-badge class="tags" v-for="j in i.tags" :key="j.tid" :content="j.name" :color="getTagColor(j.name)" />
   
-          </mu-flexbox-item>
-          <mu-flexbox-item class="flex-demo">
+            </mu-flexbox-item>
+            <mu-flexbox-item class="flex-demo">
   
-          </mu-flexbox-item>
-          <mu-flexbox-item class="flex-demo">
-            <router-link :to="getPostUrl(i.id)">阅读文章</router-link>
-          </mu-flexbox-item>
-        </mu-flexbox>
+            </mu-flexbox-item>
+            <mu-flexbox-item class="flex-demo">
+              <router-link :to="getPostUrl(i.id)">阅读文章</router-link>
+            </mu-flexbox-item>
+          </mu-flexbox>
   
-      </mu-card-actions>
-    </mu-card>
+        </mu-card-actions>
+      </mu-card>
+    </div>
+  
     <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
     </mu-pagination>
   </div>
@@ -77,7 +83,21 @@ export default {
 </script>
 <style scoped>
 #indexView {
+  position: relative;
+  padding-top: 30px;
   padding-bottom: 30px;
+  overflow: auto;
+}
+
+.tools {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  top: 0px;
+}
+
+.content {
+  height: 100%;
   overflow: auto;
 }
 
@@ -85,11 +105,22 @@ export default {
   margin: 0 5px;
 }
 
+
+.post-search {
+  border: 1px solid gray;
+  padding: 0 10px;
+  border-radius: 15px;
+  position: absolute;
+  right: 60px;
+  outline: 0px;
+}
+
 .fixed-bottom {
   position: fixed;
   bottom: 20px;
   left: 50%;
 }
+
 .listItem {
   margin-bottom: 10px;
 }
