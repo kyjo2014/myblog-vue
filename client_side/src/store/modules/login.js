@@ -1,26 +1,32 @@
 import axios from '../../util//modifiedAxios'
 export default {
-  state : {
+  state: {
     isOpen: false,
     isHost: false
 
   },
-  getters : {
+  getters: {
     isOpen: state => state.isOpen,
     isHost: state => state.isHost
   },
-  mutations : {
+  mutations: {
     close(state) {
-      Object.assign(state, {isOpen: false})
+      Object.assign(state, {
+        isOpen: false
+      })
     },
     open(state) {
-      Object.assign(state, {isOpen: true})
+      Object.assign(state, {
+        isOpen: true
+      })
     },
     isHost(state, is) {
-      Object.assign(state, {isHost: is})
+      Object.assign(state, {
+        isHost: is
+      })
     }
   },
-  actions : {
+  actions: {
 
     login({
       commit,
@@ -29,11 +35,15 @@ export default {
       axios
         .post('/users/login', userInfo)
         .then((res) => {
-          window
-            .localStorage
-            .setItem('jwt', res.data.data.token)
-          commit('isHost', res.data.data.isHost)
-          commit('close')
+          if (res.data.data.token) {
+            window
+              .localStorage
+              .setItem('jwt', res.data.data.token)
+            commit('isHost', res.data.data.isHost)
+            commit('close')
+
+          }
+
         }, (err) => {
           console.log(err)
         })

@@ -316,14 +316,26 @@ let sort = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
-        maxlength: 8
+        maxlength: 30
     },
-    tid: {
+    sid: {
         type: Number,
         unique: true
     }
 })
+//添加自增的id
+sort.plugin(AutoIncrement, {
+    inc_field: 'sid'
+});
+
+sort.statics = {
+    listAll() {
+        return this
+            .find({})
+            .select('-__v -_id')
+            .exec()
+    }
+}
 
 
 let Sort = mongoose.model('Sort', sort)

@@ -23,6 +23,8 @@ $http
   .use((res) => {
     if (res.code == '403' || res.code == '401') {
       alert('请登录')
+    } else if (res.data.code != '200') {
+      alert(res.data.message)
     }
     return res
   }, (err) => {

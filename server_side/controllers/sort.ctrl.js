@@ -47,14 +47,28 @@ exports.findById = async ctx => {
 exports.create = async ctx => {
     let body = ctx.request.body
     let {
-        name
+        sort
     } = body
-    await sortModel.Sort.create({
-        name
-    })
-    return ctx.body = await sortModel.Sort.listAll()
-}
+    try {
+        await sortModel.Sort.create({
+            name: sort
+        })
+    } catch (e) {
+        console.log(e)
+        return ctx.body = {
+            code: '500',
+            message: '增加种类失败，有重复种类'
+        }
+    }
 
+    return ctx.body = {
+        code: '200',
+        message: '新增成功',
+        data: await sortModel.Sort.listAll()
+
+    }
+
+}
 
 /**
  * @description 
@@ -65,5 +79,3 @@ exports.create = async ctx => {
 function postValid(title, content) {
     const TITLE_REG = '' //    
 }
-
-

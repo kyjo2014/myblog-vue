@@ -19,7 +19,8 @@
             <mu-flexbox-item order="0" class="flex-demo">
                 <h2>种类</h2>
                 <mu-radio label="前端" class="demo-checkbox" />
-                <mu-float-button icon="add" mini class="add-sort" />
+                <mu-radio v-for=" i in sorts" :key="i.sid" :label="i.name" class="demo-checkbox" />
+                <mu-float-button icon="add" mini class="add-sort" @click="addSortpop" />
             </mu-flexbox-item>
         </mu-flexbox>
         <mu-flexbox class="summary">
@@ -50,7 +51,7 @@ export default {
         return {
             game: 2,
             row: 300,
-            dialog: true,
+            dialog: false,
             post: {
                 title: '',
                 content: '',
@@ -59,17 +60,29 @@ export default {
                 summary: ''
             },
             prevpost: '',
-            newSort: ''
+            newSort: '',
+            sorts: []
         }
     },
     mounted() {
         let postId = this.$route.params.id
         if (postId) {
             this.$store.dispatch('fetchPost', postId)
+        } else {
+            this.$http.get('/sort').then((res) => {
+                if (res.data.code == '200') {
+                    this.sorts = res.data.data
+                }
+            }, (err) => {
+                console.log(err)
+            })
         }
     },
     methods: {
-        //TODO：草稿箱   
+        //TODO：草稿箱 
+        addSortpop() {
+            this.dialog = true
+        },
         updateContent(a) {
             this.content = a
         },
@@ -94,7 +107,10 @@ export default {
             this.$http.post('/sort', {
                 sort: this.newSort
             }).then((res) => {
-                console.log(res)
+                if (res.data.code == '200') {
+                    this.sorts = res.data.data
+                }
+
             }, (err) => {
                 console.log(err)
             })

@@ -8,7 +8,7 @@ const hostInfo = require('../conf/mainConf')
 let route = new router();
 
 //全部展示
-// route.get('/', sortCtrl.list);
+route.get('/', sortCtrl.list);
 //根据搜索框模糊查询
 // route.get('/search', sortCtrl.findByQuery);
 
