@@ -2,6 +2,7 @@ import axios from '../../util//modifiedAxios'
 export default {
   state: {
     posts: {}, //属性名是第X页
+    fullposts: {}, //完整页数
     pageIdx: 1, //当前页面数
     total: 3, //总共页数
     perPage: 10 //一页文章数目
@@ -33,14 +34,19 @@ export default {
       commit,
       state
     }, query) {
-      axios
+        axios
         .get(`/posts/search`, {
           params: {
             query
           }
         })
         .then((res) => {
-          console.log(res)
+          commit('updatePosts', {
+            pageIdx: 1,
+            posts: res.data.data,
+            total: 1
+          })
+
         }, (err) => {
           console.log(err)
         })

@@ -40,11 +40,17 @@ import getRamdomColor from '../util/randomColor'
 export default {
   data() {
     return {
-      totals: 50
+      totals: 50,
+      search: ''
     }
   },
   mounted() {
     this.getPosts(1)
+  },
+  watch: {
+    search(val) {
+      this.$store.dispatch('fetchByQuery',val)
+    }
   },
   computed: {
 
