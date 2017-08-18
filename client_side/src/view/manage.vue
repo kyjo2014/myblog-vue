@@ -1,7 +1,7 @@
 <template>
     <div class="manageView">
         <router-view name="manage" class="manage-content"></router-view>
-        
+    
     </div>
 </template>
 <script>
@@ -13,18 +13,18 @@ export default {
         }
     },
     computed: {
-        
+
     },
     methods: {
 
     },
     components: {
-      
+
     },
     beforeRouteEnter(to, from, next) {
-        
-        next((vm)=>{
-            if(!vm.$store.state.login.isHost) {
+
+        next((vm) => {
+            if (!vm.$store.state.login.isHost) {
                 vm.$router.replace('/')
             }
         })
