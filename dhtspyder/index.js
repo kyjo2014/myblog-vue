@@ -36,8 +36,8 @@ class DHT {
         this.routingTable = new RoutingTable(100)
     }
     addEvent() {
-        this.udp.on('error', this._onErrorHandle)
-        this.udp.on('message', this._onMessageHandle)
+        this.udp.on('error', this._onErrorHandle.bind(this))
+        this.udp.on('message', this._onMessageHandle.bind(this))
         this.udp.once('listening', () => {
             console.log(`爬虫开始运行，监听:${this.address} ${this.port}`)
         })
@@ -65,11 +65,11 @@ class DHT {
             })
         }
         setInterval(() => {
-            // if (this.routingTable.isEmpty()) {
+            if (this.routingTable.isEmpty()) {
 
-            //     return this.joinDHTNetWork()
-            // }
-            this.joinDHTNetWork()
+                return this.joinDHTNetWork()
+            }
+            // this.joinDHTNetWork()
             this.makeNeighbours();
         }, 1000);
 
@@ -115,9 +115,11 @@ class DHT {
         this.routingTable.nodes = [];
     }
     _onMessageHandle(packet, res) {
-        console.log(res)
         try {
             let msg = bencode.decode(packet)
+            if (msg.y == 'q' && (msg.q != 'get_peers' &&　msg.q != 'ping'　&&　msg.q != 'find_node')) {
+                console.log(msg.q.toString())
+            }
             if (msg.y == 'r' && msg.r.nodes) {
                 this._onFindNodeResponse(msg.r.nodes);
             } else if (msg.y == 'q' && msg.q == 'get_peers') {
