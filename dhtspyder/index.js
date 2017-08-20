@@ -7,7 +7,7 @@ const dgram = require('dgram')
 
 const conf = require('./config')
 
-// const utils = r
+const utils = require('./utils/index')
 
 class RoutingTable {
     constructor(maxsize) {
@@ -64,21 +64,35 @@ class DHT {
                 this.findNode(node)
             })
         }
+        setInterval(() => {
+            // if (this.routingTable.isEmpty()) {
+
+            //     return this.joinDHTNetWork()
+            // }
+            this.joinDHTNetWork()
+            this.makeNeighbours();
+        }, 1000);
 
 
     }
 
-    ping() {
+    joinDHTNetWork() {
+        conf.BOOTSTRAP_NODES.forEach((node) => {
+            this.findNode({
+                address: node[0],
+                port: node[1]
+            });
 
+        });
     }
     findNode(node, nid) {
         const _nid = nid != undefined ? utils.genNeighborID(nid, this.id) : this.id
         const msg = {
             t: crypto.randomBytes(2),
-            y: 'p',
+            y: 'q',
             q: 'find_node',
             a: {
-                id,
+                id: _nid,
                 target: utils.randomId()
             }
         }
@@ -86,29 +100,115 @@ class DHT {
     }
     sendKRPC(msg, node) {
         const address = node.address
-        const port = target.port
+        const port = node.port
         const packet = bencode.encode(msg)
         const len = packet.length
         this.udp.send(packet, 0, len, port, address)
     }
-    getPeers() {
-
-    }
-    announcePeer() {
-
+    makeNeighbours() {
+        this.routingTable.nodes.forEach((node) => {
+            this.findNode({
+                address: node.address,
+                port: node.port
+            }, node.nid);
+        });
+        this.routingTable.nodes = [];
     }
     _onMessageHandle(packet, res) {
+        console.log(res)
         try {
             let msg = bencode.decode(packet)
             if (msg.y == 'r' && msg.r.nodes) {
-                this.onFindNodeResponse(msg.r.nodes);
+                this._onFindNodeResponse(msg.r.nodes);
             } else if (msg.y == 'q' && msg.q == 'get_peers') {
-                this.onGetPeersRequest(msg, rinfo);
+                this._onGetPeersRequest(msg, node);
             } else if (msg.y == 'q' && msg.q == 'announce_peer') {
-                this.onAnnouncePeerRequest(msg, rinfo);
+                this._onAnnouncePeerRequest(msg, node);
             }
         } catch (e) {
-            
+
         }
     }
+    _onFindNodeResponse(nodes) {
+        let decodedNodes = utils.decodeNode(nodes)
+        decodedNodes.forEach((node) => {
+            node.address != this.address &&
+                node.nid != this.nid &&
+                node.port < 65536 &&
+                node.port > 0 && this.routingTable.addNode(node)
+        })
+    }
+    _onGetPeersRequest(msg, node) {
+        try {
+            var infohash = msg.a.info_hash;
+            var tid = msg.t;
+            var nid = msg.a.id;
+            var token = infohash.slice(0, TOKEN_LENGTH);
+
+            if (tid === undefined || infohash.length != 20 || nid.length != 20) {
+                throw new Error;
+            }
+        } catch (err) {
+            return;
+        }
+        this.sendKRPC({
+            t: tid,
+            y: 'r',
+            r: {
+                id: utils.genNeighborID(infohash, this.ktable.nid),
+                nodes: '',
+                token: token
+            }
+        }, node);
+
+
+    }
+    _onAnnouncePeerRequest(msg, node) {
+        var port;
+
+        try {
+            var infohash = msg.a.info_hash;
+            var token = msg.a.token;
+            var nid = msg.a.id;
+            var tid = msg.t;
+
+            if (tid == undefined) {
+                throw new Error;
+            }
+        } catch (err) {
+            return;
+        }
+
+        if (infohash.slice(0, TOKEN_LENGTH).toString() != token.toString()) {
+            return;
+        }
+
+        if (msg.a.implied_port != undefined && msg.a.implied_port != 0) {
+            port = node.port;
+        } else {
+            port = msg.a.port || 0;
+        }
+
+        if (port >= 65536 || port <= 0) {
+            return;
+        }
+
+        this.sendKRPC({
+            t: tid,
+            y: 'r',
+            r: {
+                id: genNeighborID(nid, this.ktable.nid)
+            }
+        }, node);
+
+        console.log("magnet:?xt=urn:btih:%s from %s:%s", infohash.toString("hex"), node.address, node.port);
+    }
+    _onErrorHandle(e) {
+        console.log(e)
+    }
 }
+
+
+var a = new DHT(3000, '0.0.0.0')
+
+a.setUp()
