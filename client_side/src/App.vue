@@ -92,8 +92,12 @@ export default {
       }, 2000)
 
     }.bind(this)
+    this.checkLogin()
   },
   methods: {
+    checkLogin() {
+      this.$store.dispatch('checkStatus')
+    },
     handleTabChange(val) {
       this.$router.push({ name: val, params: { id: 1 } })
     },

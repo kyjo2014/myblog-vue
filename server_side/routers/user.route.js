@@ -12,6 +12,9 @@ route.all('/', function (ctx) {
 //登录
 route.post('/login', userCtrl.login)
 
+//检查登录状态
+route.get('/checkstatus',userCtrl.checkStatus)
+
 //获取所有用户信息
 route.get('/', jwt({secret: hostInfo.secretKey}), userCtrl.list)
 

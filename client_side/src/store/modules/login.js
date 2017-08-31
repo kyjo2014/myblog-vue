@@ -2,12 +2,13 @@ import axios from '../../util//modifiedAxios'
 export default {
   state: {
     isOpen: false,
-    isHost: false
-
+    isHost: false,
+    userName: '',
   },
   getters: {
     isOpen: state => state.isOpen,
-    isHost: state => state.isHost
+    isHost: state => state.isHost,
+    user: state => state.userName
   },
   mutations: {
     close(state) {
@@ -24,10 +25,30 @@ export default {
       Object.assign(state, {
         isHost: is
       })
+    },
+    setUser(state, userName) {
+      Object.assign(state, {
+        userName
+      })
     }
   },
   actions: {
+    checkStatus({
+      commit,
+      state
+    }) {
 
+      axios
+        .get('/users/checkstatus')
+        .then((res) => {
+          if (res.data.code == '200') {
+            commit('isHost',res.data.data.isHost)
+            commit('setUser',res.data.data.name)
+          }
+        }, (err) => {
+          alert(err)
+        })
+    },
     login({
       commit,
       state

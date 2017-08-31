@@ -3,6 +3,42 @@ const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const hostInfo = require('../conf/mainConf')
 
+
+//检查用户登录状态
+exports.checkStatus = async ctx => {
+    // console.log(ctx.header)
+    let formatToken = ctx.header.authorization.slice(7)
+    let message = {}
+    try {
+
+        var info = jwt.verify(formatToken, hostInfo.secretKey);
+        if (info.id) {
+            var name = info.id
+            var isHost = true
+        } else {
+            var name = info.name
+            var isHost = false
+        }
+        message = {
+            code: '200',
+            message: 'token有效',
+            data: {
+                name,
+                isHost
+            }
+        }
+    } catch (error) {
+        message = {
+            code: '401',
+            message: 'token 无效'
+
+        }
+
+    }
+    ctx.body = message
+
+}
+
 exports.list = async ctx => {
     let items = []
     try {
@@ -51,18 +87,23 @@ exports.create = async ctx => {
     let body = ctx.request.body || {}
     let {
         email = "undefined",
-        nickname = "undefined"
+            nickname = "undefined"
     } = body;
 
     if (guestValid(email, nickname)) {
         let user = await userModel
             .User
-            .findOne({email: email})
+            .findOne({
+                email: email
+            })
             .exec()
         if (user == null) {
             let message = await userModel
                 .User
-                .createGuest({name: nickname, email})
+                .createGuest({
+                    name: nickname,
+                    email
+                })
             return ctx.body = {
                 code: '200',
                 message: message
@@ -171,10 +212,14 @@ exports.login = async ctx => {
 }
 
 exports.del = async ctx => {
-    let {id: userID} = ctx.params //获取删除的用户的id
+    let {
+        id: userID
+    } = ctx.params //获取删除的用户的id
     let user = await userModel
         .User
-        .findOneAndRemove({id: userID})
+        .findOneAndRemove({
+            id: userID
+        })
     if (user) {
         res = {
             code: '200',
@@ -193,12 +238,18 @@ exports.del = async ctx => {
 }
 
 exports.update = async ctx => {
-    let {id, nickname} = ctx.request.body
+    let {
+        id,
+        nickname
+    } = ctx.request.body
     let res = await userModel
         .User
         .findOneAndUpdate({
             id: id
-        }, {nickname, email})
+        }, {
+            nickname,
+            email
+        })
     return ctx.body = {
         code: '200',
         message: res

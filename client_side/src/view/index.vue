@@ -40,7 +40,7 @@ import getRamdomColor from '../util/randomColor'
 export default {
   data() {
     return {
-      totals: 50,
+      totals: 5,
       search: ''
     }
   },
@@ -79,6 +79,9 @@ export default {
     ]),
     nowPagePosts(a) {
       return this.posts[this.pageIdx]
+    },
+    totalPage() {
+      return 10
     }
   },
   beforeRouteLeave: (to, from, next) => {
