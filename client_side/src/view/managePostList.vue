@@ -8,8 +8,8 @@
                 </mu-icon-menu>
             </mu-list-item>
         </mu-list>
-        <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
-        </mu-pagination>
+       <mu-pagination class="fixed-bottom" :total="total" :current="pageIdx" @pageChange="getPosts">
+    </mu-pagination>
     </div>
 </template>
 <script>
@@ -33,7 +33,12 @@ export default {
     methods: {
         rmPost(postid) {
             this.$store.dispatch('rmPost', postid)
-        }
+        },
+        getPosts() {
+
+        },
+
+        
     }
 
 }

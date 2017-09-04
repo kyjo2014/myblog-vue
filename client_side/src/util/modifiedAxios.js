@@ -5,7 +5,7 @@ let baseURL = ''
 if (process.env.NODE_ENV !== 'production') {
   baseURL= 'http://localhost:3000/'
 } else {
-  baseURL= 'http://kyjocode.cn:19000/' 
+  baseURL= 'http://api.blog.kyjocode.cn/' 
 }
 
 const $http = axios.create({
