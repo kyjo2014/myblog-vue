@@ -216,6 +216,11 @@ user.statics = {
             .count()
             .exec()
     },
+    findByEmail(email) {
+        return this.findOne({
+            email: email
+        }).exec()
+    },
     async createGuest(info) {
         let count = await this
             .find({})

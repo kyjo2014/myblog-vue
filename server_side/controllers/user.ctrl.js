@@ -156,8 +156,7 @@ exports.login = async ctx => {
         email = "undefined",
         nickname = "undefined"
     } = body
-    // var id = 'host' var pwd = 'abc123456' var email = 'test@' var nickname =
-    // "123"
+
     if (hostValid(id, pwd)) {
         if (id === hostInfo['id'] && pwd === hostInfo['pwd']) {
             let token = jwt.sign({
@@ -184,7 +183,7 @@ exports.login = async ctx => {
         let user = await userModel
             .User
             .findByEmail(email)
-        if (user.hasOwnPorperty('nickname')) {
+        if (user && user.hasOwnPorperty('nickname')) {
 
             if (user['nickname'] === nickname) {
                 let token = jwt.sign({
@@ -200,6 +199,32 @@ exports.login = async ctx => {
                         token,
                         isHost: false
                     }
+                }
+            } else {
+                return ctx.body = {
+                    code: '401',
+                    message: '登录失败，昵称不一致'
+                }
+            }
+        } else {
+            let message = await userModel
+                .User
+                .createGuest({
+                    name: nickname,
+                    email
+                })
+            let token = jwt.sign({
+                email,
+                nickname
+            }, hostInfo.secretKey, {
+                expiresIn: 60 * 60
+            })
+            return ctx.body = {
+                code: '200',
+                message: '注册成功',
+                data: {
+                    token,
+                    isHost: false
                 }
             }
         }

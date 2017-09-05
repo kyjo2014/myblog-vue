@@ -100,6 +100,7 @@ export default {
     },
     logOut() {
       this.$store.commit('logOut')
+      this.$router.replace('/')
       window.localStorage.removeItem('jwt')
 
     },
