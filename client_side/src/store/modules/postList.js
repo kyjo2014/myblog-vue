@@ -34,7 +34,7 @@ export default {
       commit,
       state
     }, query) {
-        axios
+      axios
         .get(`/posts/search`, {
           params: {
             query
@@ -53,40 +53,50 @@ export default {
     },
     rmPost({
       commit,
+      dispatch,
       state
     }, postId) {
       axios
         .delete(`/posts/${postId}`)
         .then((res) => {
-          res.data.code == '200' && commit()
+          res.data.code == '200' && dispatch('loadPage', state.pageIdx)
+
         }, (err) => {
           alert(err)
         })
+    },
+    changePage({
+      commit,
+      dispatch,
+      state
+    }, pageIdx) {
+      if (!state.posts[pageIdx]) {
+        dispatch('loadPage', pageIdx)
+      } else {
+        commit('changePage', pageIdx)
+      }
     },
     loadPage({
       commit,
       state
     }, pageIdx) {
-      if (!state.posts[pageIdx]) {
-        axios
-          .get('/posts', {
-            params: {
-              pageIdx,
-              perPage: 10
-            }
+
+      axios
+        .get('/posts', {
+          params: {
+            pageIdx,
+            perPage: 10
+          }
+        })
+        .then((res) => {
+          res.data.code == '200' && commit('updatePosts', {
+            pageIdx,
+            posts: res.data.data.posts,
+            total: res.data.data.Pagination.totalPage
           })
-          .then((res) => {
-            res.data.code == '200' && commit('updatePosts', {
-              pageIdx,
-              posts: res.data.data.posts,
-              total: res.data.data.Pagination.totalPage
-            })
-          }, (err) => {
-            alert(err)
-          })
-      } else {
-        commit('changePage', pageIdx)
-      }
+        }, (err) => {
+          alert(err)
+        })
     }
   }
 }

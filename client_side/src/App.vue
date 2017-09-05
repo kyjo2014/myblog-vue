@@ -9,11 +9,11 @@
           <mu-tab value="posts" title="文章" />
           <mu-tab v-if="isHost" value="manage" title="管理" />
         </mu-tabs>
-  
       </div>
-     
+      <div class="user-name">{{user}}</div>
       <mu-icon-menu icon="more_vert" :anchorOrigin="leftTop" :targetOrigin="leftTop" class="selected" slot="right">
         <mu-menu-item title="登录" @click="openLogin" />
+        <mu-menu-item title="注销" @click="logOut" />
       </mu-icon-menu>
     </div>
     <div class="content">
@@ -78,7 +78,7 @@ export default {
     ...mapGetters([
       'isOpen',
       'isHost',
-
+      'user'
     ])
   },
 
@@ -97,6 +97,11 @@ export default {
   methods: {
     checkLogin() {
       this.$store.dispatch('checkStatus')
+    },
+    logOut() {
+      this.$store.commit('logOut')
+      window.localStorage.removeItem('jwt')
+
     },
     handleTabChange(val) {
       this.$router.push({ name: val, params: { id: 1 } })
@@ -212,5 +217,11 @@ body {
 .footer {
   padding: 20px 0;
   text-align: center;
+}
+.user-name {
+  display: inline-block;
+  color:white;
+  max-width: 40px;
+  text-overflow:ellipsis;
 }
 </style>

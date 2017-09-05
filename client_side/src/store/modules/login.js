@@ -30,6 +30,13 @@ export default {
       Object.assign(state, {
         userName
       })
+    },
+    logOut(state) {
+   
+      Object.assign(state, {
+        isHost: false,
+        userName: ''
+      })
     }
   },
   actions: {
@@ -42,8 +49,8 @@ export default {
         .get('/users/checkstatus')
         .then((res) => {
           if (res.data.code == '200') {
-            commit('isHost',res.data.data.isHost)
-            commit('setUser',res.data.data.name)
+            commit('isHost', res.data.data.isHost)
+            commit('setUser', res.data.data.name)
           }
         }, (err) => {
           alert(err)
@@ -57,6 +64,7 @@ export default {
         .post('/users/login', userInfo)
         .then((res) => {
           if (res.data.data.token) {
+            window.localStorage.removeItem('jwt')
             window
               .localStorage
               .setItem('jwt', res.data.data.token)
