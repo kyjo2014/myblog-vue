@@ -12,11 +12,12 @@ exports.checkStatus = async ctx => {
     try {
 
         var info = jwt.verify(formatToken, hostInfo.secretKey);
+        console.log(info)
         if (info.id) {
             var name = info.id
             var isHost = true
         } else {
-            var name = info.name
+            var name = info.nickname
             var isHost = false
         }
         message = {
@@ -183,7 +184,8 @@ exports.login = async ctx => {
         let user = await userModel
             .User
             .findByEmail(email)
-        if (user && user.hasOwnPorperty('nickname')) {
+        console.log(user)
+        if (user && user.hasOwnProperty('nickname')) {
 
             if (user['nickname'] === nickname) {
                 let token = jwt.sign({

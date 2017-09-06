@@ -31,7 +31,7 @@
       </mu-card>
     </div>
 
-    <mu-pagination class="fixed-bottom" :total="totals" :current="pageIdx" @pageChange="getPosts">
+    <mu-pagination class="fixed-bottom" :pageSize="pageSize" :total="totalPage" :current="pageIdx" @pageChange="getPosts">
     </mu-pagination>
   </div>
 </template>
@@ -42,7 +42,8 @@ import reloadPost from '../components/reLoadPost'
 export default {
   data() {
     return {
-      totals: 5,
+      totals: 50,
+      pageSize: 10,
       search: ''
     }
   },
@@ -83,7 +84,7 @@ export default {
       return this.posts[this.pageIdx]
     },
     totalPage() {
-      return 10
+      return this.total * 10
     }
   },
   beforeRouteLeave: (to, from, next) => {
