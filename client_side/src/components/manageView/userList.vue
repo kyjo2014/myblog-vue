@@ -1,40 +1,39 @@
 <template>
-    <mobile-tear-sheet>
-        <mu-list>
-            <mu-list-item :title="item.name" v-for="item in items" :key="item" >
-                <mu-avatar src="/images/avatar1.jpg" slot="leftAvatar" />
-                <span slot="describe">
-                    <span style="color: rgba(0, 0, 0, .87)">Email:</span>{{item.email}}
-                </span>
-                <mu-icon-menu slot="right" icon="more_vert" tooltip="操作">
-                    <mu-menu-item title="回复" />
-                    <mu-menu-item title="删除" />
-                </mu-icon-menu>
-            </mu-list-item>
-            <mu-divider inset/>
-    
-        </mu-list>
-    </mobile-tear-sheet>
+    <div class="userList">
+        <useritem v-for="i in users" :data="i" :key="i.id"></useritem>
+    </div>
 </template>
 <script>
+import useritem from './useritem'
 export default {
     data() {
         return {
-            items: [
-                {
-                    name: 'default',
-                    email: 'default@default.com'
-                }
+            users: [
+                '123'
             ]
+        }
+    },
+    components: {
+        useritem
+    },
+    methods: {
+        fetchData() {
+            this.$http.get(`http://localhost:3000/users`).then((res)=>{
+                if(res.data.code == '200') {
+                    this.users = res.data.data
+                }
+            })
         }
     },
     mounted() {
         this.fetchData()
-    },
-    methods: {
-        fetchData() {
-            this.$http.get(`http://localhost:3000/users`)
-        }
     }
 }
 </script>
+<style>
+
+</style>
+<style scoped>
+
+</style>
+

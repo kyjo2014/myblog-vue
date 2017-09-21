@@ -6,9 +6,9 @@ const jwt = require('koa-jwt')
 
 let route = new router()
 
-route.all('/', function (ctx) {
-    return ctx.body = "test"
-})
+// route.all('/', function (ctx) {
+//     return ctx.body = "test"
+// })
 //登录
 route.post('/login', userCtrl.login)
 
