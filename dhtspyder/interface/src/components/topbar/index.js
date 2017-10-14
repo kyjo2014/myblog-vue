@@ -17,7 +17,7 @@ class TopBar extends Component {
                     <div className="icon">
                         <a href="javascript:;"></a>
                     </div>
-                    <div className="btn-group">
+                    <div className="btn-group ">
                         <Button className="btn signIn">登录</Button>
                         <Button className="btn signUp">注册</Button>
                     </div>

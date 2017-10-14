@@ -5,11 +5,49 @@
     padding-top: 58px;
     background: url('./assets/img/59926e94e27df.jpg') no-repeat center;
     background-size: cover;
+    position: relative;
+    z-index: 1;
     .wrapper {
         margin: 0 auto;
         width: 1010px;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-
+        position: fixed;
+        top: 200px;
+        left: 50%;
+        transform: translate(-50%,0);
     }
+    .title {
+        flex: 1 ;
+        font-size: 70px;
+        margin-bottom: 30px;
+        color: #ffffff;
+        text-shadow: 0 0 16px #1f5449;
+        display: block;
+        text-align: center;
+    }
+    .user-input {
+        text-align: center;
+        input {
+            height: 48px;
+            font-size: 18px;
+            width: 70%;
+        }
+        .search {
+            height: 48px;
+            font-size: 18px;
+            vertical-align: top;
+        }
+    }
+    .frequent-label {
+        width: 75%;
+        height: 400px;
+        margin: 20px auto;
+        text-align: center;
+        .label {
+            margin: 5px;
+        }
+    }
+   
 }
